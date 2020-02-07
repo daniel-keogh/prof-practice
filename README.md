@@ -16,3 +16,9 @@ $ npm i -g @ionic/cli
 
 - Run `npm install` to install the neccessary dependencies.
 - Run `ionic serve` to open the client application in a web browser.
+
+### Server
+
+- `cd backend/`
+- Run `npm install` to install the neccessary dependencies.
+- Run `npm start` to start the server with [nodemon](https://www.npmjs.com/package/nodemon).
