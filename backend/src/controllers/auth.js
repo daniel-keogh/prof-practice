@@ -19,15 +19,13 @@ exports.register = (req, res, next) => {
             // Hash the user's password & save to DB
             bcrypt.hash(req.body.password, 10)
                 .then(hashedPwd => {
-                    User({
+                    new User({
                         name: req.body.name,
                         email: req.body.email,
                         password: hashedPwd
                     }).save((err, user) => {
                         if (err) {
-                            res.status(400).json({
-                                'msg': err
-                            });
+                            res.status(400).json({ 'msg': err });
                         }
                         return res.status(201).json(user);
                     });
