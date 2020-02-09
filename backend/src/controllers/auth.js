@@ -1,5 +1,7 @@
-const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const secret = require('../config/keys').secret;
+const User = require('../models/user');
 
 exports.register = (req, res, next) => {
     if (!req.body.email || !req.body.password || !req.body.name) {
@@ -40,7 +42,7 @@ exports.login = (req, res, next) => {
     }
 
     User.findOne({ email: req.body.email })
-        .select('password')
+        .select(['id', 'email', 'password'])
         .exec((err, user) => {
             if (err) {
                 res.status(400).json({ 'msg': err });
@@ -52,15 +54,17 @@ exports.login = (req, res, next) => {
                 bcrypt.compare(req.body.password, user.password)
                     .then(isMatch => {
                         if (isMatch) {
-                            res.status(200).json({ 'msg': 'User logged in successfully' });
+                            res.status(200).json({
+                                'msg': 'User logged in successfully',
+                                'token': jwt.sign({
+                                    id: user.id,
+                                    email: user.email
+                                }, secret)
+                            });
                         } else {
                             res.status(400).json({ 'msg': 'User email or password is incorrect' });
                         }
                     });
             }
         });
-};
-
-exports.logout = (req, res, next) => {
-
 };

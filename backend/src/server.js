@@ -2,11 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const passport = require('passport');
+
+const passportMiddleware = require('./middleware/passport');
 
 const authRoutes = require('./routes/auth');
 const mongoURI = require('./config/keys').mongoURI;
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(bodyParser.json());
@@ -19,13 +22,17 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(authRoutes);
+app.use(passport.initialize());
+passport.use(passportMiddleware);
+
+// Routes
+app.use('/api', authRoutes);
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
-    app.listen(process.env.PORT || PORT, () => console.log(`Server listening on port ${PORT}...`));
+    app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`));
 }).catch(err => {
     console.log(err);
 });
