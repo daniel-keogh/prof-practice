@@ -22,3 +22,11 @@ $ npm i -g @ionic/cli
 - `cd backend/`
 - Run `npm install` to install the neccessary dependencies.
 - Run `npm start` to start the server with [nodemon](https://www.npmjs.com/package/nodemon).
+
+### Concurrently
+
+You can run both the client and the server at the same time using [concurrently](https://www.npmjs.com/package/concurrently).
+
+```sh
+$ npm run dev
+```
