@@ -1,4 +1,4 @@
-import { LoginCredentials } from '../../interfaces/login-details';
+import { LoginCredentials } from '../../interfaces/login-credentials';
 import { User } from './../../interfaces/user';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
