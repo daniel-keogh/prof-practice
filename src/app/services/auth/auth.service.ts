@@ -46,13 +46,18 @@ export class AuthService {
     });
   }
 
-  register(credentials: LoginCredentials): Observable<any> {
-    return this.http.post(`${this.url}/api/register`, credentials).pipe(
-      catchError(e => {
-        console.log(e);
-        throw new Error(e);
+  register(name: string, credentials: LoginCredentials): Observable<any> {
+    return this.http
+      .post(`${this.url}/api/register`, {
+        credentials,
+        name
       })
-    );
+      .pipe(
+        catchError(e => {
+          console.log(e);
+          throw new Error(e);
+        })
+      );
   }
 
   login(credentials: LoginCredentials): Observable<any> {
