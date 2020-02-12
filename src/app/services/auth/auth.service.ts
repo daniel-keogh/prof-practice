@@ -1,4 +1,5 @@
-import { Platform } from '@ionic/angular';
+import { LoginCredentials } from '../../interfaces/login-details';
+import { User } from './../../interfaces/user';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -15,12 +16,11 @@ const ACCESS_TOKEN = 'access_token';
 export class AuthService {
   private _authState = new BehaviorSubject(false);
   private url = environment.url;
-  private user: any;
+  private user: User;
 
   constructor(
     private helper: JwtHelperService,
     private http: HttpClient,
-    private platform: Platform,
     private storage: Storage
   ) {
     this.checkToken();
@@ -46,7 +46,7 @@ export class AuthService {
     });
   }
 
-  register(credentials): Observable<any> {
+  register(credentials: LoginCredentials): Observable<any> {
     return this.http.post(`${this.url}/api/register`, credentials).pipe(
       catchError(e => {
         console.log(e);
@@ -55,7 +55,7 @@ export class AuthService {
     );
   }
 
-  login(credentials): Observable<any> {
+  login(credentials: LoginCredentials): Observable<any> {
     return this.http.post(`${this.url}/api/login`, credentials).pipe(
       tap(res => {
         this.storage.set(ACCESS_TOKEN, res['token']);
