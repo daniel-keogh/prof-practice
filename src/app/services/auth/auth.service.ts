@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { LoginCredentials } from '../../interfaces/login-credentials';
 import { User } from './../../interfaces/user';
 import { environment } from './../../../environments/environment';
@@ -49,8 +50,8 @@ export class AuthService {
   register(name: string, credentials: LoginCredentials): Observable<any> {
     return this.http
       .post(`${this.url}/api/register`, {
-        credentials,
-        name
+        name,
+        ...credentials
       })
       .pipe(
         catchError(e => {
