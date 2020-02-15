@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { LoginCredentials } from '../../interfaces/login-credentials';
 import { User } from './../../interfaces/user';
 import { environment } from './../../../environments/environment';
@@ -75,8 +74,8 @@ export class AuthService {
     );
   }
 
-  logout() {
-    this.storage.remove(ACCESS_TOKEN).then(() => {
+  logout(): Promise<void> {
+    return this.storage.remove(ACCESS_TOKEN).then(() => {
       this._authState.next(false);
     });
   }

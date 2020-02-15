@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Account</ion-label>
+    </ion-list-header>
+    <ion-item button routerLink="/profile">
+      <ion-avatar slot="start">
+        <!-- placeholder image... -->
+        <img src="https://gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y">
+      </ion-avatar>
+      <ion-label>
+        <h2>NAME</h2>
+        <p>EMAIL</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-button (click)="onLogOutClicked()" expand="block" fill="clear" shape="round" color="danger">
+      LOG OUT
+    </ion-button>
+
+    <ion-list-header>
+      <ion-label>Appearance</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Theme</ion-label>
+      <ion-select [(ngModel)]="theme" okText="OK" cancelText="Cancel" interface="popover" (ionChange)="onThemeChanged()">
+        <ion-select-option *ngFor="let theme of settings.themes | keyvalue" value="{{theme.key}}">{{theme.value}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</ion-content>

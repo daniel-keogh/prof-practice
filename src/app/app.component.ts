@@ -1,3 +1,4 @@
+import { SettingsService } from './services/storage/settings.service';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
@@ -13,6 +14,7 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
+    private settings: SettingsService,
     private statusBar: StatusBar
   ) {
     this.initializeApp();
@@ -22,6 +24,8 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.settings.restore();
     });
   }
 }
