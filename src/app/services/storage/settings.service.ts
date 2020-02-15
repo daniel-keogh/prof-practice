@@ -7,8 +7,8 @@ enum Keys {
 
 enum Themes {
   Dark = 'Dark',
-  Light = 'Light'
-  // System = 'System'
+  Light = 'Light',
+  System = 'System Default'
 }
 
 @Injectable({
@@ -26,12 +26,17 @@ export class SettingsService {
   }
 
   setTheme(theme: string): Promise<any> {
-    return this.storage.set(
-      Keys.Theme,
-      document.body.classList.toggle('dark', theme === Themes.Dark)
-        ? Themes.Dark
-        : Themes.Light
-    );
+    const isDarkThemePreferred = (): boolean => {
+      if (theme === Themes.System) {
+        // Use matchMedia to check the user preference
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      return theme === Themes.Dark;
+    };
+
+    document.body.classList.toggle('dark', isDarkThemePreferred());
+
+    return this.storage.set(Keys.Theme, theme);
   }
 
   search(key: string): Promise<any> {
