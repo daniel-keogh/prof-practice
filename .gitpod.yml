@@ -1,0 +1,15 @@
+tasks:
+  - command: mkdir -p /workspace/data && mongod --dbpath /workspace/data
+  - init: npm install && (cd backend && npm install)
+    command: npm run dev
+image:
+  file: .gitpod.Dockerfile
+ports:
+  - port: 27017
+    onOpen: ignore
+  - port: 8100
+    onOpen: open-preview
+  - port: 4200
+    onOpen: ignore
+  - port: 4000
+    onOpen: ignore
