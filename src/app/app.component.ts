@@ -1,4 +1,4 @@
-import { SettingsService } from './services/storage/settings.service';
+import { SettingsService } from './services/settings/settings.service';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
