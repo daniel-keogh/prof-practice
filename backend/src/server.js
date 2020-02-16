@@ -7,6 +7,8 @@ const passport = require('passport');
 const passportMiddleware = require('./middleware/passport');
 
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+
 const mongoURI = require('./config/keys').mongoURI;
 
 const PORT = process.env.PORT || 4000;
@@ -27,6 +29,7 @@ passport.use(passportMiddleware);
 
 // Routes
 app.use('/api', authRoutes);
+app.use('/api/users', userRoutes);
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
