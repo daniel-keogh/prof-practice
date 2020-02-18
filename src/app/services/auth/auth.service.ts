@@ -14,7 +14,7 @@ const ACCESS_TOKEN = 'access_token';
   providedIn: 'root'
 })
 export class AuthService {
-  private _authState = new BehaviorSubject(false);
+  public authState = new BehaviorSubject(false);
   private url = environment.url;
   private user: User;
 
@@ -22,23 +22,17 @@ export class AuthService {
     private helper: JwtHelperService,
     private http: HttpClient,
     private storage: Storage
-  ) {
-    this.checkToken();
-  }
+  ) { }
 
-  get authState(): BehaviorSubject<boolean> {
-    return this._authState;
-  }
-
-  checkToken() {
-    this.storage.get(ACCESS_TOKEN).then(token => {
+  checkToken(): Promise<void> {
+    return this.storage.get(ACCESS_TOKEN).then(token => {
       if (token) {
         let isExpired = this.helper.isTokenExpired(token);
         const decoded = this.helper.decodeToken(token);
 
         if (!isExpired) {
           this.user = decoded;
-          this._authState.next(true);
+          this.authState.next(true);
         } else {
           this.storage.remove(ACCESS_TOKEN);
         }
@@ -54,7 +48,6 @@ export class AuthService {
       })
       .pipe(
         catchError(e => {
-          console.log(e);
           throw new Error(e);
         })
       );
@@ -65,7 +58,7 @@ export class AuthService {
       tap(res => {
         this.storage.set(ACCESS_TOKEN, res['token']);
         this.user = this.helper.decodeToken(res['token']);
-        this._authState.next(true);
+        this.authState.next(true);
       }),
       catchError(e => {
         console.log(e);
@@ -76,11 +69,33 @@ export class AuthService {
 
   logout(): Promise<void> {
     return this.storage.remove(ACCESS_TOKEN).then(() => {
-      this._authState.next(false);
+      this.authState.next(false);
     });
   }
 
   isAuthenticated() {
-    return this._authState.value;
+    return this.authState.value;
+  }
+
+  closeAccount(pwd: string) {
+    this.http.post(`${this.url}/api/login`, {
+      email: this.user.email,
+      password: pwd
+    }).toPromise()
+      .then(res => {
+        return this.user._id === this.helper.decodeToken(res['token'])._id;
+      })
+      .then(isValid => {
+        if (isValid) {
+          this.http.delete(`${this.url}/api/users/${this.user._id}`)
+            .toPromise()
+            .then(() => {
+              this.logout();
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      });
   }
 }

@@ -24,9 +24,10 @@ exports.login = (req, res, next) => {
                             res.status(200).json({
                                 'msg': 'User logged in successfully',
                                 'token': jwt.sign({
-                                    id: user.id,
+                                    _id: user._id,
                                     email: user.email,
-                                    name: user.name
+                                    name: user.name,
+                                    registered_since: user.registered_since
                                 }, secret)
                             });
                         } else {

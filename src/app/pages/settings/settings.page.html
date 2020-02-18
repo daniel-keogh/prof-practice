@@ -24,7 +24,7 @@
     </ion-item>
 
     <ion-button (click)="onLogOutClicked()" expand="block" fill="clear" shape="round" color="danger">
-      LOG OUT
+      Log Out
     </ion-button>
 
     <ion-list-header>
@@ -32,8 +32,10 @@
     </ion-list-header>
     <ion-item>
       <ion-label>Theme</ion-label>
-      <ion-select [(ngModel)]="theme" okText="OK" cancelText="Cancel" interface="popover" (ionChange)="onThemeChanged()">
-        <ion-select-option *ngFor="let theme of settings.themes | keyvalue" value="{{theme.value}}">{{theme.value}}</ion-select-option>
+      <ion-select [(ngModel)]="theme" okText="OK" cancelText="Cancel" interface="popover"
+        (ionChange)="onThemeChanged()">
+        <ion-select-option *ngFor="let theme of settings.themes | keyvalue" value="{{theme.value}}">{{theme.value}}
+        </ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>
