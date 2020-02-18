@@ -40,6 +40,11 @@ export class AuthService {
     });
   }
 
+  async getDecodedToken(): Promise<User> {
+    const token = await this.storage.get(ACCESS_TOKEN);
+    return this.helper.decodeToken(token);
+  }
+
   register(name: string, credentials: LoginCredentials): Observable<any> {
     return this.http
       .post(`${this.url}/api/register`, {
