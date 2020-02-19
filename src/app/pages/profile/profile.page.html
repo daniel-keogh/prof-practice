@@ -3,12 +3,33 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/settings"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onEditClicked()">
+        <ion-icon slot="icon-only" [name]="!editable ? 'create-outline' : 'save'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Profile Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="onCloseAccountClicked()" expand="block" fill="outline" color="danger">
-    Close Account
-  </ion-button>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input value="{{user?.name}}" [disabled]="!editable" inputmode="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input value="{{user?.email}}" [disabled]="!editable" inputmode="email"></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="onLogOutClicked()" expand="block" fill="outline" shape="round" color="danger">
+      Log Out
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

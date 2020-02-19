@@ -1,6 +1,6 @@
+import { AlertController } from '@ionic/angular';
 import { User } from './../../interfaces/user';
 import { SettingsService } from '../../services/settings/settings.service';
-import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -14,8 +14,8 @@ export class SettingsPage implements OnInit {
   private user: User;
 
   constructor(
+    private alertController: AlertController,
     private auth: AuthService,
-    private router: Router,
     private settings: SettingsService
   ) { }
 
@@ -27,12 +27,40 @@ export class SettingsPage implements OnInit {
     this.user = await this.auth.getDecodedToken();
   }
 
-  async onLogOutClicked() {
-    await this.auth.logout();
-    this.router.navigateByUrl('start-page');
-  }
-
   onThemeChanged() {
     this.settings.setTheme(this.theme);
+  }
+
+  onChangePwdClicked() {
+    // TODO 
+  }
+
+  async onCloseAccountClicked() {
+    const alert = await this.alertController.create({
+      header: 'Close your account?',
+      message: 'Enter your password to confirm.',
+      inputs: [
+        {
+          name: 'password',
+          type: 'password',
+          placeholder: 'Password'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }, {
+          text: 'OK',
+          handler: (input) => {
+            if (input) {
+              this.auth.closeAccount(input.password);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

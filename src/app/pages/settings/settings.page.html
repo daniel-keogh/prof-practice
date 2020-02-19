@@ -10,22 +10,17 @@
 <ion-content>
   <ion-list>
     <ion-list-header>
-      <ion-label>Account</ion-label>
+      <ion-label>Profile</ion-label>
     </ion-list-header>
-    <ion-item button routerLink="profile">
+    <ion-item button detail routerLink="profile">
       <ion-avatar slot="start">
-        <!-- placeholder image... -->
-        <img src="https://gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y">
+        <ion-icon name="person-circle" size="large"></ion-icon>
       </ion-avatar>
       <ion-label>
         <h2>{{user?.name}}</h2>
         <p>{{user?.email}}</p>
       </ion-label>
     </ion-item>
-
-    <ion-button (click)="onLogOutClicked()" expand="block" fill="clear" shape="round" color="danger">
-      Log Out
-    </ion-button>
 
     <ion-list-header>
       <ion-label>Appearance</ion-label>
@@ -37,6 +32,16 @@
         <ion-select-option *ngFor="let theme of settings.themes | keyvalue" value="{{theme.value}}">{{theme.value}}
         </ion-select-option>
       </ion-select>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label>Security</ion-label>
+    </ion-list-header>
+    <ion-item button (click)="onChangePwdClicked()">
+      <ion-label>Change Password</ion-label>
+    </ion-item>
+    <ion-item button (click)="onCloseAccountClicked()">
+      <ion-label color="danger">Close Account</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

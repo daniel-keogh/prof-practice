@@ -1,6 +1,7 @@
+import { User } from './../../interfaces/user';
 import { AuthService } from './../../services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -8,41 +9,28 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  private editable = false;
+  private user: User;
 
   constructor(
-    private alertController: AlertController,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.user = await this.auth.getDecodedToken();
   }
 
-  async onCloseAccountClicked() {
-    const alert = await this.alertController.create({
-      header: 'Close your account?',
-      message: 'Enter your password to confirm.',
-      inputs: [
-        {
-          name: 'password',
-          type: 'password',
-          placeholder: 'Password'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }, {
-          text: 'OK',
-          handler: (input) => {
-            if (input) {
-              this.auth.closeAccount(input.password);
-            }
-          }
-        }
-      ]
-    });
+  onEditClicked() {
+    if (this.editable) {
+      // TODO save the changes
+    }
 
-    await alert.present();
+    this.editable = !this.editable;
+  }
+
+  async onLogOutClicked() {
+    await this.auth.logout();
+    this.router.navigateByUrl('start-page');
   }
 }
