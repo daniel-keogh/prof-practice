@@ -1,3 +1,4 @@
+import { HomePopoverComponent } from './../../components/home-popover/home-popover.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -18,6 +19,7 @@ import { HomePage } from './home.page';
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, HomePopoverComponent],
+  entryComponents: [HomePopoverComponent]
 })
 export class HomePageModule {}
