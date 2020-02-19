@@ -75,6 +75,10 @@ export class AuthService {
     this.authState.next(false);
   }
 
+  changePassword(oldPwd: string, newPwd: string) {
+    // TODO 
+  }
+
   async closeAccount(pwd: string): Promise<void> {
     const user = await this.getDecodedToken();
 
