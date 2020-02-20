@@ -28,9 +28,4 @@ export class ProfilePage implements OnInit {
 
     this.editable = !this.editable;
   }
-
-  async onLogOutClicked() {
-    await this.auth.logout();
-    this.router.navigateByUrl('start-page');
-  }
 }
