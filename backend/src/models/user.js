@@ -26,17 +26,14 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', function (next) {
-    const user = this;
-
-    // only hash the password if it has been modified
-    if (!user.isModified('password')) {
+    if (!this.isModified('password')) {
         return next();
     }
 
     const rounds = 10;
-    bcrypt.hash(user.password, rounds)
-        .then(hashedPwd => {
-            user.password = hashedPwd;
+    bcrypt.hash(this.password, rounds)
+        .then(hash => {
+            this.password = hash;
             next();
         })
         .catch(err => {

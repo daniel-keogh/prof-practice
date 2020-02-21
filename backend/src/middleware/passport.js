@@ -4,7 +4,7 @@ const keys = require('../config/keys');
 
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: keys.secret
+    secretOrKey: keys.JWT_SECRET
 };
 
 /*

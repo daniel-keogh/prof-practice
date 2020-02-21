@@ -5,56 +5,64 @@ exports.registerUser = (req, res, next) => {
         return res.status(400).json({ 'msg': 'Missing email, password or name' });
     }
 
-    User.findOne({
-        email: req.body.email
-    }, (err, user) => {
-        if (err) {
-            res.status(400).json({ 'msg': err });
-        }
+    User.findOne({ email: req.body.email })
+        .then(user => {
+            if (user) {
+                res.status(400).json({ 'msg': 'That user already exists' });
+            } else {
+                const user = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: req.body.password
+                });
 
-        if (user) {
-            res.status(400).json({ 'msg': 'That user already exists' });
-        } else {
-            new User({
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password
-            }).save((err, user) => {
-                if (err) {
-                    res.status(400).json({ 'msg': err });
-                }
-                return res.status(201).json(user);
-            });
-        }
-    });
+                return user.save();
+            }
+        })
+        .then(user => {
+            res.status(201).json(user);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        });
 };
 
 exports.getUser = (req, res, next) => {
-    User.findById({ _id: req.params.id }, (err, data) => {
-        if (!data) {
-            res.status(404).send({});
-        } else {
-            res.status(200).send(data);
-        }
-    });
+    User.findById(req.params.id)
+        .then(user => {
+            if (!user) {
+                res.status(404).send({ 'msg': 'User not found' });
+            } else {
+                res.status(200).send(user);
+            }
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        });
 };
 
 exports.updateUser = (req, res, next) => {
-    // User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, data) => {
-    //     if (err) {
-    //         res.status(404).send(err.message);
-    //     } else {
-    //         res.status(200).send(data);
-    //     }
-    // });
+    User.findById(req.params.id)
+        .then(user => {
+            const { name, email } = req.body;
+
+            user.name = name;
+            user.email = email;
+
+            return user.save();
+        }).then(user => {
+            res.status(200).send(user);
+        }).catch(err => {
+            res.send(err);
+        });
 };
 
 exports.deleteUser = (req, res, next) => {
-    User.deleteOne({ _id: req.params.id }, (err, data) => {
-        if (err) {
-            res.status(400).send(err.message);
-        } else {
+    User.deleteOne({ _id: req.params.id })
+        .then(data => {
             res.status(200).send(data);
-        }
-    });
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
 };
