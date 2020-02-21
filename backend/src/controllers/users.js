@@ -1,43 +1,16 @@
 const User = require('../models/user');
 
-exports.registerUser = (req, res, next) => {
-    if (!req.body.email || !req.body.password || !req.body.name) {
-        return res.status(400).json({ 'msg': 'Missing email, password or name' });
-    }
-
-    User.findOne({ email: req.body.email })
-        .then(user => {
-            if (user) {
-                res.status(400).json({ 'msg': 'That user already exists' });
-            } else {
-                const user = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password
-                });
-
-                return user.save();
-            }
-        })
-        .then(user => {
-            res.status(201).json(user);
-        })
-        .catch(err => {
-            res.status(400).json(err);
-        });
-};
-
 exports.getUser = (req, res, next) => {
     User.findById(req.params.id)
         .then(user => {
             if (!user) {
-                res.status(404).send({ 'msg': 'User not found' });
+                res.status(404).json({ 'msg': 'User not found' });
             } else {
-                res.status(200).send(user);
+                res.status(200).json(user);
             }
         })
         .catch(err => {
-            res.status(500).send(err);
+            res.status(500).json(err);
         });
 };
 
@@ -51,18 +24,18 @@ exports.updateUser = (req, res, next) => {
 
             return user.save();
         }).then(user => {
-            res.status(200).send(user);
+            res.status(200).json(user);
         }).catch(err => {
-            res.send(err);
+            res.json(err);
         });
 };
 
 exports.deleteUser = (req, res, next) => {
     User.deleteOne({ _id: req.params.id })
         .then(data => {
-            res.status(200).send(data);
+            res.status(200).json(data);
         })
         .catch(err => {
-            res.status(400).send(err);
+            res.status(400).json(err);
         });
 };
