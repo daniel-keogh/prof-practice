@@ -9,7 +9,7 @@ const passportMiddleware = require('./middleware/passport');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 
-const mongoURI = require('./config/keys').mongoURI;
+const mongoURI = require('./config/keys').MONGO_URI;
 
 const PORT = process.env.PORT || 4000;
 const app = express();

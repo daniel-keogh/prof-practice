@@ -1,60 +1,51 @@
+const { validationResult } = require('express-validator');
 const User = require('../models/user');
 
-exports.registerUser = (req, res, next) => {
-    if (!req.body.email || !req.body.password || !req.body.name) {
-        return res.status(400).json({ 'msg': 'Missing email, password or name' });
+exports.getUser = (req, res) => {
+    User.findById(req.params.id)
+        .then(user => {
+            if (!user) {
+                res.status(404).json({ 'msg': 'User not found' });
+            } else {
+                res.status(200).json(user);
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+};
+
+exports.updateUser = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(422).json({ 'errors': errors.array() });
     }
 
-    User.findOne({
-        email: req.body.email
-    }, (err, user) => {
-        if (err) {
-            res.status(400).json({ 'msg': err });
-        }
+    User.findById(req.params.id)
+        .then(user => {
+            if (!user) {
+                res.status(404).json({ 'msg': 'User not found' });
+            }
 
-        if (user) {
-            res.status(400).json({ 'msg': 'That user already exists' });
-        } else {
-            new User({
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password
-            }).save((err, user) => {
-                if (err) {
-                    res.status(400).json({ 'msg': err });
-                }
-                return res.status(201).json(user);
-            });
-        }
-    });
+            const { name, email } = req.body;
+
+            user.name = name;
+            user.email = email;
+
+            return user.save();
+        }).then(user => {
+            res.status(200).json(user);
+        }).catch(err => {
+            res.status(500).json(err);
+        });
 };
 
-exports.getUser = (req, res, next) => {
-    User.findById({ _id: req.params.id }, (err, data) => {
-        if (!data) {
-            res.status(404).send({});
-        } else {
-            res.status(200).send(data);
-        }
-    });
-};
-
-exports.updateUser = (req, res, next) => {
-    // User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, data) => {
-    //     if (err) {
-    //         res.status(404).send(err.message);
-    //     } else {
-    //         res.status(200).send(data);
-    //     }
-    // });
-};
-
-exports.deleteUser = (req, res, next) => {
-    User.deleteOne({ _id: req.params.id }, (err, data) => {
-        if (err) {
-            res.status(400).send(err.message);
-        } else {
-            res.status(200).send(data);
-        }
-    });
+exports.deleteUser = (req, res) => {
+    User.deleteOne({ _id: req.params.id })
+        .then(data => {
+            res.status(200).json(data);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        });
 };
