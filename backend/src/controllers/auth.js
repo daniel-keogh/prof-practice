@@ -1,38 +1,34 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
 const secret = require('../config/keys').JWT_SECRET;
 const User = require('../models/user');
 
-exports.registerUser = (req, res, next) => {
-    if (!req.body.email || !req.body.password || !req.body.name) {
-        return res.status(400).json({ 'msg': 'Missing email, password or name' });
-    }
-
-    User.findOne({ email: req.body.email })
-        .then(user => {
-            if (user) {
-                res.status(400).json({ 'msg': 'That user already exists' });
-            } else {
-                const user = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password
-                });
-
-                return user.save();
-            }
-        })
-        .then(user => {
-            res.status(201).json(user);
-        })
-        .catch(err => {
-            res.status(400).json(err);
+exports.registerUser = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(422).json({ 'errors': errors.array() });
+    } else {
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
         });
+
+        user.save()
+            .then(user => {
+                res.status(201).json(user);
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            });
+    }
 };
 
-exports.login = (req, res, next) => {
-    if (!req.body.email || !req.body.password) {
-        return res.status(400).json({ 'msg': 'Missing email or password' });
+exports.login = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(422).json({ 'errors': errors.array() });
     }
 
     let foundUser;
@@ -74,7 +70,7 @@ exports.login = (req, res, next) => {
         });
 };
 
-exports.passwordReset = (req, res, next) => {
+exports.passwordReset = (req, res) => {
     User.findOne({ email: req.body.email })
         .select('+password')
         .exec()

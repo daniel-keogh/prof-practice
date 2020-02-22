@@ -1,6 +1,7 @@
+const { validationResult } = require('express-validator');
 const User = require('../models/user');
 
-exports.getUser = (req, res, next) => {
+exports.getUser = (req, res) => {
     User.findById(req.params.id)
         .then(user => {
             if (!user) {
@@ -14,9 +15,18 @@ exports.getUser = (req, res, next) => {
         });
 };
 
-exports.updateUser = (req, res, next) => {
+exports.updateUser = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(422).json({ 'errors': errors.array() });
+    }
+
     User.findById(req.params.id)
         .then(user => {
+            if (!user) {
+                res.status(404).json({ 'msg': 'User not found' });
+            }
+
             const { name, email } = req.body;
 
             user.name = name;
@@ -26,11 +36,11 @@ exports.updateUser = (req, res, next) => {
         }).then(user => {
             res.status(200).json(user);
         }).catch(err => {
-            res.json(err);
+            res.status(500).json(err);
         });
 };
 
-exports.deleteUser = (req, res, next) => {
+exports.deleteUser = (req, res) => {
     User.deleteOne({ _id: req.params.id })
         .then(data => {
             res.status(200).json(data);
