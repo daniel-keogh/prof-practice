@@ -6,6 +6,11 @@ const User = require('../models/user');
 const router = express.Router();
 
 router.post('/register', [
+    body('name')
+        .notEmpty()
+        .withMessage('Name cannot be empty')
+        .isAlphanumeric()
+        .withMessage('Name cannot contain special characters'),
     body('email')
         .isEmail()
         .withMessage('Please enter a valid email address')
@@ -17,12 +22,7 @@ router.post('/register', [
         }),
     body('password')
         .notEmpty()
-        .withMessage('Password cannot be empty'),
-    body('name')
-        .notEmpty()
-        .withMessage('Name cannot be empty')
-        .isAlphanumeric()
-        .withMessage('Name cannot contain special characters'),
+        .withMessage('Password cannot be empty')
 ], authController.registerUser);
 
 router.post('/login', [
@@ -31,6 +31,7 @@ router.post('/login', [
         .isEmail(),
     body('password')
         .notEmpty()
+        .withMessage('Password cannot be empty')
 ], authController.login);
 
 // router.post('/password_reset', authController.passwordReset);
