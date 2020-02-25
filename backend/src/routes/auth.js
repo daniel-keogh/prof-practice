@@ -22,7 +22,9 @@ router.post('/register', [
         }),
     body('password')
         .isLength({ min: 6 })
-        .withMessage('Password must be at least 6 characters long')
+        .withMessage('password must be at least 6 characters long')
+        .isString()
+        .withMessage('password must be a string')
 ], authController.registerUser);
 
 router.post('/login', [
@@ -32,8 +34,22 @@ router.post('/login', [
     body('password')
         .notEmpty()
         .withMessage('password cannot be empty')
+        .isString()
+        .withMessage('password must be a string')
 ], authController.login);
 
-// router.post('/password_reset', authController.passwordReset);
+router.put('/password_reset', [
+    body('email')
+        .isEmail()
+        .withMessage('Please enter a valid email address'),
+    body('password')
+        .isLength({ min: 6 })
+        .withMessage('password must be at least 6 characters long'),
+    body('old_password')
+        .notEmpty()
+        .withMessage('old_password cannot be empty')
+        .isString()
+        .withMessage('old_password must be a string')
+], authController.passwordReset);
 
 module.exports = router;
