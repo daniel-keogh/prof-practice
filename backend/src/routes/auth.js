@@ -8,30 +8,30 @@ const router = express.Router();
 router.post('/register', [
     body('name')
         .notEmpty()
-        .withMessage('Name cannot be empty')
+        .withMessage('name cannot be empty')
         .isAlphanumeric()
-        .withMessage('Name cannot contain special characters'),
+        .withMessage('name cannot contain any special characters'),
     body('email')
         .isEmail()
         .withMessage('Please enter a valid email address')
         .custom(async value => {
             const user = await User.findOne({ email: value });
             if (user) {
-                return Promise.reject('A user with that email already exists');
+                return Promise.reject('A user with that email address already exists');
             }
         }),
     body('password')
-        .notEmpty()
-        .withMessage('Password cannot be empty')
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long')
 ], authController.registerUser);
 
 router.post('/login', [
-    body('email', 'Please enter a valid email address')
-        .notEmpty()
-        .isEmail(),
+    body('email')
+        .isEmail()
+        .withMessage('Please enter a valid email address'),
     body('password')
         .notEmpty()
-        .withMessage('Password cannot be empty')
+        .withMessage('password cannot be empty')
 ], authController.login);
 
 // router.post('/password_reset', authController.passwordReset);
