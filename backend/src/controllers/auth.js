@@ -73,21 +73,34 @@ exports.login = (req, res) => {
 };
 
 exports.passwordReset = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ 'errors': errors.array() });
+    }
+
     User.findOne({ email: req.body.email })
         .select('+password')
         .exec()
         .then(user => {
             if (!user) {
-                res.status(404).json({ 'msg': 'User with that email not found' });
-            } else {
-                user.password = req.body.password;
-                return user.save();
+                res.status(404).json({ 'msg': 'User with that email address not found' })
             }
-        })
-        .then(user => {
-            res.status(200).json({ 'msg': 'Password reset successful' });
+
+            // Check if the old_password matches
+            bcrypt.compare(req.body.old_password, user.password)
+                .then(isMatch => {
+                    if (isMatch) {
+                        user.password = req.body.password;
+                        user.save()
+                            .then(user => {
+                                res.status(200).json({ 'msg': 'Password reset successfully' });
+                            });
+                    } else {
+                        res.status(401).json({ 'msg': 'old_password is incorrect' });
+                    }
+                });
         })
         .catch(err => {
-            res.status(400).json(err);
+            res.status(500).json(err);
         });
 };
