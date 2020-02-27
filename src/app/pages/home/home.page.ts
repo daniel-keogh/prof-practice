@@ -1,4 +1,5 @@
-import { HomePopoverComponent } from './../../components/home-popover/home-popover.component';
+import { Router } from '@angular/router';
+import { PopoverComponent } from '../../components/popover/popover.component';
 import { Component } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
@@ -8,13 +9,23 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-  constructor(private popover: PopoverController) {}
+  constructor(private popover: PopoverController, private router: Router) {}
 
   async presentPopover(event: any) {
     const popover = await this.popover.create({
-      component: HomePopoverComponent,
+      component: PopoverComponent,
       event,
-      translucent: true
+      translucent: true,
+      componentProps: {
+        items: [
+          {
+            label: 'Settings',
+            handler: () => {
+              this.router.navigate(['/settings']);
+            }
+          }
+        ]
+      }
     });
     return await popover.present();
   }
