@@ -33,9 +33,10 @@ app.use('/api/users', userRoutes);
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 }).then(() => {
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`));
 }).catch(err => {
-    console.log(err);
+    console.log(err.message);
 });
