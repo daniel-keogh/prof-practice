@@ -1,6 +1,8 @@
+import { ChangeEmailComponent } from './../../components/change-email/change-email.component';
+import { ChangePasswordComponent } from './../../components/change-password/change-password.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -12,9 +14,11 @@ import { SettingsPage } from './settings.page';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     SettingsPageRoutingModule
   ],
-  declarations: [SettingsPage]
+  declarations: [SettingsPage, ChangeEmailComponent, ChangePasswordComponent],
+  entryComponents: [ChangePasswordComponent, ChangeEmailComponent]
 })
 export class SettingsPageModule {}

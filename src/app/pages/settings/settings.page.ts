@@ -1,4 +1,6 @@
-import { AlertController } from '@ionic/angular';
+import { ChangeEmailComponent } from './../../components/change-email/change-email.component';
+import { ChangePasswordComponent } from './../../components/change-password/change-password.component';
+import { AlertController, ModalController } from '@ionic/angular';
 import { User } from './../../interfaces/user';
 import { Setting } from '../../services/settings/setting.enum';
 import { Theme } from '../../services/settings/theme.enum';
@@ -18,6 +20,7 @@ export class SettingsPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private auth: AuthService,
+    private modalCtrl: ModalController,
     private settings: SettingsService
   ) {}
 
@@ -26,7 +29,7 @@ export class SettingsPage implements OnInit {
     this.user = await this.auth.getDecodedToken();
   }
 
-  private get themes() {
+  get themes() {
     return Theme;
   }
 
@@ -34,43 +37,24 @@ export class SettingsPage implements OnInit {
     this.settings.setTheme(this.theme);
   }
 
-  async onChangePwdClicked() {
-    const alert = await this.alertController.create({
-      header: 'Change your Password',
-      inputs: [
-        {
-          name: 'old',
-          type: 'password',
-          placeholder: 'Old Password'
-        },
-        {
-          name: 'new',
-          type: 'password',
-          placeholder: 'New Password'
-        },
-        {
-          name: 'confirm',
-          type: 'password',
-          placeholder: 'Confirm New Password'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'OK',
-          handler: input => {
-            if (input.new === input.confirm) {
-              this.auth.changePassword(input.old, input.new);
-            }
-          }
-        }
-      ]
-    });
+  onChangePwdClicked() {
+    this.modalCtrl
+      .create({
+        component: ChangePasswordComponent
+      })
+      .then(modal => {
+        modal.present();
+      });
+  }
 
-    await alert.present();
+  onChangeEmailClicked() {
+    this.modalCtrl
+      .create({
+        component: ChangeEmailComponent
+      })
+      .then(modal => {
+        modal.present();
+      });
   }
 
   async onCloseAccountClicked() {
