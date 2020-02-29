@@ -1,29 +1,21 @@
-import { PopoverController, NavParams } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   template: `
     <ion-list lines="none" *ngFor="let item of items">
-      <ion-item button (click)="onItemClicked(item.handler)">
-        <ion-label>{{ item.label }}</ion-label>
+      <ion-item button (click)="onItemClicked(item)">
+        <ion-label>{{ item }}</ion-label>
       </ion-item>
     </ion-list>
   `
 })
-export class PopoverComponent implements OnInit {
-  private items: any[];
+export class PopoverComponent {
+  @Input() items: string[];
 
-  constructor(
-    private navParams: NavParams,
-    private popover: PopoverController
-  ) {}
+  constructor(private popover: PopoverController) {}
 
-  ngOnInit() {
-    this.items = this.navParams.get('items');
-  }
-
-  onItemClicked(handler: Function) {
-    handler();
-    this.popover.dismiss();
+  onItemClicked(item: string) {
+    this.popover.dismiss(null, item);
   }
 }

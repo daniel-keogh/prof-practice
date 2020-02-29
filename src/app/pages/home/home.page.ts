@@ -9,24 +9,24 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-  constructor(private popover: PopoverController, private router: Router) {}
+  constructor(private popoverCtrl: PopoverController, private router: Router) {}
 
-  async presentPopover(event: any) {
-    const popover = await this.popover.create({
-      component: PopoverComponent,
-      event,
-      translucent: true,
-      componentProps: {
-        items: [
-          {
-            label: 'Settings',
-            handler: () => {
-              this.router.navigate(['/settings']);
-            }
-          }
-        ]
-      }
-    });
-    return await popover.present();
+  presentPopover(event: any) {
+    this.popoverCtrl
+      .create({
+        component: PopoverComponent,
+        event,
+        translucent: true,
+        componentProps: { items: ['Settings'] }
+      })
+      .then(popover => {
+        popover.present();
+        return popover.onWillDismiss();
+      })
+      .then(result => {
+        if (result.role === 'Settings') {
+          this.router.navigate([`/settings`]);
+        }
+      });
   }
 }
