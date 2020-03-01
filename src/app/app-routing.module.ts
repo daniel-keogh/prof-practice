@@ -33,22 +33,14 @@ const routes: Routes = [
   },
   {
     path: 'settings',
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('./pages/settings/settings.module').then(
-            m => m.SettingsPageModule
-          )
-      },
-      {
-        path: 'profile',
-        loadChildren: () =>
-          import('./pages/profile/profile.module').then(
-            m => m.ProfilePageModule
-          )
-      }
-    ]
+    loadChildren: () =>
+      import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
     // canActivate: [AuthGuard]
   }
 ];

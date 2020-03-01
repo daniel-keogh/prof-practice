@@ -13,12 +13,15 @@
       <ion-label>Account</ion-label>
     </ion-list-header>
     <ion-item button (click)="onChangeEmailClicked()">
+      <ion-icon name="mail-outline" slot="start"></ion-icon>
       <ion-label>Change Email</ion-label>
     </ion-item>
     <ion-item button (click)="onChangePwdClicked()">
+      <ion-icon name="key-outline" slot="start"></ion-icon>
       <ion-label>Change Password</ion-label>
     </ion-item>
     <ion-item button (click)="onCloseAccountClicked()">
+      <ion-icon name="nuclear-sharp" color="danger" slot="start"></ion-icon>
       <ion-label color="danger">Close Account</ion-label>
     </ion-item>
 
