@@ -5,7 +5,7 @@ import { AuthGuard } from './guards/auth/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'tabs/home',
     pathMatch: 'full'
   },
   {
@@ -26,21 +26,15 @@ const routes: Routes = [
       import('./pages/register/register.module').then(m => m.RegisterPageModule)
   },
   {
-    path: 'home',
+    path: 'tabs',
     loadChildren: () =>
-      import('./pages/home/home.module').then(m => m.HomePageModule)
+      import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
     // canActivate: [AuthGuard]
   },
   {
     path: 'settings',
     loadChildren: () =>
       import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
-    // canActivate: [AuthGuard]
-  },
-  {
-    path: 'profile',
-    loadChildren: () =>
-      import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
     // canActivate: [AuthGuard]
   }
 ];
