@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { LoginCredentials } from '../../interfaces/login-credentials';
 import { User } from './../../interfaces/user';
 import { environment } from './../../../environments/environment';
@@ -21,7 +22,7 @@ export class AuthService {
     private helper: JwtHelperService,
     private http: HttpClient,
     private storage: Storage
-  ) { }
+  ) {}
 
   checkToken(): Promise<void> {
     return this.storage.get(ACCESS_TOKEN).then(token => {
@@ -75,23 +76,40 @@ export class AuthService {
     this.authState.next(false);
   }
 
-  changePassword(oldPwd: string, newPwd: string) {
-    // TODO 
+  changePassword(oldPwd: string, newPwd: string, email: string) {
+    return this.http
+      .put(`http://localhost:4000/api/password_reset`, {
+        email,
+        old_password: oldPwd,
+        password: newPwd
+      })
+      .pipe(
+        catchError(e => {
+          if (e.error.msg) {
+            throw new Error(e.error.msg);
+          }
+
+          throw new Error(e.error.errors[0].msg);
+        })
+      );
   }
 
   async closeAccount(pwd: string): Promise<void> {
     const user = await this.getDecodedToken();
 
-    this.http.post(`${this.url}/api/login`, {
-      email: user.email,
-      password: pwd
-    }).toPromise()
+    this.http
+      .post(`${this.url}/api/login`, {
+        email: user.email,
+        password: pwd
+      })
+      .toPromise()
       .then(res => {
         return user._id === this.helper.decodeToken(res['token'])._id;
       })
       .then(isValid => {
         if (isValid) {
-          this.http.delete(`${this.url}/api/users/${user._id}`)
+          this.http
+            .delete(`${this.url}/api/users/${user._id}`)
             .toPromise()
             .then(() => {
               this.logout();
