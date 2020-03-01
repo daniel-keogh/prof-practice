@@ -5,7 +5,7 @@ exports.getUser = (req, res) => {
     User.findById(req.params.id)
         .then(user => {
             if (!user) {
-                res.status(404).json({ 'msg': 'User not found' });
+                res.status(404).json({ msg: 'User not found' });
             } else {
                 res.status(200).json(user);
             }
@@ -18,13 +18,13 @@ exports.getUser = (req, res) => {
 exports.updateUser = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ 'errors': errors.array() });
+        return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
     User.findById(req.params.id)
         .then(user => {
             if (!user) {
-                res.status(404).json({ 'msg': 'User not found' });
+                res.status(404).json({ msg: 'User not found' });
             } else {
                 const { name, email } = req.body;
 

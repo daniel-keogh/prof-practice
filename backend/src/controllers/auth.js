@@ -7,7 +7,7 @@ const User = require('../models/user');
 exports.registerUser = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ 'errors': errors.array() });
+        return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
     const user = new User({
@@ -18,7 +18,13 @@ exports.registerUser = (req, res) => {
 
     user.save()
         .then(user => {
-            res.status(201).json(user);
+            const { _id, name, email, registered_since } = user;
+            res.status(201).json({
+                _id,
+                name,
+                email,
+                registered_since
+            });
         })
         .catch(err => {
             res.status(400).json(err);
@@ -29,7 +35,7 @@ exports.registerUser = (req, res) => {
 exports.login = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ 'errors': errors.array() });
+        return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
     let foundUser;
@@ -49,8 +55,9 @@ exports.login = (req, res) => {
         .then(isMatch => {
             if (isMatch) {
                 res.status(200).json({
-                    'msg': 'User logged in successfully',
-                    'token': jwt.sign({
+                    msg: 'User logged in successfully',
+                    _id: foundUser._id,
+                    token: jwt.sign({
                         _id: foundUser._id,
                         email: foundUser.email,
                         name: foundUser.name,
@@ -65,7 +72,7 @@ exports.login = (req, res) => {
         })
         .catch(err => {
             if (err.status === 401) {
-                res.status(401).json({ 'msg': 'User email or password is incorrect' });
+                res.status(401).json({ msg: 'User email or password is incorrect' });
             } else {
                 res.status(400).json(err);
             }
@@ -75,7 +82,7 @@ exports.login = (req, res) => {
 exports.passwordReset = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ 'errors': errors.array() });
+        return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
     User.findOne({ email: req.body.email })
@@ -83,7 +90,7 @@ exports.passwordReset = (req, res) => {
         .exec()
         .then(user => {
             if (!user) {
-                res.status(404).json({ 'msg': 'User with that email address not found' })
+                res.status(404).json({ msg: 'User with that email address not found' })
             }
 
             // Check if the old_password matches
@@ -93,10 +100,10 @@ exports.passwordReset = (req, res) => {
                         user.password = req.body.password;
                         user.save()
                             .then(user => {
-                                res.status(200).json({ 'msg': 'Password reset successfully' });
+                                res.status(200).json({ msg: 'Password reset successfully' });
                             });
                     } else {
-                        res.status(401).json({ 'msg': 'old_password is incorrect' });
+                        res.status(401).json({ msg: 'Old Password is incorrect' });
                     }
                 });
         })

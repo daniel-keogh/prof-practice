@@ -27,7 +27,7 @@ export class SettingsService {
     return this.storage.get(key);
   }
 
-  async restore() {
+  restore() {
     this.storage.forEach((value, key) => {
       switch (key) {
         case Setting.Theme:

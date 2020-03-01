@@ -42,12 +42,12 @@ router.put('/password_reset', [
         .withMessage('Please enter a valid email address'),
     body('password')
         .isLength({ min: 6 })
-        .withMessage('password must be at least 6 characters long'),
+        .withMessage('Password must be at least 6 characters long'),
     body('old_password')
         .notEmpty()
-        .withMessage('old_password cannot be empty')
+        .withMessage('Old Password cannot be empty')
         .isString()
-        .withMessage('old_password must be a string')
+        .withMessage('Old Password must be a string')
 ], authController.passwordReset);
 
 module.exports = router;

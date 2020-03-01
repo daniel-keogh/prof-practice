@@ -33,7 +33,7 @@ export class UserService {
           this._user.email = newEmail;
         }),
         catchError(e => {
-          throw new Error(e.error.errors[0].msg);
+          throw new Error(e.error.msg);
         })
       );
   }

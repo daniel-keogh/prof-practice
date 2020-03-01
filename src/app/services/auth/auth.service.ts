@@ -53,7 +53,7 @@ export class AuthService {
       })
       .pipe(
         catchError(e => {
-          throw new Error(e);
+          throw new Error(e.error.msg);
         })
       );
   }
@@ -65,8 +65,7 @@ export class AuthService {
         this.authState.next(true);
       }),
       catchError(e => {
-        console.log(e);
-        throw new Error(e);
+        throw new Error(e.error.msg);
       })
     );
   }
@@ -85,11 +84,7 @@ export class AuthService {
       })
       .pipe(
         catchError(e => {
-          if (e.error.msg) {
-            throw new Error(e.error.msg);
-          }
-
-          throw new Error(e.error.errors[0].msg);
+          throw new Error(e.error.msg);
         })
       );
   }

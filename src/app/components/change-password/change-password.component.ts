@@ -1,4 +1,6 @@
-import { ModalController } from '@ionic/angular';
+import { UserService } from './../../services/user/user.service';
+import { AuthService } from './../../services/auth/auth.service';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
@@ -9,7 +11,12 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 export class ChangePasswordComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private modal: ModalController) {}
+  constructor(
+    private auth: AuthService,
+    private modal: ModalController,
+    private toastCtrl: ToastController,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup(
@@ -36,7 +43,20 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form);
+    const { current, newPwd } = this.form.value;
+    const { email } = this.userService.user;
+
+    this.auth.changePassword(current, newPwd, email).subscribe(
+      () => this.dismiss(),
+      err => {
+        this.toastCtrl
+          .create({
+            message: err,
+            duration: 2000
+          })
+          .then(toast => toast.present());
+      }
+    );
   }
 
   /* Prevents the user clicking save if newPwd !== confirm
