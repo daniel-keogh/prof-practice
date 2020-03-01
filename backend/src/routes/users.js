@@ -10,9 +10,7 @@ router.get('/:id', usersController.getUser);
 router.put('/:id', [
     body('name')
         .notEmpty()
-        .withMessage('name cannot be empty')
-        .isAlphanumeric()
-        .withMessage('name cannot contain special characters'),
+        .withMessage('name cannot be empty'),
     body('email')
         .isEmail()
         .withMessage('Please enter a valid email address')

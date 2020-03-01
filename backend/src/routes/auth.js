@@ -8,9 +8,7 @@ const router = express.Router();
 router.post('/register', [
     body('name')
         .notEmpty()
-        .withMessage('name cannot be empty')
-        .isAlphanumeric()
-        .withMessage('name cannot contain any special characters'),
+        .withMessage('name cannot be empty'),
     body('email')
         .isEmail()
         .withMessage('Please enter a valid email address')
