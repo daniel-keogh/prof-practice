@@ -9,11 +9,17 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: '',
+        redirectTo: '/tabs/home',
+        pathMatch: 'full'
+      },
+      {
         path: 'home',
         children: [
           {
             path: '',
-            loadChildren: '../home/home.module#HomePageModule'
+            loadChildren: () =>
+              import('../home/home.module').then(m => m.HomePageModule)
           }
         ]
       },
@@ -22,14 +28,10 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: '../profile/profile.module#ProfilePageModule'
+            loadChildren: () =>
+              import('../profile/profile.module').then(m => m.ProfilePageModule)
           }
         ]
-      },
-      {
-        path: '',
-        redirectTo: '/tabs/home',
-        pathMatch: 'full'
       }
     ]
   }
