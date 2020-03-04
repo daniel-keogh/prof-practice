@@ -9,6 +9,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'home',
+    redirectTo: 'tabs/home'
+  },
+  {
+    path: 'profile',
+    redirectTo: 'tabs/profile'
+  },
+  {
     path: 'start-page',
     loadChildren: () =>
       import('./pages/start-page/start-page.module').then(
@@ -50,4 +58,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
