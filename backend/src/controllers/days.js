@@ -13,7 +13,7 @@ exports.addDay = (req, res) => {
         date: req.body.date
     }).then(day => {
         if (day) {
-            res.json(day)
+            res.status(202).json(day)
         } else {
             User.findById(req.body.user_id)
                 .then(user => {
@@ -26,38 +26,49 @@ exports.addDay = (req, res) => {
                         user.days.push(day._id);
                         user.save();
 
-                        day.save()
-                            .then(day => {
-                                res.json(day)
-                            })
+                        return day.save();
                     } else {
-                        res.status(404).json({ err: "User with id user_id not found" })
+                        res.status(404).json({ msg: "User with `user_id` not found" })
                     }
+                })
+                .then(day => {
+                    res.status(201).json(day);
                 });
         }
-    });
+    }).catch(err => {
+        res.status(500).json(err);
+    });;
 };
 
 exports.updateDay = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ msg: errors.array()[0].msg });
+    }
+
     Day.findById(req.params.id)
         .then(day => {
             if (day) {
-                const { water } = req.body;
+                const { water, sleep } = req.body;
 
                 day.water = water;
+                day.sleep = sleep;
 
-                day.save()
-                    .then(day => {
-                        res.json(day);
-                    });
+                return day.save();
+            } else {
+                res.status(404).json({ msg: 'Day not found' });
             }
+        }).then(day => {
+            res.status(200).json(day);
+        }).catch(err => {
+            res.status(500).json(err);
         });
 };
 
 exports.getUsersDays = (req, res) => {
     Day.find({ user_id: req.params.userId })
         .then(days => {
-            if (days) {
+            if ('start_at' in req.query && 'end_at' in req.query) {
                 const startDate = new Date(req.query.start_at);
                 const endDate = new Date(req.query.end_at);
 
@@ -67,10 +78,12 @@ exports.getUsersDays = (req, res) => {
                         return day;
                     }
                 })
-                res.json(filteredDays);
+                res.status(200).json(filteredDays);
+            } else {
+                res.status(200).json(days);
             }
         })
         .catch(err => {
-            console.log(err);
+            res.status(500).json(err);
         })
 }
