@@ -6,7 +6,8 @@ const daySchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        expires: "366d"
     },
     water: {
         type: Number,
