@@ -6,7 +6,7 @@
     <ion-title>Water</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-segment (ionChange)="segmentChanged($event)" value="week" #segment class="ion-justify-content-center">
+    <ion-segment (ionChange)="segmentChanged($event)" value="day" #segment class="ion-justify-content-center">
       <ion-segment-button value="day">
         <ion-label>Day</ion-label>
       </ion-segment-button>
@@ -21,5 +21,19 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row class="ion-padding-vertical">
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
+        <div class="chart-container" [ngClass]="{'chart-border': points}">
+          <canvas #canvas id="chart"></canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="tertiary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
