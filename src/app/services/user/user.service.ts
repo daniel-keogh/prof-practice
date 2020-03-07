@@ -30,7 +30,7 @@ export class UserService {
         email: newEmail
       })
       .pipe(
-        tap(res => {
+        tap(() => {
           this._user.email = newEmail;
         }),
         catchError(e => {
@@ -39,18 +39,37 @@ export class UserService {
       );
   }
 
-  getDays(): Observable<any[]> {
+  getDays(numWeeks: number): Observable<any> {
+    const today = this.formatDate(new Date());
+    const start = this.formatDate(this.subtractDays(new Date(), numWeeks * 7));
+
     return this.http
-      .get<any[]>(`http://localhost:4000/api/days/${this._user._id}`)
+      .get<any>(
+        `http://localhost:4000/api/days/5e6418ad98024f30c45f87bc?start_at=${start}&end_at=${today}`
+      )
       .pipe(
         map(days => {
           return days.map(day => {
             return {
               ...day,
-              date: day.date.split('T')[0] // change date to yyyy-mm-dd
+              date: this.formatDate(day.date)
             };
           });
         })
       );
+  }
+
+  /* Convert a Date to yyyy-mm-dd */
+  private formatDate(date: Date | string): string {
+    if (typeof date === 'string') {
+      date = new Date(date);
+    }
+    return date.toISOString().split('T')[0];
+  }
+
+  /* Subtract a given number of days from a Date */
+  private subtractDays(date: Date, days: number): Date {
+    date.setDate(date.getDate() - days);
+    return date;
   }
 }

@@ -5,8 +5,35 @@
     </ion-buttons>
     <ion-title>Sleep</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" value="1" #segment class="ion-justify-content-center">
+      <ion-segment-button value="1">
+        <ion-label>Week</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="4">
+        <ion-label>Month</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="52">
+        <ion-label>Year</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row class="ion-padding-vertical">
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
+        <div class="chart-container" [ngClass]="{'chart-border': daysArray.length}">
+          <canvas #canvas id="chart"></canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin">
+    <ion-fab-button color="tertiary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

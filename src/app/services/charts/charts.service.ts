@@ -28,7 +28,7 @@ export class ChartsService {
     }
 
     return (this.historyChart = new Chart(canvas.nativeElement, {
-      type: 'line',
+      type: 'bar',
       data: {
         labels: dates,
         datasets: [

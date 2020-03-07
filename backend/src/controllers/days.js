@@ -58,7 +58,16 @@ exports.getUsersDays = (req, res) => {
     Day.find({ user_id: req.params.userId })
         .then(days => {
             if (days) {
-                res.json(days);
+                const startDate = new Date(req.query.start_at);
+                const endDate = new Date(req.query.end_at);
+
+                // Return only the days between `start_at` and `end_at`
+                const filteredDays = days.filter(day => {
+                    if (day.date >= startDate && day.date <= endDate) {
+                        return day;
+                    }
+                })
+                res.json(filteredDays);
             }
         })
         .catch(err => {
