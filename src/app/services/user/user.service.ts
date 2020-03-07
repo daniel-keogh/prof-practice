@@ -1,8 +1,9 @@
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './../auth/auth.service';
 import { User } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,21 @@ export class UserService {
         }),
         catchError(e => {
           throw new Error(e.error.msg);
+        })
+      );
+  }
+
+  getDays(): Observable<any[]> {
+    return this.http
+      .get<any[]>(`http://localhost:4000/api/days/${this._user._id}`)
+      .pipe(
+        map(days => {
+          return days.map(day => {
+            return {
+              ...day,
+              date: day.date.split('T')[0] // change date to yyyy-mm-dd
+            };
+          });
         })
       );
   }

@@ -1,4 +1,6 @@
-import { StatsService } from './../../services/stats/stats.service';
+import { map, filter } from 'rxjs/operators';
+import { UserService } from './../../services/user/user.service';
+import { ChartsService } from '../../services/charts/charts.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
@@ -7,18 +9,32 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./water.page.scss']
 })
 export class WaterPage implements OnInit {
-  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
-  constructor(private stats: StatsService) {}
+  daysArray: any = [];
+
+  @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
+  constructor(private stats: ChartsService, private userService: UserService) {}
 
   ngOnInit() {
     const days = 7;
-    this.createChart(days);
+
+    this.userService.getDays().subscribe(data => {
+      this.daysArray = data.map(day => {
+        return {
+          water: day.water,
+          date: day.date
+        };
+      });
+      this.createChart(days);
+    });
   }
 
   async createChart(days?: number, months?: number) {
-    // get the array of days with the amount of water drank on each day & generate the chart
     this.stats.generateChart({
-      canvas: this.canvas
+      canvas: this.canvas,
+      dates: this.daysArray.map(day => day.date),
+      values: this.daysArray.map(day => day.water),
+      chartTitle: 'Water',
+      itemLabels: 'Amount'
     });
   }
 

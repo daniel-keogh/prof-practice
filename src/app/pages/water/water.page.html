@@ -24,14 +24,14 @@
   <ion-grid>
     <ion-row class="ion-padding-vertical">
       <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3" class="ion-padding-horizontal">
-        <div class="chart-container" [ngClass]="{'chart-border': points}">
+        <div class="chart-container" [ngClass]="{'chart-border': daysArray.length}">
           <canvas #canvas id="chart"></canvas>
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin">
     <ion-fab-button color="tertiary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
