@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Water</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" value="week" #segment class="ion-justify-content-center">
+      <ion-segment-button value="day">
+        <ion-label>Day</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="week">
+        <ion-label>Week</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="month">
+        <ion-label>Month</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+</ion-content>
