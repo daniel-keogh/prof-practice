@@ -45,7 +45,7 @@ export class UserService {
 
     return this.http
       .get<any>(
-        `http://localhost:4000/api/days/5e6418ad98024f30c45f87bc?start_at=${start}&end_at=${today}`
+        `http://localhost:4000/api/days/${this._user._id}?start_at=${start}&end_at=${today}`
       )
       .pipe(
         map(days => {
