@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "concurrently \"cd backend && npm start\" \"ionic serve\""
+    "dev": "concurrently \"npm run server\" \"ionic serve\"",
+    "server": "cd backend && npm start"
   },
   "private": true,
   "dependencies": {
