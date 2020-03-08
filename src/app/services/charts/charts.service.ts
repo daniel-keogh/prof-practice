@@ -35,11 +35,13 @@ export class ChartsService {
           {
             label: itemLabels || '',
             data: values,
-            backgroundColor: 'rgba(40, 175, 176, 0.2)',
-            borderColor: 'rgba(40, 175, 176, 1)',
+            backgroundColor: 'rgba(82, 96, 255, 0.2)',
+            hoverBackgroundColor: 'rgba(82, 96, 255, 0.3)',
+            borderColor: 'rgba(82, 96, 255, 1)',
             borderWidth: 2.5,
             pointRadius: 0,
-            pointHoverRadius: 5
+            pointHoverRadius: 5,
+            minBarLength: 6
           }
         ]
       },
@@ -57,11 +59,31 @@ export class ChartsService {
         hover: {
           intersect: false
         },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                min: 0,
+                stepSize: 1
+              }
+            }
+          ],
+          xAxes: [
+            {
+              ticks: {
+                callback: value => {
+                  // TODO: format the dates properly
+                  return value;
+                }
+              }
+            }
+          ]
+        },
         tooltips: {
           intersect: false,
           mode: 'index',
           displayColors: false,
-          titleFontColor: '#ff3366',
+          titleFontColor: '#3dc2ff',
           titleFontSize: 13,
           bodyFontSize: 13,
           xPadding: 10,
