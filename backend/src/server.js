@@ -8,6 +8,7 @@ const passportMiddleware = require('./middleware/passport');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const dayRoutes = require('./routes/days');
 
 const mongoURI = require('./config/keys').MONGO_URI;
 
@@ -30,6 +31,7 @@ passport.use(passportMiddleware);
 // Routes
 app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api', dayRoutes);
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,

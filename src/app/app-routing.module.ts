@@ -9,6 +9,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'home',
+    redirectTo: 'tabs/home'
+  },
+  {
+    path: 'profile',
+    redirectTo: 'tabs/profile'
+  },
+  {
     path: 'start-page',
     loadChildren: () =>
       import('./pages/start-page/start-page.module').then(
@@ -41,7 +49,23 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
     // canActivate: [AuthGuard]
+  },  {
+    path: 'diet',
+    loadChildren: () => import('./pages/diet/diet.module').then( m => m.DietPageModule)
+  },
+  {
+    path: 'exercise',
+    loadChildren: () => import('./pages/exercise/exercise.module').then( m => m.ExercisePageModule)
+  },
+  {
+    path: 'sleep',
+    loadChildren: () => import('./pages/sleep/sleep.module').then( m => m.SleepPageModule)
+  },
+  {
+    path: 'water',
+    loadChildren: () => import('./pages/water/water.module').then( m => m.WaterPageModule)
   }
+
 ];
 
 @NgModule({
@@ -50,4 +74,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

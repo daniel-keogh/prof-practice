@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-const User = require('../models/user');
+const User = require('../models/User');
+const Day = require('../models/Day');
 
 exports.getUser = (req, res) => {
     User.findById(req.params.id)
@@ -45,7 +46,11 @@ exports.updateUser = (req, res) => {
 exports.deleteUser = (req, res) => {
     User.deleteOne({ _id: req.params.id })
         .then(data => {
-            res.status(200).json(data);
+            // Also delete all the days logged by the user
+            Day.deleteMany({ user_id: req.params.id })
+                .then(() => {
+                    res.status(200).json(data);
+                })
         })
         .catch(err => {
             res.status(400).json(err);

@@ -24,3 +24,19 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+/* Chart.js */
+.chart-container {
+    position: relative;
+    height: 50vh;
+    width: 100%;
+    margin: auto;
+    min-height: 350px;
+    max-height: 700px;
+    padding: 10px;
+}
+
+.chart-border {
+    border: 1px solid var(--ion-color-light-shade);
+}
