@@ -4,8 +4,7 @@ import { SettingsService } from './services/settings/settings.service';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Capacitor, Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -17,17 +16,16 @@ export class AppComponent {
     private auth: AuthService,
     private platform: Platform,
     private router: Router,
-    private splashScreen: SplashScreen,
-    private settings: SettingsService,
-    private statusBar: StatusBar
+    private settings: SettingsService
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      if (Capacitor.isPluginAvailable('SplashScreen')) {
+        Plugins.SplashScreen.hide();
+      }
 
       this.auth.checkToken().then(() => {
         this.auth.authState.subscribe(state => {
