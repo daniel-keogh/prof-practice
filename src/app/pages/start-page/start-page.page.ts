@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./start-page.page.scss'],
 })
 export class StartPagePage implements OnInit {
+  text = "Default starting text"
 
+  onChangeText() {
+    this.text = 'Changed!';
+  }
   constructor() { }
 
   ngOnInit() {
