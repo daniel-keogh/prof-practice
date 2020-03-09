@@ -23,7 +23,13 @@ const userSchema = new mongoose.Schema({
     registered_since: {
         type: Date,
         default: Date.now
-    }
+    },
+    days: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Day'
+        }
+    ]
 });
 
 userSchema.pre('save', function (next) {
