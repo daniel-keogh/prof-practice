@@ -24,16 +24,16 @@ export class AuthService {
     private storage: Storage
   ) {}
 
-  checkToken(): Promise<void> {
-    return this.storage.get(ACCESS_TOKEN).then(token => {
-      if (token) {
-        if (!this.helper.isTokenExpired(token)) {
-          this.authState.next(true);
-        } else {
-          this.storage.remove(ACCESS_TOKEN);
-        }
+  async checkToken(): Promise<void> {
+    const token = await this.storage.get(ACCESS_TOKEN);
+
+    if (token) {
+      if (!this.helper.isTokenExpired(token)) {
+        this.authState.next(true);
+      } else {
+        this.storage.remove(ACCESS_TOKEN);
       }
-    });
+    }
   }
 
   async getDecodedToken(): Promise<User> {

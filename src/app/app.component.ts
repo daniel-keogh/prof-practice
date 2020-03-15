@@ -30,11 +30,11 @@ export class AppComponent {
       this.auth.checkToken().then(() => {
         this.auth.authState.subscribe(state => {
           if (!state) {
-            //this.router.navigate(['start-page']);
+            this.router.navigate(['start-page']);
           } else if (
             ['/login', '/register', '/start-page'].includes(this.router.url)
           ) {
-            //this.router.navigate(['home']);
+            this.router.navigate(['home']);
           }
         });
       });

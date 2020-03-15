@@ -3,23 +3,25 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/start-page"></ion-back-button>
     </ion-buttons>
-    <ion-title>register</ion-title>
+    <ion-title>Register</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-item>
-  <ion-label position="floating">Name</ion-label>
-  <ion-input></ion-input>
-</ion-item>
-<ion-item>
-  <ion-label position="floating">Email</ion-label>
-  <ion-input type="email"></ion-input>
-</ion-item>
-<ion-item>
-  <ion-label position="floating">Password</ion-label>
-  <ion-input type="password"></ion-input>
-</ion-item>
-<ion-button routerLink="/login">Register</ion-button>
 <ion-content>
+  <ion-item>
+    <ion-label position="floating">Name</ion-label>
+    <ion-input [(ngModel)]="usersName"></ion-input>
+  </ion-item>
 
+  <ion-item>
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="email" [(ngModel)]="loginCreds.email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password" [(ngModel)]="loginCreds.password"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click)="onRegisterClick()">Register</ion-button>
 </ion-content>

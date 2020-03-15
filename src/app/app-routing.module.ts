@@ -41,31 +41,43 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () =>
-      import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
-    // canActivate: [AuthGuard]
+      import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'settings',
     loadChildren: () =>
-      import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
-    // canActivate: [AuthGuard]
+      import('./pages/settings/settings.module').then(
+        m => m.SettingsPageModule
+      ),
+    canActivate: [AuthGuard]
   },
   {
     path: 'diet',
-    loadChildren: () => import('./pages/diet/diet.module').then(m => m.DietPageModule)
+    loadChildren: () =>
+      import('./pages/diet/diet.module').then(m => m.DietPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'exercise',
-    loadChildren: () => import('./pages/exercise/exercise.module').then(m => m.ExercisePageModule)
+    loadChildren: () =>
+      import('./pages/exercise/exercise.module').then(
+        m => m.ExercisePageModule
+      ),
+    canActivate: [AuthGuard]
   },
   {
     path: 'sleep',
-    loadChildren: () => import('./pages/sleep/sleep.module').then(m => m.SleepPageModule)
+    loadChildren: () =>
+      import('./pages/sleep/sleep.module').then(m => m.SleepPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'water',
-    loadChildren: () => import('./pages/water/water.module').then(m => m.WaterPageModule)
-  },
+    loadChildren: () =>
+      import('./pages/water/water.module').then(m => m.WaterPageModule),
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
@@ -74,4 +86,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
