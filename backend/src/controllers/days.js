@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const Day = require('../models/Day');
-const User = require('../models/user');
+const User = require('../models/User');
 
 exports.addDay = (req, res) => {
     const errors = validationResult(req);
