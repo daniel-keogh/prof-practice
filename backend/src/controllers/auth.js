@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const secret = require('../config/keys').JWT_SECRET;
+const JWT_SECRET = require('../config/keys').JWT_SECRET;
 const User = require('../models/User');
 
 exports.registerUser = (req, res) => {
@@ -62,7 +62,7 @@ exports.login = (req, res) => {
                         email: foundUser.email,
                         name: foundUser.name,
                         registered_since: foundUser.registered_since
-                    }, secret)
+                    }, JWT_SECRET)
                 });
             } else {
                 const error = new Error();
@@ -99,7 +99,7 @@ exports.passwordReset = (req, res) => {
                     if (isMatch) {
                         user.password = req.body.password;
                         user.save()
-                            .then(user => {
+                            .then(() => {
                                 res.status(200).json({ msg: 'Password reset successfully' });
                             });
                     } else {

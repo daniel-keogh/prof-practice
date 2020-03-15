@@ -1,6 +1,10 @@
 const express = require('express');
 const { body } = require('express-validator');
-const authController = require('../controllers/auth');
+const {
+    login,
+    passwordReset,
+    registerUser
+} = require('../controllers/auth');
 const User = require('../models/User');
 
 const router = express.Router();
@@ -23,7 +27,7 @@ router.post('/register', [
         .withMessage('password must be at least 6 characters long')
         .isString()
         .withMessage('password must be a string')
-], authController.registerUser);
+], registerUser);
 
 router.post('/login', [
     body('email')
@@ -34,7 +38,7 @@ router.post('/login', [
         .withMessage('password cannot be empty')
         .isString()
         .withMessage('password must be a string')
-], authController.login);
+], login);
 
 router.put('/password_reset', [
     body('email')
@@ -48,6 +52,6 @@ router.put('/password_reset', [
         .withMessage('Old Password cannot be empty')
         .isString()
         .withMessage('Old Password must be a string')
-], authController.passwordReset);
+], passwordReset);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const Day = require('../models/Day');
-const User = require('../models/User');
+const User = require('../models/user');
 
 exports.addDay = (req, res) => {
     const errors = validationResult(req);
@@ -37,7 +37,7 @@ exports.addDay = (req, res) => {
         }
     }).catch(err => {
         res.status(500).json(err);
-    });;
+    });
 };
 
 exports.updateDay = (req, res) => {
