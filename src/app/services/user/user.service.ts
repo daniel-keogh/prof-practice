@@ -9,29 +9,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private _user: User;
+  user: User;
 
-  constructor(private auth: AuthService, private http: HttpClient) {
-    this.initialiseUser();
-  }
-
-  get user() {
-    return { ...this._user };
-  }
-
-  private async initialiseUser() {
-    this._user = await this.auth.getDecodedToken();
-  }
+  constructor(private auth: AuthService, private http: HttpClient) {}
 
   updateUserEmail(newEmail: string) {
     return this.http
-      .put(`http://localhost:4000/api/users/${this._user._id}`, {
-        ...this._user,
+      .put(`http://localhost:4000/api/users/${this.user._id}`, {
+        ...this.user,
         email: newEmail
       })
       .pipe(
         tap(() => {
-          this._user.email = newEmail;
+          this.user.email = newEmail;
         }),
         catchError(e => {
           throw new Error(e.error.msg);
@@ -45,7 +35,7 @@ export class UserService {
 
     return this.http
       .get<any>(
-        `http://localhost:4000/api/days/${this._user._id}?start_at=${start}&end_at=${today}`
+        `http://localhost:4000/api/days/${this.user._id}?start_at=${start}&end_at=${today}`
       )
       .pipe(
         map(days => {
