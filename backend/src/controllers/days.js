@@ -8,19 +8,23 @@ exports.addDay = (req, res) => {
         return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
+    const today = new Date().toISOString().split('T')[0];
+
     Day.findOne({
-        user_id: req.body.user_id,
-        date: req.body.date
+        user_id: req.user._id,
+        date: req.body.date || today
     }).then(day => {
         if (day) {
             res.status(202).json(day)
         } else {
-            User.findById(req.body.user_id)
+            User.findById(req.user._id)
                 .then(user => {
                     if (user) {
                         const day = new Day({
-                            user_id: req.body.user_id,
-                            date: req.body.date
+                            user_id: req.user._id,
+                            date: req.body.date || today,
+                            water: req.body.water,
+                            sleep: req.body.sleep
                         });
 
                         user.days.push(day._id);

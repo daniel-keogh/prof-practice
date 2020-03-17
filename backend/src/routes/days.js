@@ -10,16 +10,6 @@ const {
 const router = express.Router();
 
 router.post('/days',
-    [
-        body('user_id')
-            .notEmpty()
-            .withMessage('user_id cannot be empty')
-            .isMongoId()
-            .withMessage("user_id must be a Mongo ID"),
-        body('date')
-            .notEmpty()
-            .withMessage('date cannot be empty')
-    ],
     passport.authenticate('jwt', { session: false }),
     addDay
 );
