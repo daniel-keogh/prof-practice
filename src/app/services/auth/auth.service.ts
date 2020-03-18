@@ -1,7 +1,5 @@
-import { UserService } from './../user/user.service';
 import { LoginCredentials } from '../../interfaces/login-credentials';
 import { User } from './../../interfaces/user';
-import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -16,7 +14,6 @@ const ACCESS_TOKEN = 'access_token';
 })
 export class AuthService {
   public authState = new BehaviorSubject(false);
-  private url = environment.url;
 
   constructor(
     private helper: JwtHelperService,
@@ -47,7 +44,7 @@ export class AuthService {
 
   register(name: string, credentials: LoginCredentials): Observable<any> {
     return this.http
-      .post(`${this.url}/api/register`, {
+      .post(`http://localhost:4000/api/register`, {
         name,
         ...credentials
       })
@@ -59,7 +56,7 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<any> {
-    return this.http.post(`${this.url}/api/login`, credentials).pipe(
+    return this.http.post(`http://localhost:4000/api/login`, credentials).pipe(
       tap(res => {
         this.storage.set(ACCESS_TOKEN, res['token']);
         this.storage.set('user_id', res['_id']);
@@ -93,8 +90,8 @@ export class AuthService {
   async closeAccount(pwd: string): Promise<void> {
     const user = await this.getDecodedToken();
 
-    this.http
-      .post(`${this.url}/api/login`, {
+    return this.http
+      .post(`http://localhost:4000/api/login`, {
         email: user.email,
         password: pwd
       })
@@ -104,16 +101,21 @@ export class AuthService {
       })
       .then(isValid => {
         if (isValid) {
-          this.http
-            .delete(`${this.url}/api/users/${user._id}`)
+          return this.http
+            .delete(`http://localhost:4000/api/users/${user._id}`)
             .toPromise()
-            .then(() => {
-              this.logout();
+            .then(data => {
+              if (data['ok']) {
+                this.logout();
+              }
             })
             .catch(err => {
-              console.log(err);
+              throw err;
             });
         }
+      })
+      .catch(err => {
+        throw err;
       });
   }
 }

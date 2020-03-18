@@ -10,15 +10,7 @@ export class SettingsService {
   constructor(private storage: Storage) {}
 
   setTheme(theme: Theme): Promise<any> {
-    const isDarkThemePreferred = (): boolean => {
-      if (theme === Theme.System) {
-        // Use matchMedia to check the user's preference
-        return window.matchMedia('(prefers-color-scheme: dark)').matches;
-      }
-      return theme === Theme.Dark;
-    };
-
-    document.body.classList.toggle('dark', isDarkThemePreferred());
+    document.body.classList.toggle('dark', theme === Theme.Dark);
 
     return this.storage.set(Setting.Theme, theme);
   }

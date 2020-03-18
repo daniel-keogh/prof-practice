@@ -15,7 +15,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
   private theme: Theme;
-  private user: User;
 
   constructor(
     private alertController: AlertController,
@@ -26,7 +25,6 @@ export class SettingsPage implements OnInit {
 
   async ngOnInit() {
     this.theme = (await this.settings.search(Setting.Theme)) || Theme.Light;
-    this.user = await this.auth.getDecodedToken();
   }
 
   get themes() {
@@ -76,8 +74,22 @@ export class SettingsPage implements OnInit {
         {
           text: 'OK',
           handler: input => {
-            if (input) {
-              this.auth.closeAccount(input.password);
+            if (input.password) {
+              this.auth.closeAccount(input.password).catch(err => {
+                if (err.status === 401) {
+                  err.error.msg = 'User password is incorrect';
+                }
+
+                this.alertController
+                  .create({
+                    header: err.statusText,
+                    message: err.error.msg,
+                    buttons: ['OK']
+                  })
+                  .then(alert => {
+                    alert.present();
+                  });
+              });
             }
           }
         }
