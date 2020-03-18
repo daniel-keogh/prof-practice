@@ -1,3 +1,4 @@
+import { AlertController, ToastController } from '@ionic/angular';
 import { UserService } from './../../services/user/user.service';
 import { ChartsService } from './../../services/charts/charts.service';
 import { Subscription } from 'rxjs';
@@ -19,7 +20,12 @@ export class SleepPage implements OnInit, OnDestroy {
   daysSubscription: Subscription;
 
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
-  constructor(private stats: ChartsService, private userService: UserService) {}
+  constructor(
+    private alertCtrl: AlertController,
+    private stats: ChartsService,
+    private toastCtrl: ToastController,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.createChart();
@@ -35,7 +41,7 @@ export class SleepPage implements OnInit, OnDestroy {
       .subscribe(data => {
         this.daysArray = data.map(day => {
           return {
-            water: day.sleep,
+            sleep: day.sleep,
             date: day.date
           };
         });
@@ -52,5 +58,48 @@ export class SleepPage implements OnInit, OnDestroy {
 
   segmentChanged(ev: any) {
     this.createChart(ev.detail.value as number);
+  }
+
+  async addClick() {
+    const alert = await this.alertCtrl.create({
+      header: 'Track Sleep',
+      subHeader: 'How many hours did you sleep?',
+      inputs: [
+        {
+          name: 'sleep',
+          type: 'number',
+          value: 0,
+          min: 0,
+          max: 24
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'OK',
+          handler: label => {
+            if (label.sleep) {
+              this.userService
+                .updateDay({
+                  sleep: +label.sleep
+                })
+                .catch(err => {
+                  this.toastCtrl
+                    .create({
+                      message: err,
+                      duration: 2000
+                    })
+                    .then(toast => toast.present());
+                });
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

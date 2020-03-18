@@ -1,3 +1,4 @@
+import { Day } from './../../interfaces/day';
 import { tap, catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './../auth/auth.service';
@@ -47,6 +48,35 @@ export class UserService {
           });
         })
       );
+  }
+
+  updateDay(day: Day): Promise<any> {
+    return this.http
+      .get<any>(`http://localhost:4000/api/days/${this.user._id}`)
+      .toPromise()
+      .then((data: Day[]) => {
+        const today = data.find(day => {
+          return this.formatDate(day.date) === this.formatDate(new Date());
+        });
+
+        if (today) {
+          return this.http
+            .put<any>(`http://localhost:4000/api/days/${today._id}`, {
+              ...today,
+              ...day
+            })
+            .toPromise();
+        } else {
+          return this.http
+            .post<any>(`http://localhost:4000/api/days/`, {
+              ...day
+            })
+            .toPromise();
+        }
+      })
+      .catch(err => {
+        throw new Error(err.error.msg);
+      });
   }
 
   /* Convert a Date to yyyy-mm-dd */
