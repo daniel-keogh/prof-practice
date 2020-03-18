@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class UserService {
   user: User;
 
-  constructor(private auth: AuthService, private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   updateUserEmail(newEmail: string) {
     return this.http

@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 const ACCESS_TOKEN = 'access_token';
+const USER_ID = 'user_id';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class AuthService {
     return this.http.post(`http://localhost:4000/api/login`, credentials).pipe(
       tap(res => {
         this.storage.set(ACCESS_TOKEN, res['token']);
-        this.storage.set('user_id', res['_id']);
+        this.storage.set(USER_ID, res['_id']);
         this.authState.next(true);
       }),
       catchError(e => {
@@ -70,6 +71,8 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await this.storage.remove(ACCESS_TOKEN);
+    await this.storage.remove(USER_ID);
+
     this.authState.next(false);
   }
 

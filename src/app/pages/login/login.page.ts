@@ -1,7 +1,7 @@
 import { ToastController } from '@ionic/angular';
-import { LoginCredentials } from './../../interfaces/login-credentials';
 import { AuthService } from './../../services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +9,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
-  loginCreds: LoginCredentials = {
-    email: '',
-    password: ''
-  };
+  form: FormGroup;
 
   constructor(private auth: AuthService, private toastCtrl: ToastController) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.form = new FormGroup({
+      email: new FormControl(null, {
+        updateOn: 'change',
+        validators: [Validators.required, Validators.email]
+      }),
+      password: new FormControl(null, {
+        updateOn: 'change',
+        validators: [Validators.required]
+      })
+    });
+  }
 
   onLoginClick() {
-    if (this.loginCreds.email && this.loginCreds.password) {
+    const { email, password } = this.form.value;
+
+    if (email && password) {
       this.auth
-        .login(this.loginCreds)
+        .login({
+          email,
+          password
+        })
         .toPromise()
         .catch(err => {
           this.toastCtrl

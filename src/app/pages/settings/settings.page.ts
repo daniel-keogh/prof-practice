@@ -1,7 +1,6 @@
 import { ChangeEmailComponent } from './../../components/change-email/change-email.component';
 import { ChangePasswordComponent } from './../../components/change-password/change-password.component';
 import { AlertController, ModalController } from '@ionic/angular';
-import { User } from './../../interfaces/user';
 import { Setting } from '../../services/settings/setting.enum';
 import { Theme } from '../../services/settings/theme.enum';
 import { SettingsService } from '../../services/settings/settings.service';
