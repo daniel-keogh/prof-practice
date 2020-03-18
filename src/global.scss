@@ -40,3 +40,20 @@
 .chart-border {
     border: 1px solid var(--ion-color-light-shade);
 }
+
+.auth-card {
+    @media(max-width: 500px) {
+        ion-card {
+            box-shadow: none !important;
+            background: var(--ion-color-background);
+        }
+    }
+    
+    ion-card-header {
+        text-align: center;
+
+        ion-avatar {
+            margin: auto;
+        }
+    }
+}

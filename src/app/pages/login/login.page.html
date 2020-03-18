@@ -9,44 +9,59 @@
 
 <ion-content>
   <form [formGroup]="form">
-    <ion-grid>
+    <ion-grid class="ion-padding-top">
       <ion-row>
-        <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-          <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input type="email" formControlName="email"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-  
-      <ion-row>
-        <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-          <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-  
-      <ion-row>
-        <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-          <ion-button expand="block" 
-            class="ion-padding-vertical" 
-            [disabled]="!form.valid" 
-            (click)="onLoginClick()">
-            Login
-          </ion-button>
-        </ion-col>
-      </ion-row>
+        <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+          <ion-card color="light" class="auth-card">
+            <ion-card-header>
+              <h2 class="ion-padding-vertical">Welcome Back.</h2>
+              <ion-avatar>
+                <img src="../../../assets/logo.PNG">
+              </ion-avatar>
+            </ion-card-header>
+          
+            <ion-card-content>
+              <ion-grid class="ion-padding-top">
+                <ion-row>
+                  <ion-col size-lg="10" offset-lg="1">
+                    <ion-item>
+                      <ion-label position="floating">Email</ion-label>
+                      <ion-input type="email" formControlName="email"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+            
+                <ion-row>
+                  <ion-col size-lg="10" offset-lg="1">
+                    <ion-item>
+                      <ion-label position="floating">Password</ion-label>
+                      <ion-input type="password" formControlName="password"></ion-input>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+            
+                <ion-row class="ion-padding-vertical" >
+                  <ion-col size-lg="10" offset-lg="1">
+                    <ion-button expand="block" 
+                      [disabled]="!form.valid" 
+                      (click)="onLoginClick()">
+                      Login
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
 
-      <ion-row>
-        <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3" style="text-align: center;">
-          <ion-button routerLink="/register"
-            fill="clear"
-            class="ion-padding-vertical"
-            size="small">
-            Register Instead
-          </ion-button>
+                <ion-row>
+                  <ion-col size-lg="8" offset-lg="2" style="text-align: center;">
+                    <ion-button routerLink="/register"
+                      fill="clear"
+                      size="small">
+                      Register Instead
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
         </ion-col>
       </ion-row>
     </ion-grid>

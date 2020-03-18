@@ -1,9 +1,5 @@
-#container {
-    text-align: center;
-  
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+@media(min-width: 500px) {
+  form {
+      margin-top: 5%;
   }
+}
