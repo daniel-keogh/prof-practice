@@ -1,33 +1,29 @@
-#container {
+.button-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+  
+ion-content.background{
+  --background: linear-gradient(to left top, #00c4ee, #00cee6, #00d6d3, #00ddb8, #40e197);
+}
+
+ion-card {
+  box-shadow: none;
+
+  ion-card-header {
     text-align: center;
-  
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    color: white;
+
+    ion-avatar {
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 64px;
+      font-family: 'Raleway', sans-serif;
+    }
   }
-  
-  #container strong {
-    font-size: 20px;
-    line-height: 26px;
-  }
-  
-  #container p {
-    font-size: 16px;
-    line-height: 22px;
-  
-    color: #8c8c8c;
-  
-    margin: 0;
-  }
-  
-  #container a {
-    text-decoration: none;
-  }
-  ion-content.background{
-    --background: url('../../../assets/fittrak2.png') 0 0/100% 100% no-repeat;
-  }
-  ion-content ion-toolbar {
-    --background: translucent;
-  }
+}

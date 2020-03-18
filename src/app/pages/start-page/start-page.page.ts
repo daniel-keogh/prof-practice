@@ -3,17 +3,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-start-page',
   templateUrl: './start-page.page.html',
-  styleUrls: ['./start-page.page.scss'],
+  styleUrls: ['./start-page.page.scss']
 })
 export class StartPagePage implements OnInit {
-  text = "Default starting text"
+  constructor() {}
 
-  onChangeText() {
-    this.text = 'Changed!';
-  }
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

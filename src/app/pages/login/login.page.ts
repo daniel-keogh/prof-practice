@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
       }),
       password: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.minLength(6)]
       })
     });
   }

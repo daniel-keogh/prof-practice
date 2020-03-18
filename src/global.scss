@@ -43,10 +43,8 @@
 
 .auth-card {
     @media(max-width: 500px) {
-        ion-card {
-            box-shadow: none !important;
-            background: var(--ion-color-background);
-        }
+        box-shadow: none;
+        background: var(--ion-color-background);
     }
     
     ion-card-header {
