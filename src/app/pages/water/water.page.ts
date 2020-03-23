@@ -1,14 +1,12 @@
+import { Setting } from './../../services/settings/setting.enum';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { UserService } from './../../services/user/user.service';
 import { ChartsService } from '../../services/charts/charts.service';
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Label } from 'ng2-charts';
+import { ChartDataSets } from 'chart.js';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-water',
@@ -16,18 +14,32 @@ import {
   styleUrls: ['./water.page.scss']
 })
 export class WaterPage implements OnInit, OnDestroy {
-  daysArray: any = [];
+  chartLabels: Label[] = [];
+  chartData: ChartDataSets[] = [
+    {
+      data: [],
+      label: 'Amount',
+      minBarLength: 6
+    }
+  ];
   daysSubscription: Subscription;
 
-  @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
   constructor(
     private alertCtrl: AlertController,
-    private stats: ChartsService,
+    private charts: ChartsService,
+    private storage: Storage,
     private toastCtrl: ToastController,
     private userService: UserService
   ) {}
 
   ngOnInit() {
+    this.charts.title = 'Water Intake';
+    this.storage.get(Setting.Theme).then(theme => {
+      if (theme) {
+        this.charts.selectedTheme = theme;
+      }
+    });
+
     this.createChart();
   }
 
@@ -39,19 +51,12 @@ export class WaterPage implements OnInit, OnDestroy {
     this.daysSubscription = this.userService
       .getDays(numWeeks)
       .subscribe(data => {
-        this.daysArray = data.map(day => {
-          return {
-            water: day.water,
-            date: day.date
-          };
-        });
+        this.chartLabels = [];
+        this.chartData[0].data = [];
 
-        this.stats.generateChart({
-          canvas: this.canvas,
-          dates: this.daysArray.map(day => day.date),
-          values: this.daysArray.map(day => day.water),
-          chartTitle: 'Water',
-          itemLabels: 'Amount'
+        data.forEach(day => {
+          this.chartLabels.push(day.date);
+          this.chartData[0].data.push(day.water);
         });
       });
   }
@@ -80,10 +85,13 @@ export class WaterPage implements OnInit, OnDestroy {
         {
           text: 'OK',
           handler: label => {
-            if (label.water) {
+            if (+label.water >= 0) {
               this.userService
                 .updateDay({
                   water: +label.water
+                })
+                .then(() => {
+                  this.createChart();
                 })
                 .catch(err => {
                   this.toastCtrl

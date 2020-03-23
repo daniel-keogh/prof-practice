@@ -1,95 +1,128 @@
-import { Injectable, ElementRef } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Theme } from './../settings/theme.enum';
+import { Injectable } from '@angular/core';
+import { ChartOptions, ChartType } from 'chart.js';
+import { Color, ThemeService } from 'ng2-charts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChartsService {
-  private historyChart: Chart;
+  private _selectedTheme: Theme;
 
-  constructor() {}
+  public get selectedTheme(): Theme {
+    return this._selectedTheme;
+  }
 
-  generateChart({
-    canvas,
-    dates,
-    values,
-    chartTitle,
-    itemLabels
-  }: {
-    canvas: ElementRef<HTMLCanvasElement>;
-    dates: string[];
-    values: number[];
-    chartTitle: string;
-    itemLabels?: string;
-  }): Chart {
-    // If a chart was already drawn, destory it and make a new one.
-    if (this.historyChart) {
-      this.historyChart.destroy();
-    }
+  public set selectedTheme(value: Theme) {
+    this._selectedTheme = value;
 
-    return (this.historyChart = new Chart(canvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: dates,
-        datasets: [
-          {
-            label: itemLabels || '',
-            data: values,
-            backgroundColor: 'rgba(82, 96, 255, 0.2)',
-            hoverBackgroundColor: 'rgba(82, 96, 255, 0.3)',
-            borderColor: 'rgba(82, 96, 255, 1)',
-            borderWidth: 2.5,
-            pointRadius: 0,
-            pointHoverRadius: 5,
-            minBarLength: 6
-          }
-        ]
-      },
-      options: {
-        maintainAspectRatio: false,
-        legend: {
-          display: false
-        },
+    let overrides: ChartOptions;
+
+    if (this.selectedTheme === Theme.Dark) {
+      overrides = {
         title: {
-          display: true,
-          text: chartTitle,
-          fontSize: 16,
-          fontColor: '#717172'
-        },
-        hover: {
-          intersect: false
+          fontColor: '#d7d8da'
         },
         scales: {
-          yAxes: [
-            {
-              ticks: {
-                min: 0,
-                stepSize: 1
-              }
-            }
-          ],
           xAxes: [
             {
-              ticks: {
-                callback: value => {
-                  // TODO: format the dates properly
-                  return value;
-                }
-              }
+              ticks: { fontColor: '#d7d8da' },
+              gridLines: { color: 'rgba(255,255,255,0.1)' }
+            }
+          ],
+          yAxes: [
+            {
+              ticks: { fontColor: '#d7d8da' },
+              gridLines: { color: 'rgba(255,255,255,0.1)' }
             }
           ]
-        },
-        tooltips: {
-          intersect: false,
-          mode: 'index',
-          displayColors: false,
-          titleFontColor: '#3dc2ff',
-          titleFontSize: 13,
-          bodyFontSize: 13,
-          xPadding: 10,
-          yPadding: 10
         }
-      }
-    }));
+      };
+    } else {
+      overrides = {};
+    }
+
+    this.themeService.setColorschemesOptions(overrides);
   }
+
+  private _options: ChartOptions = {
+    responsive: true,
+    title: {
+      display: true,
+      fontSize: 16,
+      fontColor: '#92949c'
+    },
+    maintainAspectRatio: false,
+    legend: {
+      display: false
+    },
+    hover: {
+      intersect: false
+    },
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            min: 0,
+            stepSize: 1
+          }
+        }
+      ],
+      xAxes: [
+        {
+          ticks: {
+            callback: value => {
+              // TODO: format the dates properly
+              return value;
+            }
+          }
+        }
+      ]
+    },
+    tooltips: {
+      intersect: false,
+      mode: 'index',
+      displayColors: false,
+      titleFontColor: '#3dc2ff',
+      titleFontSize: 13,
+      bodyFontSize: 13,
+      xPadding: 10,
+      yPadding: 10
+    }
+  };
+
+  get options(): ChartOptions {
+    return this._options;
+  }
+
+  private _colors: Color[] = [
+    {
+      borderColor: 'rgba(82, 96, 255, 1)',
+      backgroundColor: 'rgba(82, 96, 255, 0.5)',
+      hoverBackgroundColor: 'rgba(82, 96, 255, 0.6)',
+      borderWidth: 2.5,
+      pointRadius: 1,
+      pointHoverRadius: 5
+    }
+  ];
+
+  get colors(): Color[] {
+    return this._colors;
+  }
+
+  set title(title: string) {
+    this._options.title.text = title;
+  }
+
+  private _chartType: ChartType = 'bar';
+
+  get chartType() {
+    return this._chartType;
+  }
+
+  set chartType(type: ChartType) {
+    this._chartType = type;
+  }
+
+  constructor(private themeService: ThemeService) {}
 }

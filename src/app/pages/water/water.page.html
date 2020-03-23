@@ -25,8 +25,26 @@
     <ion-row class="ion-padding-vertical">
       <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3" class="ion-no-padding">
         <div class="chart-container" [ngClass]="{'chart-border': daysSubscription}">
-          <canvas #canvas id="chart"></canvas>
+          <canvas baseChart
+            [datasets]="chartData"
+            [labels]="chartLabels"
+            [chartType]="charts.chartType"
+            [colors]="charts.colors"
+            [options]="charts.options">
+        </canvas>
         </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding-top">
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
+        <ion-item>
+          <ion-label>Chart Type</ion-label>
+          <ion-select [(ngModel)]="charts.chartType" okText="OK" cancelText="Cancel" interface="popover">
+            <ion-select-option value="bar">Bar</ion-select-option>
+            <ion-select-option value="line">Line</ion-select-option>
+          </ion-select>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>

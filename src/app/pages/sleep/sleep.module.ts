@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+import { ChartsModule } from 'ng2-charts';
+
 import { SleepPageRoutingModule } from './sleep-routing.module';
 
 import { SleepPage } from './sleep.page';
@@ -13,7 +15,8 @@ import { SleepPage } from './sleep.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    SleepPageRoutingModule
+    SleepPageRoutingModule,
+    ChartsModule
   ],
   declarations: [SleepPage]
 })

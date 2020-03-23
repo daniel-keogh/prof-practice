@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+import { ChartsModule } from 'ng2-charts';
+
 import { WaterPageRoutingModule } from './water-routing.module';
 
 import { WaterPage } from './water.page';
@@ -13,7 +15,8 @@ import { WaterPage } from './water.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    WaterPageRoutingModule
+    WaterPageRoutingModule,
+    ChartsModule
   ],
   declarations: [WaterPage]
 })
