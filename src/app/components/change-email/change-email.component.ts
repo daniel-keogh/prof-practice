@@ -45,18 +45,20 @@ export class ChangeEmailComponent implements OnInit {
   }
 
   onSubmit() {
-    const { email } = this.form.value;
+    if (this.form.status !== 'INVALID') {
+      const { email } = this.form.value;
 
-    this.userService.updateUserEmail(email).subscribe(
-      () => this.dismiss(),
-      err => {
-        this.toastCtrl
-          .create({
-            message: err,
-            duration: 2000
-          })
-          .then(toast => toast.present());
-      }
-    );
+      this.userService.updateUserEmail(email).subscribe(
+        () => this.dismiss(),
+        err => {
+          this.toastCtrl
+            .create({
+              message: err,
+              duration: 2000
+            })
+            .then(toast => toast.present());
+        }
+      );
+    }
   }
 }

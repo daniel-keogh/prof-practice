@@ -27,23 +27,25 @@ export class LoginPage implements OnInit {
   }
 
   onLoginClick() {
-    const { email, password } = this.form.value;
+    if (this.form.status !== 'INVALID') {
+      const { email, password } = this.form.value;
 
-    if (email && password) {
-      this.auth
-        .login({
-          email,
-          password
-        })
-        .toPromise()
-        .catch(err => {
-          this.toastCtrl
-            .create({
-              message: err,
-              duration: 2000
-            })
-            .then(toast => toast.present());
-        });
+      if (email && password) {
+        this.auth
+          .login({
+            email,
+            password
+          })
+          .toPromise()
+          .catch(err => {
+            this.toastCtrl
+              .create({
+                message: err,
+                duration: 2000
+              })
+              .then(toast => toast.present());
+          });
+      }
     }
   }
 }

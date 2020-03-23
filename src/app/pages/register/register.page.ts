@@ -31,29 +31,32 @@ export class RegisterPage implements OnInit {
   }
 
   async onRegisterClick() {
-    const { usersName, email, password } = this.form.value;
+    if (this.form.status !== 'INVALID') {
+      const { usersName, email, password } = this.form.value;
 
-    if (usersName && email && password) {
-      try {
-        await this.auth
-          .register(usersName, {
-            email,
-            password
-          })
-          .toPromise();
-        await this.auth
-          .login({
-            email,
-            password
-          })
-          .toPromise();
-      } catch (err) {
-        this.toastCtrl
-          .create({
-            message: err,
-            duration: 2000
-          })
-          .then(toast => toast.present());
+      if (usersName && email && password) {
+        try {
+          await this.auth
+            .register(usersName, {
+              email,
+              password
+            })
+            .toPromise();
+
+          await this.auth
+            .login({
+              email,
+              password
+            })
+            .toPromise();
+        } catch (err) {
+          this.toastCtrl
+            .create({
+              message: err,
+              duration: 2000
+            })
+            .then(toast => toast.present());
+        }
       }
     }
   }

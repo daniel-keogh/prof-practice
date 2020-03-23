@@ -43,20 +43,22 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    const { current, newPwd } = this.form.value;
-    const { email } = this.userService.user;
+    if (this.form.status !== 'INVALID') {
+      const { current, newPwd } = this.form.value;
+      const { email } = this.userService.user;
 
-    this.auth.changePassword(current, newPwd, email).subscribe(
-      () => this.dismiss(),
-      err => {
-        this.toastCtrl
-          .create({
-            message: err,
-            duration: 2000
-          })
-          .then(toast => toast.present());
-      }
-    );
+      this.auth.changePassword(current, newPwd, email).subscribe(
+        () => this.dismiss(),
+        err => {
+          this.toastCtrl
+            .create({
+              message: err,
+              duration: 2000
+            })
+            .then(toast => toast.present());
+        }
+      );
+    }
   }
 
   /* Prevents the user clicking save if newPwd !== confirm
