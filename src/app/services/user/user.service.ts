@@ -1,28 +1,71 @@
 import { Day } from './../../interfaces/day';
 import { tap, catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from './../auth/auth.service';
 import { User } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  user: User;
+  private _user = new BehaviorSubject<User>(null);
 
   constructor(private http: HttpClient) {}
 
+  get userId() {
+    return this._user.asObservable().pipe(
+      map(user => {
+        if (user) {
+          return user._id;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  get user() {
+    if (this._user) {
+      return this._user.value;
+    } else {
+      return null;
+    }
+  }
+
+  set user(user: User) {
+    this._user.next(user);
+  }
+
+  getUsersFullInfo(): Observable<User> {
+    return this.http
+      .get<User>(`http://localhost:4000/api/users/${this._user.value._id}`)
+      .pipe(
+        tap(data => {
+          const { _id, name, email, registered_since } = data;
+
+          this._user.next({
+            _id,
+            name,
+            email,
+            registered_since
+          });
+        })
+      );
+  }
+
   updateUserEmail(newEmail: string) {
     return this.http
-      .put(`http://localhost:4000/api/users/${this.user._id}`, {
-        ...this.user,
+      .put(`http://localhost:4000/api/users/${this._user.value._id}`, {
+        ...this._user.value,
         email: newEmail
       })
       .pipe(
         tap(() => {
-          this.user.email = newEmail;
+          this._user.next({
+            ...this._user.value,
+            email: newEmail
+          });
         }),
         catchError(e => {
           throw new Error(e.error.msg);
@@ -36,7 +79,7 @@ export class UserService {
 
     return this.http
       .get<any>(
-        `http://localhost:4000/api/days/${this.user._id}?start_at=${start}&end_at=${today}`
+        `http://localhost:4000/api/days/${this._user.value._id}?start_at=${start}&end_at=${today}`
       )
       .pipe(
         map(days => {
@@ -52,7 +95,7 @@ export class UserService {
 
   updateDay(day: Day): Promise<any> {
     return this.http
-      .get<any>(`http://localhost:4000/api/days/${this.user._id}`)
+      .get<any>(`http://localhost:4000/api/days/${this._user.value._id}`)
       .toPromise()
       .then((data: Day[]) => {
         const today = data.find(day => {

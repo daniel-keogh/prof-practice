@@ -1,7 +1,8 @@
+import { map, take } from 'rxjs/operators';
 import { UserService } from './../../services/user/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-change-email',
@@ -9,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChangeEmailComponent implements OnInit {
   form: FormGroup;
+  currentEmail: string;
 
   constructor(
     private modal: ModalController,
@@ -17,6 +19,19 @@ export class ChangeEmailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.currentEmail = this.userService.user.email;
+    this.userService
+      .getUsersFullInfo()
+      .pipe(
+        map(user => user.email),
+        take(1)
+      )
+      .subscribe(email => {
+        if (email !== this.currentEmail) {
+          this.currentEmail = email;
+        }
+      });
+
     this.form = new FormGroup({
       email: new FormControl(null, {
         updateOn: 'change',

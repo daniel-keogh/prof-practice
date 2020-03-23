@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { LoginCredentials } from '../../interfaces/login-credentials';
 import { User } from './../../interfaces/user';
 import { Injectable } from '@angular/core';
@@ -19,7 +20,8 @@ export class AuthService {
   constructor(
     private helper: JwtHelperService,
     private http: HttpClient,
-    private storage: Storage
+    private storage: Storage,
+    private userService: UserService
   ) {}
 
   async checkToken(): Promise<void> {
@@ -28,6 +30,7 @@ export class AuthService {
     if (token) {
       if (!this.helper.isTokenExpired(token)) {
         this.authState.next(true);
+        this.userService.user = await this.getDecodedToken();
       } else {
         this.storage.remove(ACCESS_TOKEN);
       }
@@ -61,6 +64,8 @@ export class AuthService {
       tap(res => {
         this.storage.set(ACCESS_TOKEN, res['token']);
         this.storage.set(USER_ID, res['_id']);
+
+        this.userService.user = this.helper.decodeToken(res['token']);
         this.authState.next(true);
       }),
       catchError(e => {
@@ -73,6 +78,7 @@ export class AuthService {
     await this.storage.remove(ACCESS_TOKEN);
     await this.storage.remove(USER_ID);
 
+    this.userService.user = null;
     this.authState.next(false);
   }
 
