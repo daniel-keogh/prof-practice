@@ -1,11 +1,11 @@
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Setting } from './../../services/settings/setting.enum';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, IonSegment } from '@ionic/angular';
 import { UserService } from './../../services/user/user.service';
 import { ChartsService } from './../../services/charts/charts.service';
 import { Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -26,6 +26,9 @@ export class SleepPage implements OnInit, OnDestroy {
   ];
   daysSubscription: Subscription;
 
+  @ViewChild('segment', { static: false })
+  segment: IonSegment;
+
   constructor(
     private alertCtrl: AlertController,
     private charts: ChartsService,
@@ -41,15 +44,32 @@ export class SleepPage implements OnInit, OnDestroy {
         this.charts.selectedTheme = theme;
       }
     });
-
-    this.createChart();
   }
 
   ngOnDestroy() {
     this.daysSubscription.unsubscribe();
   }
 
-  async createChart(numWeeks: number = 1) {
+  ionViewDidEnter() {
+    this.segmentChanged(this.segment.value);
+  }
+
+  async createChart(period: string) {
+    let numWeeks: number;
+    switch (period) {
+      case 'week':
+        numWeeks = 1;
+        break;
+      case 'month':
+        numWeeks = 4;
+        break;
+      case 'year':
+        numWeeks = 52;
+        break;
+      default:
+        return;
+    }
+
     this.daysSubscription = this.userService
       .getDays(numWeeks)
       .subscribe(data => {
@@ -66,19 +86,7 @@ export class SleepPage implements OnInit, OnDestroy {
   }
 
   segmentChanged(ev: any) {
-    switch (ev.detail.value) {
-      case 'week':
-        this.createChart(1);
-        break;
-      case 'month':
-        this.createChart(4);
-        break;
-      case 'year':
-        this.createChart(52);
-        break;
-      default:
-        break;
-    }
+    this.createChart(ev.detail.value);
   }
 
   getPoints(): any {
@@ -118,7 +126,7 @@ export class SleepPage implements OnInit, OnDestroy {
                   sleep: +label.sleep
                 })
                 .then(() => {
-                  this.createChart();
+                  this.createChart(this.segment.value);
                 })
                 .catch(err => {
                   this.toastCtrl
