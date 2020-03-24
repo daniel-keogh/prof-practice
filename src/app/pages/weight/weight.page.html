@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Weight</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addClick($event)">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment
+      #segment
+      value="week"
+      (ionChange)="segmentChanged($event)" 
+      class="ion-justify-content-center">
+      <ion-segment-button value="week">
+        <ion-label>Week</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="month">
+        <ion-label>Month</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="year">
+        <ion-label>Year</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-padding-vertical">
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3" class="ion-no-padding">
+        <div class="chart-container" [ngClass]="{'chart-border': daysSubscription}">
+          <canvas baseChart
+            [datasets]="chartData"
+            [labels]="chartLabels"
+            [chartType]="charts.chartType"
+            [colors]="charts.colors"
+            [options]="charts.options">
+        </canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding-top">
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
+        <ion-item>
+          <ion-label>Chart Type</ion-label>
+          <ion-select [(ngModel)]="charts.chartType" okText="OK" cancelText="Cancel" interface="popover">
+            <ion-select-option value="bar">Bar</ion-select-option>
+            <ion-select-option value="line">Line</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
+        <ion-card *ngIf="points">
+          <ion-card-header color="light">
+            <ion-card-title>This {{segment.value | titlecase}}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-item *ngFor="let item of ['High', 'Low', 'Average']">
+              <ion-label>{{item}}</ion-label>
+              <ion-chip slot="end" [color]="(item === 'High') ? 'success' : (item === 'Low') ? 'warning' : 'secondary'">
+                <ion-label>{{points[item]}}lbs</ion-label>
+              </ion-chip>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

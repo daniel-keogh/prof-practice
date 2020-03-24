@@ -16,16 +16,21 @@ router.post('/days',
 
 router.put('/days/:id',
     [
+        body('sleep')
+            .notEmpty()
+            .withMessage('sleep cannot be empty')
+            .isNumeric()
+            .withMessage('sleep must be a number'),
         body('water')
             .notEmpty()
             .withMessage('water cannot be empty')
             .isNumeric()
             .withMessage('water must be a number'),
-        body('sleep')
+        body('weight')
             .notEmpty()
-            .withMessage('sleep cannot be empty')
+            .withMessage('weight cannot be empty')
             .isNumeric()
-            .withMessage('sleep must be a number')
+            .withMessage('weight must be a number')
     ],
     passport.authenticate('jwt', { session: false }),
     updateDay

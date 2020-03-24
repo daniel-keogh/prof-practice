@@ -24,6 +24,7 @@ exports.addDay = (req, res) => {
                             user_id: req.user._id,
                             date: req.body.date || today,
                             water: req.body.water,
+                            weight: req.body.weight,
                             sleep: req.body.sleep
                         });
 
@@ -53,9 +54,10 @@ exports.updateDay = (req, res) => {
     Day.findById(req.params.id)
         .then(day => {
             if (day) {
-                const { water, sleep } = req.body;
+                const { water, weight, sleep } = req.body;
 
                 day.water = water;
+                day.weight = weight;
                 day.sleep = sleep;
 
                 return day.save();

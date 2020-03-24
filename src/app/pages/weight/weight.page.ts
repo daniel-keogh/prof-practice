@@ -9,11 +9,11 @@ import { ChartDataSets } from 'chart.js';
 import { Storage } from '@ionic/storage';
 
 @Component({
-  selector: 'app-water',
-  templateUrl: './water.page.html',
-  styleUrls: ['./water.page.scss']
+  selector: 'app-weight',
+  templateUrl: './weight.page.html',
+  styleUrls: ['./weight.page.scss']
 })
-export class WaterPage implements OnInit, OnDestroy {
+export class WeightPage implements OnInit, OnDestroy {
   recommended = 1920;
   today = 0;
   points: any;
@@ -21,7 +21,7 @@ export class WaterPage implements OnInit, OnDestroy {
   chartData: ChartDataSets[] = [
     {
       data: [],
-      label: 'Milliliters',
+      label: 'Pounds',
       minBarLength: 6
     }
   ];
@@ -36,7 +36,7 @@ export class WaterPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.charts.title = 'Water Intake';
+    this.charts.title = 'Weight';
     this.storage.get(Setting.Theme).then(theme => {
       if (theme) {
         this.charts.selectedTheme = theme;
@@ -59,14 +59,7 @@ export class WaterPage implements OnInit, OnDestroy {
 
         data.forEach(day => {
           this.chartLabels.push(day.date);
-          this.chartData[0].data.push(day.water);
-
-          if (
-            new Date().toLocaleDateString() ===
-            new Date(day.date).toLocaleDateString()
-          ) {
-            this.today = day.water;
-          }
+          this.chartData[0].data.push(day.weight);
         });
 
         this.points = this.getPoints();
@@ -95,17 +88,17 @@ export class WaterPage implements OnInit, OnDestroy {
     return {
       High: Math.max(...allNums),
       Low: Math.min(...allNums),
-      Average: allNums.reduce((a, b) => a + b) / allNums.length
+      Average: allNums.reduce((a, b) => a + b, 0) / allNums.length
     };
   }
 
   async addClick() {
     const alert = await this.alertCtrl.create({
-      header: 'Track Water',
-      subHeader: 'How much water have you drank today (ml)?',
+      header: 'Track Weight',
+      subHeader: 'Record your weight for today (lbs).',
       inputs: [
         {
-          name: 'water',
+          name: 'weight',
           type: 'number',
           value: 0,
           min: 0
@@ -119,10 +112,10 @@ export class WaterPage implements OnInit, OnDestroy {
         {
           text: 'OK',
           handler: label => {
-            if (+label.water >= 0) {
+            if (+label.weight >= 0) {
               this.userService
                 .updateDay({
-                  water: +label.water
+                  weight: +label.weight
                 })
                 .then(() => {
                   this.createChart();

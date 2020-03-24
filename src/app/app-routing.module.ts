@@ -77,6 +77,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/water/water.module').then(m => m.WaterPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'weight',
+    loadChildren: () =>
+      import('./pages/weight/weight.module').then(m => m.WeightPageModule),
+    canActivate: [AuthGuard]
   }
 ];
 

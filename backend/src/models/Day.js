@@ -9,11 +9,15 @@ const daySchema = new mongoose.Schema({
         default: Date.now,
         expires: "366d"
     },
+    sleep: {
+        type: Number,
+        default: 0
+    },
     water: {
         type: Number,
         default: 0
     },
-    sleep: {
+    weight: {
         type: Number,
         default: 0
     }
