@@ -14,6 +14,8 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./sleep.page.scss']
 })
 export class SleepPage implements OnInit, OnDestroy {
+  today = 0;
+  points: any;
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [
     {
@@ -58,11 +60,35 @@ export class SleepPage implements OnInit, OnDestroy {
           this.chartLabels.push(day.date);
           this.chartData[0].data.push(day.sleep);
         });
+
+        this.points = this.getPoints();
       });
   }
 
   segmentChanged(ev: any) {
-    this.createChart(ev.detail.value as number);
+    switch (ev.detail.value) {
+      case 'week':
+        this.createChart(1);
+        break;
+      case 'month':
+        this.createChart(4);
+        break;
+      case 'year':
+        this.createChart(52);
+        break;
+      default:
+        break;
+    }
+  }
+
+  getPoints(): any {
+    const allNums = this.chartData[0].data as number[];
+
+    return {
+      High: Math.max(...allNums),
+      Low: Math.min(...allNums),
+      Average: allNums.reduce((a, b) => a + b, 0) / allNums.length
+    };
   }
 
   async addClick() {
@@ -86,7 +112,7 @@ export class SleepPage implements OnInit, OnDestroy {
         {
           text: 'OK',
           handler: label => {
-            if (+label.sleep >= 0) {
+            if (+label.sleep >= 0 && +label.sleep <= 24) {
               this.userService
                 .updateDay({
                   sleep: +label.sleep

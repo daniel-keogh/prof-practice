@@ -14,11 +14,14 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./water.page.scss']
 })
 export class WaterPage implements OnInit, OnDestroy {
+  recommended = 1920;
+  today = 0;
+  points: any;
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [
     {
       data: [],
-      label: 'Amount',
+      label: 'Milliliters',
       minBarLength: 6
     }
   ];
@@ -57,18 +60,50 @@ export class WaterPage implements OnInit, OnDestroy {
         data.forEach(day => {
           this.chartLabels.push(day.date);
           this.chartData[0].data.push(day.water);
+
+          if (
+            new Date().toLocaleDateString() ===
+            new Date(day.date).toLocaleDateString()
+          ) {
+            this.today = day.water;
+          }
         });
+
+        this.points = this.getPoints();
       });
   }
 
   segmentChanged(ev: any) {
-    this.createChart(ev.detail.value as number);
+    switch (ev.detail.value) {
+      case 'week':
+        this.createChart(1);
+        break;
+      case 'month':
+        this.createChart(4);
+        break;
+      case 'year':
+        this.createChart(52);
+        break;
+      default:
+        break;
+    }
+  }
+
+  getPoints(): any {
+    const allNums = this.chartData[0].data as number[];
+    console.log(allNums);
+
+    return {
+      High: Math.max(...allNums),
+      Low: Math.min(...allNums),
+      Average: allNums.reduce((a, b) => a + b) / allNums.length
+    };
   }
 
   async addClick() {
     const alert = await this.alertCtrl.create({
       header: 'Track Water',
-      subHeader: 'How much water did you drink today?',
+      subHeader: 'How much water have you drank today (ml)?',
       inputs: [
         {
           name: 'water',
