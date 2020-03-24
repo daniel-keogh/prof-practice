@@ -1,6 +1,6 @@
 import { Theme } from './../settings/theme.enum';
 import { Injectable } from '@angular/core';
-import { ChartOptions, ChartType } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Color, ThemeService } from 'ng2-charts';
 
 @Injectable({
@@ -124,4 +124,32 @@ export class ChartsService {
   }
 
   constructor(private themeService: ThemeService) {}
+
+  getStats(
+    chartData: ChartDataSets[]
+  ): {
+    High: number;
+    Low: number;
+    Average: number;
+  } {
+    const allNums = chartData[0].data as number[];
+
+    return {
+      High: this.getHigh(allNums),
+      Low: this.getLow(allNums),
+      Average: this.getAvg(allNums)
+    };
+  }
+
+  getHigh(nums: number[]): number {
+    return Math.max(...nums);
+  }
+
+  getLow(nums: number[]): number {
+    return Math.min(...nums);
+  }
+
+  getAvg(nums: number[]): number {
+    return nums.reduce((a, b) => a + b, 0) / nums.length;
+  }
 }

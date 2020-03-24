@@ -74,7 +74,7 @@
 
     <ion-row>
       <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
-        <ion-card *ngIf="points">
+        <ion-card *ngIf="stats">
           <ion-card-header color="light">
             <ion-card-title>This {{segment.value | titlecase}}</ion-card-title>
           </ion-card-header>
@@ -83,7 +83,7 @@
             <ion-item *ngFor="let item of ['High', 'Low', 'Average']">
               <ion-label>{{item}}</ion-label>
               <ion-chip slot="end" [color]="(item === 'High') ? 'success' : (item === 'Low') ? 'warning' : 'secondary'">
-                <ion-label>{{points[item]}}ml</ion-label>
+                <ion-label>{{stats[item]}}ml</ion-label>
               </ion-chip>
             </ion-item>
           </ion-card-content>

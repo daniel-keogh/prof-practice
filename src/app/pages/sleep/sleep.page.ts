@@ -15,7 +15,7 @@ import { Storage } from '@ionic/storage';
 })
 export class SleepPage implements OnInit, OnDestroy {
   today = 0;
-  points: any;
+  stats: any;
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [
     {
@@ -51,7 +51,7 @@ export class SleepPage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    this.segmentChanged(this.segment.value);
+    this.createChart(this.segment.value);
   }
 
   async createChart(period: string) {
@@ -81,22 +81,12 @@ export class SleepPage implements OnInit, OnDestroy {
           this.chartData[0].data.push(day.sleep);
         });
 
-        this.points = this.getPoints();
+        this.stats = this.charts.getStats(this.chartData);
       });
   }
 
   segmentChanged(ev: any) {
     this.createChart(ev.detail.value);
-  }
-
-  getPoints(): any {
-    const allNums = this.chartData[0].data as number[];
-
-    return {
-      High: Math.max(...allNums),
-      Low: Math.min(...allNums),
-      Average: allNums.reduce((a, b) => a + b, 0) / allNums.length
-    };
   }
 
   async addClick() {
