@@ -14,7 +14,14 @@ Make sure you have [Node.js](https://nodejs.org/en/) installed on your machine, 
 $ npm i -g @ionic/cli
 ```
 
-Remember to first run `npm install` in both the root, and `backend/` directories if you're working with a fresh clone of the repository.
+Remember to first run `npm install` in both the root, and `backend/` directories if you're working with a fresh clone of the repository:
+
+```console
+user@host:~/prof-practice$ npm install
+
+user@host:~/prof-practice$ cd backend/
+user@host:~/prof-practice/backend$ npm install
+```
 
 ### Run the Ionic Client
 
@@ -25,21 +32,9 @@ Remember to first run `npm install` in both the root, and `backend/` directories
 - Run `npm run server` to start the server with [nodemon](https://www.npmjs.com/package/nodemon).
 It should automatically reload if you change any of the source files.
 
-#### Database
-
-The server currently connects to a local MongoDB database ([see keys.js](./backend/src/config/keys.js)):
-
-```js
-module.exports = {
-    MONGO_URI: 'mongodb://localhost/fitTrack'
-};
-```
-
-For the server to run correctly you'll need to [install MongoDB](https://docs.mongodb.com/manual/installation/) and run the `mongod` command. Alternatively, you could replace the above `MONGO_URI` string with a [MongoDB Atlas](https://docs.mongodb.com/guides/cloud/connectionstring/) connection string.
-
 ### Concurrently
 
-You can run both the client and the server at the same time, using the below command:
+You can also run both the client and the server at the same time, using the below command:
 
 ```sh
 $ npm run dev
