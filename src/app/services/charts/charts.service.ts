@@ -134,11 +134,15 @@ export class ChartsService {
   } {
     const allNums = chartData[0].data as number[];
 
-    return {
-      High: this.getHigh(allNums),
-      Low: this.getLow(allNums),
-      Average: this.getAvg(allNums)
-    };
+    if (allNums.length) {
+      return {
+        High: this.getHigh(allNums),
+        Low: this.getLow(allNums),
+        Average: this.getAvg(allNums)
+      };
+    } else {
+      return null;
+    }
   }
 
   getHigh(nums: number[]): number {
