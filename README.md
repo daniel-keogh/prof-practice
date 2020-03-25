@@ -23,19 +23,22 @@ user@host:~/prof-practice$ cd backend/
 user@host:~/prof-practice/backend$ npm install
 ```
 
-### Run the Ionic Client
+### Run Concurrently
 
-- Run `ionic serve` to open the client application in a web browser.
-
-### Run the Server
-
-- Run `npm run server` to start the server with [nodemon](https://www.npmjs.com/package/nodemon).
-It should automatically reload if you change any of the source files.
-
-### Concurrently
-
-You can also run both the client and the server at the same time, using the below command:
+You can run both the client and the server at the same time, using the below command:
 
 ```sh
 $ npm run dev
 ```
+
+You could alternatively run the client or server individually, as follows.
+Note that all these commands should be run from the root of the repository.
+
+#### Run the Ionic Client
+
+- Run `ionic serve` to open the client application in a web browser.
+
+#### Run the Server
+
+- Run `npm run server` to start the server with [nodemon](https://www.npmjs.com/package/nodemon).
+It should automatically reload if you change any of the source files.
