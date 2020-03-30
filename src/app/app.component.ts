@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
+import { NotificationService } from './services/notification/notification.service';
 import { SettingsService } from './services/settings/settings.service';
 import { Component } from '@angular/core';
 
@@ -14,6 +15,7 @@ import { Capacitor, Plugins } from '@capacitor/core';
 export class AppComponent {
   constructor(
     private auth: AuthService,
+    private notif: NotificationService,
     private platform: Platform,
     private router: Router,
     private settings: SettingsService
@@ -39,6 +41,7 @@ export class AppComponent {
         });
       });
 
+      this.notif.scheduleDailyNotification();
       this.settings.restore();
     });
   }
