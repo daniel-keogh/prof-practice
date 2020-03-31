@@ -8,6 +8,9 @@
       <ion-button (click)="addClick($event)">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
+      <ion-button (click)="showPopover($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
@@ -42,18 +45,6 @@
             [options]="charts.options">
           </canvas>
         </div>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="ion-padding-top">
-      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
-        <ion-item>
-          <ion-label>Chart Type</ion-label>
-          <ion-select [(ngModel)]="charts.chartType" okText="OK" cancelText="Cancel" interface="popover">
-            <ion-select-option value="bar">Bar</ion-select-option>
-            <ion-select-option value="line">Line</ion-select-option>
-          </ion-select>
-        </ion-item>
       </ion-col>
     </ion-row>
 

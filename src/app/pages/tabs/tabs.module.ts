@@ -1,4 +1,3 @@
-import { PopoverComponent } from './../../components/popover/popover.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +10,6 @@ import { TabsPage } from './tabs.page';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, TabsPageRoutingModule],
-  declarations: [TabsPage, PopoverComponent],
-  entryComponents: [PopoverComponent]
+  declarations: [TabsPage]
 })
 export class TabsPageModule {}

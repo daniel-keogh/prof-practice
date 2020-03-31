@@ -6,6 +6,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { ChartsModule } from 'ng2-charts';
 
+import { RadioPopoverComponent } from 'src/app/components/radio-popover/radio-popover.component';
+import { ComponentsModule } from './../../components/components.module';
+
 import { WaterPageRoutingModule } from './water-routing.module';
 
 import { WaterPage } from './water.page';
@@ -13,11 +16,13 @@ import { WaterPage } from './water.page';
 @NgModule({
   imports: [
     CommonModule,
+    ComponentsModule,
     FormsModule,
     IonicModule,
     WaterPageRoutingModule,
     ChartsModule
   ],
-  declarations: [WaterPage]
+  declarations: [WaterPage],
+  entryComponents: [RadioPopoverComponent]
 })
 export class WaterPageModule {}

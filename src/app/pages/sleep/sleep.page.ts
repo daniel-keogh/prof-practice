@@ -1,12 +1,18 @@
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Setting } from './../../services/settings/setting.enum';
-import { AlertController, ToastController, IonSegment } from '@ionic/angular';
+import {
+  AlertController,
+  ToastController,
+  IonSegment,
+  PopoverController
+} from '@ionic/angular';
 import { UserService } from './../../services/user/user.service';
 import { ChartsService } from './../../services/charts/charts.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { RadioPopoverComponent } from './../../components/radio-popover/radio-popover.component';
 
 @Component({
   selector: 'app-sleep',
@@ -32,6 +38,7 @@ export class SleepPage implements OnInit, OnDestroy {
   constructor(
     private alertCtrl: AlertController,
     private charts: ChartsService,
+    private popoverCtrl: PopoverController,
     private storage: Storage,
     private toastCtrl: ToastController,
     private userService: UserService
@@ -133,5 +140,28 @@ export class SleepPage implements OnInit, OnDestroy {
     });
 
     await alert.present();
+  }
+
+  showPopover(event: any) {
+    this.popoverCtrl
+      .create({
+        component: RadioPopoverComponent,
+        event,
+        translucent: true,
+        componentProps: {
+          title: 'Chart Type',
+          items: ['bar', 'line'],
+          value: this.charts.chartType
+        }
+      })
+      .then(popover => {
+        popover.present();
+        return popover.onWillDismiss();
+      })
+      .then(result => {
+        if (result.data) {
+          this.charts.chartType = result.data;
+        }
+      });
   }
 }

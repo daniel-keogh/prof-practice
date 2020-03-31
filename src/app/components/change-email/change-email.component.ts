@@ -2,7 +2,7 @@ import { map, take } from 'rxjs/operators';
 import { UserService } from './../../services/user/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-change-email',

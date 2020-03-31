@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
@@ -12,8 +12,6 @@ import { PopoverController } from '@ionic/angular';
   `
 })
 export class PopoverComponent {
-  @Input() items: string[];
-
   constructor(private popover: PopoverController) {}
 
   onItemClicked(item: string) {
