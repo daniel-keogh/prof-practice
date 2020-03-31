@@ -1,0 +1,14 @@
+<ion-card>
+  <ion-card-header color="light">
+    <ion-card-title>This {{label | titlecase}}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item *ngFor="let item of ['High', 'Low', 'Average']">
+      <ion-label>{{item}}</ion-label>
+      <ion-chip slot="end" [color]="(item === 'High') ? 'success' : (item === 'Low') ? 'warning' : 'secondary'">
+        <ion-label>{{stats[item]}} {{units}}</ion-label>
+      </ion-chip>
+    </ion-item>
+  </ion-card-content>
+</ion-card>

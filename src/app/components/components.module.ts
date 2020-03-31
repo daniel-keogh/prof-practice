@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { StatsComponent } from './stats/stats.component';
 import { RadioPopoverComponent } from 'src/app/components/radio-popover/radio-popover.component';
 import { PopoverComponent } from './popover/popover.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -24,14 +25,16 @@ import { ChartHeaderbarComponent } from './chart-headerbar/chart-headerbar.compo
     ChangePasswordComponent,
     ChartHeaderbarComponent,
     PopoverComponent,
-    RadioPopoverComponent
+    RadioPopoverComponent,
+    StatsComponent
   ],
   exports: [
     ChangeEmailComponent,
     ChangePasswordComponent,
     ChartHeaderbarComponent,
     PopoverComponent,
-    RadioPopoverComponent
+    RadioPopoverComponent,
+    StatsComponent
   ]
 })
 export class ComponentsModule {}
