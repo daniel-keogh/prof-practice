@@ -9,6 +9,7 @@ import { RadioPopoverComponent } from 'src/app/components/radio-popover/radio-po
 import { PopoverComponent } from './popover/popover.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
+import { ChartHeaderbarComponent } from './chart-headerbar/chart-headerbar.component';
 
 @NgModule({
   imports: [
@@ -21,12 +22,14 @@ import { ChangeEmailComponent } from './change-email/change-email.component';
   declarations: [
     ChangeEmailComponent,
     ChangePasswordComponent,
+    ChartHeaderbarComponent,
     PopoverComponent,
     RadioPopoverComponent
   ],
   exports: [
     ChangeEmailComponent,
     ChangePasswordComponent,
+    ChartHeaderbarComponent,
     PopoverComponent,
     RadioPopoverComponent
   ]

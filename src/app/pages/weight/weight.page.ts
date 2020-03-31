@@ -1,11 +1,4 @@
-import { RadioPopoverComponent } from 'src/app/components/radio-popover/radio-popover.component';
-import { Setting } from './../../services/settings/setting.enum';
-import {
-  AlertController,
-  ToastController,
-  IonSegment,
-  PopoverController
-} from '@ionic/angular';
+import { AlertController, ToastController, IonSegment } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { UserService } from './../../services/user/user.service';
 import { ChartsService } from '../../services/charts/charts.service';
@@ -13,6 +6,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Label } from 'ng2-charts';
 import { ChartDataSets } from 'chart.js';
 import { Storage } from '@ionic/storage';
+import { Setting } from './../../services/settings/setting.enum';
 
 @Component({
   selector: 'app-weight',
@@ -39,7 +33,6 @@ export class WeightPage implements OnInit, OnDestroy {
   constructor(
     private alertCtrl: AlertController,
     private charts: ChartsService,
-    private popoverCtrl: PopoverController,
     private storage: Storage,
     private toastCtrl: ToastController,
     private userService: UserService
@@ -140,28 +133,5 @@ export class WeightPage implements OnInit, OnDestroy {
     });
 
     await alert.present();
-  }
-
-  showPopover(event: any) {
-    this.popoverCtrl
-      .create({
-        component: RadioPopoverComponent,
-        event,
-        translucent: true,
-        componentProps: {
-          title: 'Chart Type',
-          items: ['bar', 'line'],
-          value: this.charts.chartType
-        }
-      })
-      .then(popover => {
-        popover.present();
-        return popover.onWillDismiss();
-      })
-      .then(result => {
-        if (result.data) {
-          this.charts.chartType = result.data;
-        }
-      });
   }
 }

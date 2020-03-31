@@ -1,18 +1,5 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Water</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="addClick($event)">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-      <ion-button (click)="showPopover($event)">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <app-chart-headerbar title="Water" (onAddClicked)="addClick($event)"></app-chart-headerbar>
   <ion-toolbar>
     <ion-segment
       #segment
