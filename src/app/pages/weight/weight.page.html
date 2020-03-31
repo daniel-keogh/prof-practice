@@ -37,8 +37,7 @@
 
     <ion-row>
       <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
-        <app-stats *ngIf="stats"
-          [label]="segment.value"
+        <app-stats [label]="segment.value"
           [stats]="stats"
           units="lbs">
         </app-stats>

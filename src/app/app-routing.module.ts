@@ -73,6 +73,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'steps',
+    loadChildren: () =>
+      import('./pages/steps/steps.module').then(m => m.StepsPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'water',
     loadChildren: () =>
       import('./pages/water/water.module').then(m => m.WaterPageModule),

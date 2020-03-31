@@ -29,6 +29,13 @@ export class HomePage {
       iconColour: 'success'
     },
     {
+      title: 'Steps',
+      url: '/steps',
+      label: 'Some placeholder text',
+      icon: 'walk-outline',
+      iconColour: 'secondary'
+    },
+    {
       title: 'Water',
       url: '/water',
       label: 'Some placeholder text',

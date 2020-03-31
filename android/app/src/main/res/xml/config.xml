@@ -14,5 +14,9 @@
     <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification"/>
   </feature>
 
+  <feature name="Pedometer">
+    <param name="android-package" value="org.apache.cordova.pedometer.PedoListener"/>
+  </feature>
+
   
 </widget>

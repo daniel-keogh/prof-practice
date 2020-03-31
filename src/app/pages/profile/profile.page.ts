@@ -1,3 +1,5 @@
+import { User } from './../../interfaces/user';
+import { UserService } from './../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss']
 })
 export class ProfilePage implements OnInit {
-  constructor() {}
+  user: User;
 
-  ngOnInit() {}
+  constructor(private userService: UserService) {}
+
+  ngOnInit() {
+    this.user = this.userService.user;
+  }
 }

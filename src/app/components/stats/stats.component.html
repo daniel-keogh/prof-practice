@@ -6,8 +6,9 @@
   <ion-card-content>
     <ion-item *ngFor="let item of ['High', 'Low', 'Average']">
       <ion-label>{{item}}</ion-label>
-      <ion-chip slot="end" [color]="(item === 'High') ? 'success' : (item === 'Low') ? 'warning' : 'secondary'">
-        <ion-label>{{stats[item]}} {{units}}</ion-label>
+      <ion-chip #chip slot="end" [color]="(item === 'High') ? 'success' : (item === 'Low') ? 'warning' : 'secondary'">
+        <ion-label *ngIf="stats">{{stats[item]}} {{units}}</ion-label>
+        <ion-spinner *ngIf="!stats" name="dots" [color]="chip.color"></ion-spinner>
       </ion-chip>
     </ion-item>
   </ion-card-content>

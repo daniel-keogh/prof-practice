@@ -8,5 +8,9 @@
 </ion-header>
 
 <ion-content>
-
+  <div *ngIf="user" class="ion-padding-top ion-text-center">
+    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
+    <h2>{{user.name}}</h2>
+    <p>User since {{user.registered_since | date:medium}}.</p>
+  </div>
 </ion-content>

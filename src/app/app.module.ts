@@ -14,6 +14,7 @@ import { IonicStorageModule, Storage } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Pedometer } from '@ionic-native/pedometer/ngx';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -43,6 +44,7 @@ export function jwtOptionsFactory(storage) {
     StatusBar,
     SplashScreen,
     LocalNotifications,
+    Pedometer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
