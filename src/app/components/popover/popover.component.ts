@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
+  selector: 'app-popover',
   template: `
     <ion-list lines="none" *ngFor="let item of items">
       <ion-item button (click)="onItemClicked(item)">

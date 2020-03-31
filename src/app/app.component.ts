@@ -13,6 +13,8 @@ import { Capacitor, Plugins } from '@capacitor/core';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  isLoggedIn = false;
+
   constructor(
     private auth: AuthService,
     private notif: NotificationService,
@@ -31,6 +33,8 @@ export class AppComponent {
 
       this.auth.checkToken().then(() => {
         this.auth.authState.subscribe(state => {
+          this.isLoggedIn = state;
+
           if (!state) {
             this.router.navigate(['start-page']);
           } else if (

@@ -1,79 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="side"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
   <ion-grid>
-    <ion-row>
+    <ion-row *ngFor="let card of cards">
       <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-        <ion-card button routerLink="/diet">
+        <ion-card button [routerLink]="card.url">
           <ion-card-header color="light">
-            <ion-card-title>Diet</ion-card-title>
+            <ion-card-title>{{card.title}}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             <ion-item lines="none" detail class="ion-margin-top">
-              <ion-icon name="fast-food-outline" slot="start" color="warning"></ion-icon>
-              <ion-label>Some placeholder text</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-        <ion-card button routerLink="/exercise">
-          <ion-card-header color="light">
-            <ion-card-title>Exercise</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item lines="none" detail class="ion-margin-top">
-              <ion-icon name="fitness-outline" slot="start" color="danger"></ion-icon>
-              <ion-label>Some placeholder text</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-        <ion-card button routerLink="/sleep">
-          <ion-card-header color="light">
-            <ion-card-title>Sleep</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item lines="none" detail class="ion-margin-top">
-              <ion-icon name="bed-outline" slot="start" color="success"></ion-icon>
-              <ion-label>Some placeholder text</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-        <ion-card button routerLink="/water">
-          <ion-card-header color="light">
-            <ion-card-title>Water</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item lines="none" detail class="ion-margin-top">
-              <ion-icon name="water-outline" slot="start" color="primary"></ion-icon>
-              <ion-label>Some placeholder text</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
-        <ion-card button routerLink="/weight">
-          <ion-card-header color="light">
-            <ion-card-title>Weight</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item lines="none" detail class="ion-margin-top">
-              <ion-icon name="body-outline" slot="start" color="dark"></ion-icon>
-              <ion-label>Some placeholder text</ion-label>
+              <ion-icon [name]="card.icon" slot="start" [color]="card.iconColour"></ion-icon>
+              <ion-label>{{card.label}}</ion-label>
             </ion-item>
           </ion-card-content>
         </ion-card>
