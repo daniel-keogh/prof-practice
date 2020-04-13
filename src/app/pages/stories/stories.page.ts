@@ -1,5 +1,6 @@
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { map } from 'rxjs/operators';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Article } from './../../interfaces/article';
 import { StoriesService } from './../../services/stories/stories.service';
 import { Component, OnInit } from '@angular/core';
@@ -16,15 +17,16 @@ export class StoriesPage implements OnInit {
 
   constructor(
     private storiesService: StoriesService,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private iab: InAppBrowser
   ) {}
 
   ngOnInit() {
     this.getStories();
   }
 
-  getStories() {
-    this.articles = this.storiesService.getStories(this.category).pipe(
+  getStories(): Observable<Article[]> {
+    return (this.articles = this.storiesService.getStories(this.category).pipe(
       map((stories: Article[]) => {
         return stories.map((story: Article) => {
           return {
@@ -33,7 +35,7 @@ export class StoriesPage implements OnInit {
           };
         });
       })
-    );
+    ));
   }
 
   truncateString(str: string, max: number) {
@@ -43,6 +45,16 @@ export class StoriesPage implements OnInit {
     const ellipsis = array.length > max ? '...' : '';
 
     return array.slice(0, max).join(' ') + ellipsis;
+  }
+
+  doRefresh(ev: any) {
+    this.getStories()
+      .toPromise()
+      .then(() => {
+        if (this.articles) {
+          ev.target.complete();
+        }
+      });
   }
 
   async showCategoryActionSheet() {
@@ -100,7 +112,7 @@ export class StoriesPage implements OnInit {
     await actionSheet.present();
   }
 
-  view(url: string) {
-    window.open(url, '_system');
+  openLink(url: string) {
+    this.iab.create(url);
   }
 }
