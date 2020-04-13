@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="side"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Stories</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+        <ion-list>
+          <ion-list-header class="ion-margin-bottom">
+            <h2 style="width: 100%;">{{category | titlecase}} Stories</h2>
+            <ion-button fill="outline"
+              size="small"
+              shape="round"
+              (click)="showCategoryActionSheet()">Category
+            </ion-button>
+          </ion-list-header>
+
+          <ion-item *ngFor="let article of articles | async" 
+            button
+            (click)="view(article.url)">
+            <ion-avatar slot="start">
+              <img [src]="article.urlToImage" 
+                onerror="this.src='../../assets/newspaper-outline.svg'"/>
+            </ion-avatar>
+            <ion-label text-wrap>
+              <h2>{{article.title}}</h2>
+              <ion-note color="tertiary">{{article.source}}</ion-note>
+              <p>{{article.description}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

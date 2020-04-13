@@ -11,7 +11,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: '/tabs/home',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'home',
@@ -19,9 +19,21 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../home/home.module').then(m => m.HomePageModule)
-          }
-        ]
+              import('../home/home.module').then((m) => m.HomePageModule),
+          },
+        ],
+      },
+      {
+        path: 'stories',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../stories/stories.module').then(
+                (m) => m.StoriesPageModule
+              ),
+          },
+        ],
       },
       {
         path: 'profile',
@@ -29,16 +41,18 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../profile/profile.module').then(m => m.ProfilePageModule)
-          }
-        ]
-      }
-    ]
-  }
+              import('../profile/profile.module').then(
+                (m) => m.ProfilePageModule
+              ),
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class TabsPageRoutingModule {}

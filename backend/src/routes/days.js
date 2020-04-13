@@ -9,12 +9,12 @@ const {
 
 const router = express.Router();
 
-router.post('/days',
+router.post('/',
     passport.authenticate('jwt', { session: false }),
     addDay
 );
 
-router.put('/days/:id',
+router.put('/:id',
     [
         body('sleep')
             .notEmpty()
@@ -36,7 +36,7 @@ router.put('/days/:id',
     updateDay
 );
 
-router.get('/days/:userId',
+router.get('/:userId',
     passport.authenticate('jwt', { session: false }),
     getUsersDays
 );

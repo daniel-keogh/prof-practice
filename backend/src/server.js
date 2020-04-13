@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const axios = require('axios');
 const passport = require('passport');
 
 const passportMiddleware = require('./middleware/passport');
@@ -9,6 +10,7 @@ const passportMiddleware = require('./middleware/passport');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const dayRoutes = require('./routes/days');
+const storiesRoutes = require('./routes/stories');
 
 const mongoURI = require('./config/keys').MONGO_URI;
 
@@ -31,7 +33,8 @@ passport.use(passportMiddleware);
 // Routes
 app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api', dayRoutes);
+app.use('/api/days', dayRoutes);
+app.use('/api/stories', storiesRoutes);
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,

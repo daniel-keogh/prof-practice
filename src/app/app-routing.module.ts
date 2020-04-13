@@ -6,96 +6,102 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'tabs/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'home',
-    redirectTo: 'tabs/home'
+    redirectTo: 'tabs/home',
+  },
+  {
+    path: 'stories',
+    redirectTo: 'tabs/stories',
   },
   {
     path: 'profile',
-    redirectTo: 'tabs/profile'
+    redirectTo: 'tabs/profile',
   },
   {
     path: 'start-page',
     loadChildren: () =>
       import('./pages/start-page/start-page.module').then(
-        m => m.StartPagePageModule
-      )
+        (m) => m.StartPagePageModule
+      ),
   },
   {
     path: 'login',
     loadChildren: () =>
-      import('./pages/login/login.module').then(m => m.LoginPageModule)
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'register',
     loadChildren: () =>
-      import('./pages/register/register.module').then(m => m.RegisterPageModule)
+      import('./pages/register/register.module').then(
+        (m) => m.RegisterPageModule
+      ),
   },
   {
     path: 'about',
     loadChildren: () =>
-      import('./pages/about/about.module').then(m => m.AboutPageModule)
+      import('./pages/about/about.module').then((m) => m.AboutPageModule),
   },
   {
     path: 'tabs',
     loadChildren: () =>
-      import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuard]
+      import('./pages/tabs/tabs.module').then((m) => m.TabsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'settings',
     loadChildren: () =>
       import('./pages/settings/settings.module').then(
-        m => m.SettingsPageModule
+        (m) => m.SettingsPageModule
       ),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'diet',
     loadChildren: () =>
-      import('./pages/diet/diet.module').then(m => m.DietPageModule),
-    canActivate: [AuthGuard]
+      import('./pages/diet/diet.module').then((m) => m.DietPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'exercise',
     loadChildren: () =>
       import('./pages/exercise/exercise.module').then(
-        m => m.ExercisePageModule
+        (m) => m.ExercisePageModule
       ),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'sleep',
     loadChildren: () =>
-      import('./pages/sleep/sleep.module').then(m => m.SleepPageModule),
-    canActivate: [AuthGuard]
+      import('./pages/sleep/sleep.module').then((m) => m.SleepPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'steps',
     loadChildren: () =>
-      import('./pages/steps/steps.module').then(m => m.StepsPageModule),
-    canActivate: [AuthGuard]
+      import('./pages/steps/steps.module').then((m) => m.StepsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'water',
     loadChildren: () =>
-      import('./pages/water/water.module').then(m => m.WaterPageModule),
-    canActivate: [AuthGuard]
+      import('./pages/water/water.module').then((m) => m.WaterPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'weight',
     loadChildren: () =>
-      import('./pages/weight/weight.module').then(m => m.WeightPageModule),
-    canActivate: [AuthGuard]
-  }
+      import('./pages/weight/weight.module').then((m) => m.WeightPageModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
