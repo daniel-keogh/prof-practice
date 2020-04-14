@@ -6,6 +6,7 @@ const {
     getUsersDays,
     updateDay
 } = require('../controllers/days');
+const Day = require('../models/Day');
 
 const router = express.Router();
 
@@ -40,6 +41,15 @@ router.put('/:id',
                         return Promise.reject(`Invalid value for bloodPressure`);
                     }
                 })
+            })
+            .custom(async (value) => {
+                for (bp of value) {
+                    const days = await Day.findOne({ 'bloodPressure.time': bp.time });
+
+                    if (days) {
+                        return Promise.reject(`Cannot add duplicate reading`);
+                    }
+                }
             })
             .isArray()
             .withMessage('bloodPressure must be an Array')
