@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Blood Pressure</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addClick($event)">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment
+      #segment
+      value="week"
+      (ionChange)="segmentChanged($event)" 
+      class="ion-justify-content-center">
+      <ion-segment-button value="week">
+        <ion-label>Week</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="month">
+        <ion-label>Month</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="year">
+        <ion-label>Year</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-padding-vertical">
+      <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3" class="ion-no-padding">
+        <div class="chart-container" [ngClass]="{'chart-border': daysSubscription}">
+          <canvas baseChart
+            [datasets]="chartData"
+            [labels]="chartLabels"
+            chartType="line"
+            [colors]="colors"
+            [options]="charts.options">
+          </canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

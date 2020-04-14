@@ -20,6 +20,18 @@ const daySchema = new mongoose.Schema({
     weight: {
         type: Number,
         default: 0
+    },
+    bloodPressure: {
+        type: {
+            systolic: {
+                type: Number,
+                default: 0
+            },
+            diastolic: {
+                type: Number,
+                default: 0
+            }
+        }
     }
 });
 

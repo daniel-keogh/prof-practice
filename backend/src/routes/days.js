@@ -30,7 +30,15 @@ router.put('/:id',
             .notEmpty()
             .withMessage('weight cannot be empty')
             .isNumeric()
-            .withMessage('weight must be a number')
+            .withMessage('weight must be a number'),
+        body('bloodPressure')
+            .notEmpty()
+            .withMessage('bloodPressure cannot be empty')
+            .custom(async (value) => {
+                if (typeof value.systolic != 'number' && typeof value.diastolic != 'number') {
+                    return Promise.reject(`Invalid value for bloodPressure`);
+                }
+            })
     ],
     passport.authenticate('jwt', { session: false }),
     updateDay

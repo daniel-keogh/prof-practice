@@ -4,7 +4,7 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Color, ThemeService } from 'ng2-charts';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChartsService {
   private _selectedTheme: Theme;
@@ -21,22 +21,22 @@ export class ChartsService {
     if (this.selectedTheme === Theme.Dark) {
       overrides = {
         title: {
-          fontColor: '#d7d8da'
+          fontColor: '#d7d8da',
         },
         scales: {
           xAxes: [
             {
               ticks: { fontColor: '#d7d8da' },
-              gridLines: { color: 'rgba(255,255,255,0.1)' }
-            }
+              gridLines: { color: 'rgba(255,255,255,0.1)' },
+            },
           ],
           yAxes: [
             {
               ticks: { fontColor: '#d7d8da' },
-              gridLines: { color: 'rgba(255,255,255,0.1)' }
-            }
-          ]
-        }
+              gridLines: { color: 'rgba(255,255,255,0.1)' },
+            },
+          ],
+        },
       };
     } else {
       overrides = {};
@@ -50,33 +50,33 @@ export class ChartsService {
     title: {
       display: true,
       fontSize: 16,
-      fontColor: '#92949c'
+      fontColor: '#92949c',
     },
     maintainAspectRatio: false,
     legend: {
-      display: false
+      display: false,
     },
     hover: {
-      intersect: false
+      intersect: false,
     },
     scales: {
       yAxes: [
         {
           ticks: {
-            min: 0
-          }
-        }
+            min: 0,
+          },
+        },
       ],
       xAxes: [
         {
           ticks: {
-            callback: value => {
+            callback: (value) => {
               // TODO: format the dates properly
               return value;
-            }
-          }
-        }
-      ]
+            },
+          },
+        },
+      ],
     },
     tooltips: {
       intersect: false,
@@ -86,8 +86,8 @@ export class ChartsService {
       titleFontSize: 13,
       bodyFontSize: 13,
       xPadding: 10,
-      yPadding: 10
-    }
+      yPadding: 10,
+    },
   };
 
   get options(): ChartOptions {
@@ -101,8 +101,16 @@ export class ChartsService {
       hoverBackgroundColor: 'rgba(82, 96, 255, 0.6)',
       borderWidth: 2.5,
       pointRadius: 1,
-      pointHoverRadius: 5
-    }
+      pointHoverRadius: 5,
+    },
+    {
+      borderColor: 'rgba(61, 194, 255, 1)',
+      backgroundColor: 'rgba(61, 194, 255, 0.5)',
+      hoverBackgroundColor: 'rgba(61, 194, 255, 0.6)',
+      borderWidth: 2.5,
+      pointRadius: 1,
+      pointHoverRadius: 5,
+    },
   ];
 
   get colors(): Color[] {
@@ -138,7 +146,7 @@ export class ChartsService {
       return {
         High: this.getHigh(allNums),
         Low: this.getLow(allNums),
-        Average: this.getAvg(allNums)
+        Average: this.getAvg(allNums),
       };
     } else {
       return null;

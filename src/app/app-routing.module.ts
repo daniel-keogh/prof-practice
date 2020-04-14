@@ -96,6 +96,14 @@ const routes: Routes = [
       import('./pages/weight/weight.module').then((m) => m.WeightPageModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'blood-pressure',
+    loadChildren: () =>
+      import('./pages/blood-pressure/blood-pressure.module').then(
+        (m) => m.BloodPressurePageModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
