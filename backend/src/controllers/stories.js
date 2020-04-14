@@ -9,9 +9,11 @@ exports.getStories = (req, res) => {
         return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
+    const category = req.query.category || 'fitness';
     const pageSize = req.query.limit || 25;
+    const sortBy = req.query.sortBy || 'publishedAt';
 
-    axios.get(`https://newsapi.org/v2/everything?q=${req.query.category}&language=en&pageSize=${pageSize}&sortBy=publishedAt&apiKey=${NEWS_API}`)
+    axios.get(`https://newsapi.org/v2/everything?qInTitle=${category}&pageSize=${pageSize}&sortBy=${sortBy}&apiKey=${NEWS_API}`)
         .then(data => {
             // Format the articles array
             const articles = data.data.articles.map(article => {

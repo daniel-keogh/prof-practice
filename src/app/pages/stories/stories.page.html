@@ -4,6 +4,11 @@
       <ion-menu-button menu="side"></ion-menu-button>
     </ion-buttons>
     <ion-title>Stories</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showSortPopover($event)">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -35,7 +40,7 @@
               </ion-avatar>
               <ion-label text-wrap>
                 <h2>{{article.title}}</h2>
-                <ion-note color="tertiary">{{article.source}}</ion-note>
+                <ion-note color="tertiary">{{article.source}}, {{article.publishedAt | date:'MMM d, H:mm'}}</ion-note>
                 <p>{{article.description}}</p>
               </ion-label>
             </ion-item>

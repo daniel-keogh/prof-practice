@@ -1,10 +1,15 @@
+import { PopoverComponent } from './../../components/popover/popover.component';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Article } from './../../interfaces/article';
-import { StoriesService } from './../../services/stories/stories.service';
+import {
+  StoriesService,
+  StorySort,
+  StoryCategory,
+} from './../../services/stories/stories.service';
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-stories',
@@ -13,12 +18,14 @@ import { ActionSheetController } from '@ionic/angular';
 })
 export class StoriesPage implements OnInit {
   articles: Observable<Article[]>;
-  category = 'fitness';
+  category: StoryCategory = 'fitness';
+  sortBy: StorySort = 'publishedAt';
 
   constructor(
     private storiesService: StoriesService,
     private actionSheetCtrl: ActionSheetController,
-    private iab: InAppBrowser
+    private iab: InAppBrowser,
+    private popoverCtrl: PopoverController
   ) {}
 
   ngOnInit() {
@@ -26,16 +33,18 @@ export class StoriesPage implements OnInit {
   }
 
   getStories(): Observable<Article[]> {
-    return (this.articles = this.storiesService.getStories(this.category).pipe(
-      map((stories: Article[]) => {
-        return stories.map((story: Article) => {
-          return {
-            ...story,
-            description: this.truncateString(story.description, 25),
-          };
-        });
-      })
-    ));
+    return (this.articles = this.storiesService
+      .getStories({ category: this.category, sortBy: this.sortBy })
+      .pipe(
+        map((stories: Article[]) => {
+          return stories.map((story: Article) => {
+            return {
+              ...story,
+              description: this.truncateString(story.description, 25),
+            };
+          });
+        })
+      ));
   }
 
   truncateString(str: string, max: number) {
@@ -53,6 +62,39 @@ export class StoriesPage implements OnInit {
       .then(() => {
         if (this.articles) {
           ev.target.complete();
+        }
+      });
+  }
+
+  showSortPopover(event: any) {
+    this.popoverCtrl
+      .create({
+        component: PopoverComponent,
+        event,
+        translucent: true,
+        componentProps: {
+          title: 'Sort By',
+          items: ['Popularity', 'Publication Date'],
+        },
+      })
+      .then((popover) => {
+        popover.present();
+        return popover.onWillDismiss();
+      })
+      .then((result) => {
+        if (result.data) {
+          switch (result.data) {
+            case 'Popularity':
+              this.sortBy = 'popularity';
+              break;
+            case 'Publication Date':
+              this.sortBy = 'publishedAt';
+              break;
+            default:
+              break;
+          }
+
+          this.getStories();
         }
       });
   }
