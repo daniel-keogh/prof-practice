@@ -18,12 +18,13 @@ import { Component } from '@angular/core';
         </div>
       </ion-radio-group>
     </ion-list>
-  `
+  `,
 })
 export class RadioPopoverComponent {
   constructor(private popover: PopoverController) {}
 
   onItemClicked(item: string) {
+    // Send back the `item` that was selected
     this.popover.dismiss(item);
   }
 }

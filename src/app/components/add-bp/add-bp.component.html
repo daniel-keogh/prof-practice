@@ -28,7 +28,11 @@
       <ion-col>
         <ion-item>
           <ion-label>Time</ion-label>
-          <ion-datetime displayFormat="h:mm A" minuteValues="0,15,30,45" [value]="time" [(ngModel)]="time"></ion-datetime>
+          <ion-datetime displayFormat="h:mm A" 
+            minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" 
+            [value]="time" 
+            [(ngModel)]="time">
+          </ion-datetime>
         </ion-item>
       </ion-col>
     </ion-row>

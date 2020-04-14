@@ -1,3 +1,4 @@
+import { Stats } from './../../interfaces/stats';
 import { Theme } from './../settings/theme.enum';
 import { Injectable } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
@@ -18,6 +19,8 @@ export class ChartsService {
 
     let overrides: ChartOptions;
 
+    // Make sure the chart is clearly visible, even when the app is using
+    // a dark theme
     if (this.selectedTheme === Theme.Dark) {
       overrides = {
         title: {
@@ -125,13 +128,7 @@ export class ChartsService {
 
   constructor(private themeService: ThemeService) {}
 
-  getStats(
-    chartData: ChartDataSets[]
-  ): {
-    High: number;
-    Low: number;
-    Average: number;
-  } {
+  getStats(chartData: ChartDataSets[]): Stats {
     const allNums = chartData[0].data as number[];
 
     if (allNums.length) {

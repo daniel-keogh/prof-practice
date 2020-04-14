@@ -6,7 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss']
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
   form: FormGroup;
@@ -17,12 +17,12 @@ export class LoginPage implements OnInit {
     this.form = new FormGroup({
       email: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required, Validators.email]
+        validators: [Validators.required, Validators.email],
       }),
       password: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required, Validators.minLength(6)]
-      })
+        validators: [Validators.required, Validators.minLength(6)],
+      }),
     });
   }
 
@@ -31,19 +31,20 @@ export class LoginPage implements OnInit {
       const { email, password } = this.form.value;
 
       if (email && password) {
+        // Log the user in (or show an error)
         this.auth
           .login({
             email,
-            password
+            password,
           })
           .toPromise()
-          .catch(err => {
+          .catch((err) => {
             this.toastCtrl
               .create({
                 message: err,
-                duration: 2000
+                duration: 2000,
               })
-              .then(toast => toast.present());
+              .then((toast) => toast.present());
           });
       }
     }

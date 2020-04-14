@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-change-email',
-  templateUrl: './change-email.component.html'
+  templateUrl: './change-email.component.html',
 })
 export class ChangeEmailComponent implements OnInit {
   form: FormGroup;
@@ -23,20 +23,21 @@ export class ChangeEmailComponent implements OnInit {
     this.userService
       .getUsersFullInfo()
       .pipe(
-        map(user => user.email),
+        map((user) => user.email),
         take(1)
       )
-      .subscribe(email => {
+      .subscribe((email) => {
         if (email !== this.currentEmail) {
           this.currentEmail = email;
         }
       });
 
+    // Set up the form
     this.form = new FormGroup({
       email: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required, Validators.email]
-      })
+        validators: [Validators.required, Validators.email],
+      }),
     });
   }
 
@@ -45,18 +46,20 @@ export class ChangeEmailComponent implements OnInit {
   }
 
   onSubmit() {
+    // Update the user's email
     if (this.form.status !== 'INVALID') {
       const { email } = this.form.value;
 
       this.userService.updateUserEmail(email).subscribe(
         () => this.dismiss(),
-        err => {
+        (err) => {
+          // Show an error message
           this.toastCtrl
             .create({
               message: err,
-              duration: 2000
+              duration: 2000,
             })
-            .then(toast => toast.present());
+            .then((toast) => toast.present());
         }
       );
     }

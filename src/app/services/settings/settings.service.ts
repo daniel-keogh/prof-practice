@@ -4,12 +4,13 @@ import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsService {
   constructor(private storage: Storage) {}
 
   setTheme(theme: Theme): Promise<any> {
+    // Toggle the dark theme CSS classes
     document.body.classList.toggle('dark', theme === Theme.Dark);
 
     return this.storage.set(Setting.Theme, theme);

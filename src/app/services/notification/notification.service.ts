@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 
 import {
   LocalNotifications,
-  ELocalNotificationTriggerUnit
+  ELocalNotificationTriggerUnit,
 } from '@ionic-native/local-notifications/ngx';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
   constructor(private localNotifications: LocalNotifications) {}
@@ -15,6 +15,7 @@ export class NotificationService {
     // Cancel any pre-scheduled
     this.localNotifications.cancel(0);
 
+    // Schedule a notification
     this.localNotifications.schedule({
       id: 0,
       foreground: true,
@@ -23,8 +24,8 @@ export class NotificationService {
       text: 'Daily reminder to log your progress',
       trigger: {
         in: 1,
-        unit: ELocalNotificationTriggerUnit.DAY
-      }
+        unit: ELocalNotificationTriggerUnit.DAY,
+      },
     });
   }
 }

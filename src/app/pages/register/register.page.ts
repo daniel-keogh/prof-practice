@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss']
+  styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
   form: FormGroup;
@@ -14,19 +14,20 @@ export class RegisterPage implements OnInit {
   constructor(private auth: AuthService, private toastCtrl: ToastController) {}
 
   ngOnInit() {
+    // Set up form validation
     this.form = new FormGroup({
       usersName: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
       email: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required, Validators.email]
+        validators: [Validators.required, Validators.email],
       }),
       password: new FormControl(null, {
         updateOn: 'change',
-        validators: [Validators.required, Validators.minLength(6)]
-      })
+        validators: [Validators.required, Validators.minLength(6)],
+      }),
     });
   }
 
@@ -36,26 +37,27 @@ export class RegisterPage implements OnInit {
 
       if (usersName && email && password) {
         try {
+          // Register & then login
           await this.auth
             .register(usersName, {
               email,
-              password
+              password,
             })
             .toPromise();
 
           await this.auth
             .login({
               email,
-              password
+              password,
             })
             .toPromise();
         } catch (err) {
           this.toastCtrl
             .create({
               message: err,
-              duration: 2000
+              duration: 2000,
             })
-            .then(toast => toast.present());
+            .then((toast) => toast.present());
         }
       }
     }

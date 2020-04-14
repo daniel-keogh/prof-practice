@@ -10,9 +10,11 @@ import { Capacitor, Plugins } from '@capacitor/core';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  // Used for hiding certain items from the side menu if the
+  // user is not logged-in
   isLoggedIn = false;
 
   constructor(
@@ -31,8 +33,10 @@ export class AppComponent {
         Plugins.SplashScreen.hide();
       }
 
+      // Check the user auth token
       this.auth.checkToken().then(() => {
-        this.auth.authState.subscribe(state => {
+        // Subscribe to the authState in case it ever changes
+        this.auth.authState.subscribe((state) => {
           this.isLoggedIn = state;
 
           if (!state) {
@@ -40,6 +44,7 @@ export class AppComponent {
           } else if (
             ['/login', '/register', '/start-page'].includes(this.router.url)
           ) {
+            // Don't go to the above pages if logged-in
             this.router.navigate(['home']);
           }
         });

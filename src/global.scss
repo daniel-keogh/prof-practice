@@ -25,7 +25,6 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
 /* Chart.js */
 .chart-container {
     position: relative;
@@ -41,6 +40,7 @@
     border: 1px solid var(--ion-color-light-shade);
 }
 
+// Start Page, Login & Register
 .auth-card {
     @media(max-width: 500px) {
         box-shadow: none;

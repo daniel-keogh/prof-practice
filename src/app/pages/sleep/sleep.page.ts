@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-sleep',
   templateUrl: './sleep.page.html',
-  styleUrls: ['./sleep.page.scss']
+  styleUrls: ['./sleep.page.scss'],
 })
 export class SleepPage implements OnInit, OnDestroy {
   today = 0;
@@ -21,8 +21,8 @@ export class SleepPage implements OnInit, OnDestroy {
     {
       data: [],
       label: 'Hours',
-      minBarLength: 6
-    }
+      minBarLength: 6,
+    },
   ];
   daysSubscription: Subscription;
 
@@ -39,7 +39,7 @@ export class SleepPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.charts.title = 'Sleep';
-    this.storage.get(Setting.Theme).then(theme => {
+    this.storage.get(Setting.Theme).then((theme) => {
       if (theme) {
         this.charts.selectedTheme = theme;
       }
@@ -72,11 +72,11 @@ export class SleepPage implements OnInit, OnDestroy {
 
     this.daysSubscription = this.userService
       .getDays(numWeeks)
-      .subscribe(data => {
+      .subscribe((data) => {
         this.chartLabels = [];
         this.chartData[0].data = [];
 
-        data.forEach(day => {
+        data.forEach((day) => {
           this.chartLabels.push(day.date);
           this.chartData[0].data.push(day.sleep);
         });
@@ -99,37 +99,39 @@ export class SleepPage implements OnInit, OnDestroy {
           type: 'number',
           value: 0,
           min: 0,
-          max: 24
-        }
+          max: 24,
+        },
       ],
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'OK',
-          handler: label => {
+          handler: (label) => {
             if (+label.sleep >= 0 && +label.sleep <= 24) {
               this.userService
                 .updateDay({
-                  sleep: +label.sleep
+                  sleep: +label.sleep,
                 })
                 .then(() => {
+                  // Re-draw the chart
                   this.createChart(this.segment.value);
                 })
-                .catch(err => {
+                .catch((err) => {
+                  // Show an error message
                   this.toastCtrl
                     .create({
                       message: err,
-                      duration: 2000
+                      duration: 2000,
                     })
-                    .then(toast => toast.present());
+                    .then((toast) => toast.present());
                 });
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();

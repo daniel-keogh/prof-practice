@@ -13,7 +13,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  get userId() {
+  get userId(): Observable<string> {
     return this._user.asObservable().pipe(
       map((user) => {
         if (user) {
@@ -25,7 +25,7 @@ export class UserService {
     );
   }
 
-  get user() {
+  get user(): User {
     if (this._user) {
       return this._user.value;
     } else {
@@ -62,6 +62,7 @@ export class UserService {
       })
       .pipe(
         tap(() => {
+          // Update the user BehaviourSubject as well
           this._user.next({
             ...this._user.value,
             email: newEmail,
@@ -110,6 +111,7 @@ export class UserService {
             })
             .toPromise();
         } else {
+          // The current Day does not exist, so create a new one
           return this.http
             .post<Day>(`http://localhost:4000/api/days/`, {
               ...day,
@@ -132,7 +134,7 @@ export class UserService {
         });
 
         if (today) {
-          // Prevent multiple readings for the same time of day
+          // Prevent multiple BP readings for the same time of day
           today.bloodPressure.forEach((reading, i) => {
             if (reading.time === bp.time) {
               today.bloodPressure.splice(i, 1);
@@ -146,6 +148,7 @@ export class UserService {
             })
             .toPromise();
         } else {
+          // The current Day does not exist, so create a new one
           return this.http
             .post<Day>(`http://localhost:4000/api/days/`, {
               bloodPressure: [bp],
@@ -168,6 +171,7 @@ export class UserService {
         });
 
         if (today) {
+          // Filter out the `item` to be removed
           const bp = today.bloodPressure.filter((reading) => {
             return reading.time !== item.time;
           });

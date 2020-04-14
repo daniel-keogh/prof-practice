@@ -76,6 +76,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
         data.forEach((day) => {
           this.chartLabels.push(day.date);
 
+          // Calculate the average blood pressure for each day
           let totalSystolic = 0;
           let totalDiastolic = 0;
 
@@ -92,6 +93,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
             +(totalDiastolic / day.bloodPressure.length).toFixed(3)
           );
 
+          // Check for today's readings so they can be displayed separate
           if (
             new Date().toLocaleDateString() ===
             new Date(day.date).toLocaleDateString()
@@ -107,6 +109,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
   }
 
   addClick() {
+    // Show a modal page
     this.modalCtrl
       .create({
         component: AddBloodPressure,
@@ -118,6 +121,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
           if (data.data) {
             const { diastolic, systolic, time } = data.data.bloodPressure;
 
+            // Update the user's BP
             this.userService
               .updateBloodPressure({
                 diastolic,
@@ -125,9 +129,11 @@ export class BloodPressurePage implements OnInit, OnDestroy {
                 time,
               })
               .then(() => {
+                // Re-draw the chart
                 this.createChart(this.segment.value);
               })
               .catch((err) => {
+                // Show an error message
                 this.toastCtrl
                   .create({
                     message: err,
@@ -141,6 +147,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
   }
 
   async deleteReading(reading: BloodPressure) {
+    // Delete the specified BP reading from today's readings
     await this.userService.deleteBloodPressureItem(reading);
     this.createChart(this.segment.value);
   }

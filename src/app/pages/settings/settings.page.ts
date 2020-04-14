@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss']
+  styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
   private theme: Theme;
@@ -35,21 +35,23 @@ export class SettingsPage implements OnInit {
   }
 
   onChangePwdClicked() {
+    // Show modal page to change password
     this.modalCtrl
       .create({
-        component: ChangePasswordComponent
+        component: ChangePasswordComponent,
       })
-      .then(modal => {
+      .then((modal) => {
         modal.present();
       });
   }
 
   onChangeEmailClicked() {
+    // Show modal page to change email
     this.modalCtrl
       .create({
-        component: ChangeEmailComponent
+        component: ChangeEmailComponent,
       })
-      .then(modal => {
+      .then((modal) => {
         modal.present();
       });
   }
@@ -62,37 +64,39 @@ export class SettingsPage implements OnInit {
         {
           name: 'password',
           type: 'password',
-          placeholder: 'Password'
-        }
+          placeholder: 'Password',
+        },
       ],
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'OK',
-          handler: input => {
+          handler: (input) => {
             if (input.password) {
-              this.auth.closeAccount(input.password).catch(err => {
+              // Close the user's account
+              this.auth.closeAccount(input.password).catch((err) => {
                 if (err.status === 401) {
                   err.error.msg = 'User password is incorrect';
                 }
 
+                // Show error message
                 this.alertController
                   .create({
                     header: err.statusText,
                     message: err.error.msg,
-                    buttons: ['OK']
+                    buttons: ['OK'],
                   })
-                  .then(alert => {
+                  .then((alert) => {
                     alert.present();
                   });
               });
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();

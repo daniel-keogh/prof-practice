@@ -9,12 +9,13 @@ import { PopoverController } from '@ionic/angular';
         <ion-label>{{ item }}</ion-label>
       </ion-item>
     </ion-list>
-  `
+  `,
 })
 export class PopoverComponent {
   constructor(private popover: PopoverController) {}
 
   onItemClicked(item: string) {
+    // Send back the `item` that was clicked
     this.popover.dismiss(null, item);
   }
 }

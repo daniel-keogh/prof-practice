@@ -6,7 +6,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-change-password',
-  templateUrl: './change-password.component.html'
+  templateUrl: './change-password.component.html',
 })
 export class ChangePasswordComponent implements OnInit {
   form: FormGroup;
@@ -19,20 +19,21 @@ export class ChangePasswordComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Set up form validation
     this.form = new FormGroup(
       {
         current: new FormControl(null, {
           updateOn: 'change',
-          validators: [Validators.required]
+          validators: [Validators.required],
         }),
         newPwd: new FormControl(null, {
           updateOn: 'change',
-          validators: [Validators.required, Validators.minLength(6)]
+          validators: [Validators.required, Validators.minLength(6)],
         }),
         confirm: new FormControl(null, {
           updateOn: 'change',
-          validators: [Validators.required, Validators.minLength(6)]
-        })
+          validators: [Validators.required, Validators.minLength(6)],
+        }),
       },
       this.confirmPasswordValidator
     );
@@ -49,13 +50,14 @@ export class ChangePasswordComponent implements OnInit {
 
       this.auth.changePassword(current, newPwd, email).subscribe(
         () => this.dismiss(),
-        err => {
+        (err) => {
+          // Show an error message
           this.toastCtrl
             .create({
               message: err,
-              duration: 2000
+              duration: 2000,
             })
-            .then(toast => toast.present());
+            .then((toast) => toast.present());
         }
       );
     }

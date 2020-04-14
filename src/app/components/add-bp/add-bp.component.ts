@@ -56,7 +56,7 @@ export class AddBloodPressure implements OnInit {
       ],
     });
 
-    // Set default selected values
+    // Set the values that are selected by default when the picker is opened
     picker.columns[0].selectedIndex = this.systolic;
     picker.columns[1].selectedIndex = this.diastolic;
 
@@ -79,10 +79,12 @@ export class AddBloodPressure implements OnInit {
   }
 
   save() {
+    // Omit seconds & milliseconds from the time
     const t = new Date(Date.parse(this.time));
     t.setSeconds(0);
     t.setMilliseconds(0);
 
+    // Validate the time
     if (+t > Date.now()) {
       this.alertCtrl
         .create({
