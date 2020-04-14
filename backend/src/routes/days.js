@@ -35,10 +35,14 @@ router.put('/:id',
             .notEmpty()
             .withMessage('bloodPressure cannot be empty')
             .custom(async (value) => {
-                if (typeof value.systolic != 'number' && typeof value.diastolic != 'number') {
-                    return Promise.reject(`Invalid value for bloodPressure`);
-                }
+                value.forEach(val => {
+                    if (typeof val.systolic != 'number' && typeof val.diastolic != 'number') {
+                        return Promise.reject(`Invalid value for bloodPressure`);
+                    }
+                })
             })
+            .isArray()
+            .withMessage('bloodPressure must be an Array')
     ],
     passport.authenticate('jwt', { session: false }),
     updateDay

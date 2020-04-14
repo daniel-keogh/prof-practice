@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Log Blood Pressure</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-padding-top">
+      <ion-col>
+        <ion-button (click)="openPicker()"
+          size="large"
+          expand="full"
+          fill="clear"
+          strong
+          color="primary">
+          {{systolic}} / {{diastolic}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding-bottom">
+      <ion-col>
+        <ion-item>
+          <ion-label>Time</ion-label>
+          <ion-datetime displayFormat="h:mm A" minuteValues="0,15,30,45" [value]="time" [(ngModel)]="time"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-padding-top">
+      <ion-col>
+        <ion-button (click)="save()" expand="block">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

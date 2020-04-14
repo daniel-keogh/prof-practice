@@ -1,12 +1,12 @@
+import { AddBloodPressure } from './../../components/add-bp/add-bp.component';
+import { BloodPressureChartService } from './../../services/bp-chart/bp-chart.service';
 import { Setting } from './../../services/settings/setting.enum';
-import { Label, Colors, Color } from 'ng2-charts';
+import { Label } from 'ng2-charts';
 import { ChartDataSets } from 'chart.js';
 import { Subscription } from 'rxjs';
-import { ChartsService } from './../../services/charts/charts.service';
 import { UserService } from './../../services/user/user.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ToastController, PickerController, IonSegment } from '@ionic/angular';
-import { PickerColumnOption } from '@ionic/core';
+import { ToastController, IonSegment, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -16,44 +16,16 @@ import { Storage } from '@ionic/storage';
 })
 export class BloodPressurePage implements OnInit, OnDestroy {
   chartLabels: Label[] = [];
-  chartData: ChartDataSets[] = [
-    {
-      data: [],
-      label: 'Systolic',
-      fill: false,
-      order: 1,
-    },
-    {
-      data: [],
-      label: 'Diastolic',
-      fill: false,
-      order: 2,
-    },
-  ];
-  colors: Color[] = [
-    {
-      ...this.charts.colors[0],
-      borderWidth: 4,
-      pointRadius: 2,
-      pointHoverRadius: 6,
-    },
-    {
-      ...this.charts.colors[1],
-      borderWidth: 4,
-      pointRadius: 2,
-      pointHoverRadius: 6,
-    },
-  ];
-
+  chartData: ChartDataSets[] = [];
   daysSubscription: Subscription;
 
   @ViewChild('segment', { static: false })
   segment: IonSegment;
 
   constructor(
-    private charts: ChartsService,
-    private pickerCtrl: PickerController,
+    private charts: BloodPressureChartService,
     private storage: Storage,
+    private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private userService: UserService
   ) {}
@@ -65,6 +37,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
         this.charts.selectedTheme = theme;
       }
     });
+    this.chartData = this.charts.chartData;
   }
 
   ngOnDestroy() {
@@ -100,8 +73,21 @@ export class BloodPressurePage implements OnInit, OnDestroy {
 
         data.forEach((day) => {
           this.chartLabels.push(day.date);
-          this.chartData[0].data.push(day.bloodPressure.systolic);
-          this.chartData[1].data.push(day.bloodPressure.diastolic);
+
+          let totalSystolic = 0;
+          let totalDiastolic = 0;
+
+          day.bloodPressure.forEach((bp) => {
+            totalSystolic += bp.systolic;
+            totalDiastolic += bp.diastolic;
+          });
+
+          this.chartData[0].data.push(
+            +(totalSystolic / day.bloodPressure.length).toFixed(3)
+          );
+          this.chartData[1].data.push(
+            +(totalDiastolic / day.bloodPressure.length).toFixed(3)
+          );
         });
       });
   }
@@ -110,32 +96,30 @@ export class BloodPressurePage implements OnInit, OnDestroy {
     this.createChart(ev.detail.value);
   }
 
-  async addClick() {
-    const picker = await this.pickerCtrl.create({
-      columns: [
-        {
-          name: 'systolic',
-          options: this.genPickerRange(250),
-        },
-        {
-          name: 'diastolic',
-          options: this.genPickerRange(200),
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirm',
-          handler: (value) => {
+  addClick() {
+    this.modalCtrl
+      .create({
+        component: AddBloodPressure,
+      })
+      .then((modal) => {
+        modal.present();
+
+        modal.onDidDismiss().then((data) => {
+          if (data.data) {
+            const { diastolic, systolic, time } = data.data.bloodPressure;
+
             this.userService
               .updateDay({
-                bloodPressure: {
-                  diastolic: value.diastolic.value,
-                  systolic: value.systolic.value,
-                },
+                bloodPressure: [
+                  {
+                    diastolic,
+                    systolic,
+                    time,
+                  },
+                ],
+              })
+              .then(() => {
+                this.createChart(this.segment.value);
               })
               .catch((err) => {
                 this.toastCtrl
@@ -145,30 +129,8 @@ export class BloodPressurePage implements OnInit, OnDestroy {
                   })
                   .then((toast) => toast.present());
               });
-          },
-        },
-      ],
-    });
-
-    // Set default selected values
-    picker.columns[0].selectedIndex = 120;
-    picker.columns[1].selectedIndex = 80;
-
-    await picker.present();
-  }
-
-  genPickerRange(length: number): PickerColumnOption[] {
-    // Generate an array of `length` numbers, starting from 0
-    // Reference: https://stackoverflow.com/a/44957114
-    return Array(length + 1)
-      .fill(0)
-      .map((x, y) => {
-        const num = x + y;
-
-        return {
-          text: num + '',
-          value: num,
-        };
+          }
+        });
       });
   }
 }

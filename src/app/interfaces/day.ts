@@ -5,8 +5,11 @@ export interface Day {
   water?: number;
   weight?: number;
   sleep?: number;
-  bloodPressure?: {
-    systolic: number;
-    diastolic: number;
-  };
+  bloodPressure?: BloodPressure[];
+}
+
+export interface BloodPressure {
+  systolic: number;
+  diastolic: number;
+  time: Date;
 }

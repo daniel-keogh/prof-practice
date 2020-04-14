@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-const daySchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const daySchema = new Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId
     },
@@ -22,16 +24,23 @@ const daySchema = new mongoose.Schema({
         default: 0
     },
     bloodPressure: {
-        type: {
+        type: [new Schema({
             systolic: {
                 type: Number,
-                default: 0
+                default: 0,
+                required: true
             },
             diastolic: {
                 type: Number,
-                default: 0
+                default: 0,
+                required: true
+            },
+            time: {
+                type: Date,
+                unique: true,
+                required: true
             }
-        }
+        }, { _id: false })]
     }
 });
 

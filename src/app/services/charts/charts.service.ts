@@ -9,11 +9,11 @@ import { Color, ThemeService } from 'ng2-charts';
 export class ChartsService {
   private _selectedTheme: Theme;
 
-  public get selectedTheme(): Theme {
+  get selectedTheme(): Theme {
     return this._selectedTheme;
   }
 
-  public set selectedTheme(value: Theme) {
+  set selectedTheme(value: Theme) {
     this._selectedTheme = value;
 
     let overrides: ChartOptions;
@@ -99,14 +99,6 @@ export class ChartsService {
       borderColor: 'rgba(82, 96, 255, 1)',
       backgroundColor: 'rgba(82, 96, 255, 0.5)',
       hoverBackgroundColor: 'rgba(82, 96, 255, 0.6)',
-      borderWidth: 2.5,
-      pointRadius: 1,
-      pointHoverRadius: 5,
-    },
-    {
-      borderColor: 'rgba(61, 194, 255, 1)',
-      backgroundColor: 'rgba(61, 194, 255, 0.5)',
-      hoverBackgroundColor: 'rgba(61, 194, 255, 0.6)',
       borderWidth: 2.5,
       pointRadius: 1,
       pointHoverRadius: 5,

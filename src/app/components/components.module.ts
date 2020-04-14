@@ -11,6 +11,7 @@ import { PopoverComponent } from './popover/popover.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangeEmailComponent } from './change-email/change-email.component';
 import { ChartHeaderbarComponent } from './chart-headerbar/chart-headerbar.component';
+import { AddBloodPressure } from './add-bp/add-bp.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { ChartHeaderbarComponent } from './chart-headerbar/chart-headerbar.compo
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    RouterModule
+    RouterModule,
   ],
   declarations: [
     ChangeEmailComponent,
@@ -26,7 +27,8 @@ import { ChartHeaderbarComponent } from './chart-headerbar/chart-headerbar.compo
     ChartHeaderbarComponent,
     PopoverComponent,
     RadioPopoverComponent,
-    StatsComponent
+    StatsComponent,
+    AddBloodPressure,
   ],
   exports: [
     ChangeEmailComponent,
@@ -34,7 +36,8 @@ import { ChartHeaderbarComponent } from './chart-headerbar/chart-headerbar.compo
     ChartHeaderbarComponent,
     PopoverComponent,
     RadioPopoverComponent,
-    StatsComponent
-  ]
+    StatsComponent,
+    AddBloodPressure,
+  ],
 })
 export class ComponentsModule {}
