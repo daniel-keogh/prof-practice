@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const axios = require('axios');
 const passport = require('passport');
 
 const passportMiddleware = require('./middleware/passport');
@@ -27,6 +26,7 @@ app.use((req, res, next) => {
     next();
 });
 
+// Set-up Passport
 app.use(passport.initialize());
 passport.use(passportMiddleware);
 
@@ -36,6 +36,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/days', dayRoutes);
 app.use('/api/stories', storiesRoutes);
 
+// Connect to MongoDB
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

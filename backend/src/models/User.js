@@ -33,6 +33,8 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', function (next) {
+    // If the password has been updated, always make sure the
+    // new password is hashed before saving to the database
     if (!this.isModified('password')) {
         return next();
     }

@@ -3,6 +3,7 @@ const { default: axios } = require('axios');
 const { NEWS_API } = require('../config/keys');
 
 exports.getStories = (req, res) => {
+    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ msg: errors.array()[0].msg });
@@ -12,6 +13,7 @@ exports.getStories = (req, res) => {
 
     axios.get(`https://newsapi.org/v2/everything?q=${req.query.category}&language=en&pageSize=${pageSize}&sortBy=publishedAt&apiKey=${NEWS_API}`)
         .then(data => {
+            // Format the articles array
             const articles = data.data.articles.map(article => {
                 const { title, description, source, url, urlToImage, publishedAt } = article
                 return {
@@ -24,7 +26,7 @@ exports.getStories = (req, res) => {
                 };
             });
 
-            res.json(articles);
+            res.status(200).json(articles);
         })
         .catch(() => {
             res.status(400).json({ articles: [] })

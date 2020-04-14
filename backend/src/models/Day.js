@@ -37,7 +37,6 @@ const daySchema = new Schema({
             },
             time: {
                 type: Date,
-                unique: true,
                 required: true
             }
         }, { _id: false })],

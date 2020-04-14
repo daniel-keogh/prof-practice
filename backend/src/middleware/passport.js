@@ -10,6 +10,8 @@ const options = {
 /*
  * `jwt_payload` is an object literal containing the decoded JWT payload.
  * `done` is a passport error first callback accepting arguments done(error, user, info)
+ * 
+ * Ref: http://www.passportjs.org/packages/passport-jwt/
  */
 module.exports = new JwtStrategy(options, (jwt_payload, done) => {
     User.findById(jwt_payload._id, (err, user) => {

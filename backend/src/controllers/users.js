@@ -17,6 +17,7 @@ exports.getUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
+    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ msg: errors.array()[0].msg });
@@ -29,6 +30,7 @@ exports.updateUser = (req, res) => {
             } else {
                 const { name, email } = req.body;
 
+                // Update the name & email
                 user.name = name;
                 user.email = email;
 
@@ -44,9 +46,10 @@ exports.updateUser = (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
+    // Delete the user by their ID
     User.deleteOne({ _id: req.params.id })
         .then(data => {
-            // Also delete all the days logged by the user
+            // Also delete all of the days logged by this user
             Day.deleteMany({ user_id: req.params.id })
                 .then(() => {
                     res.status(200).json(data);

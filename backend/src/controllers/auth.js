@@ -1,24 +1,29 @@
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
 const JWT_SECRET = require('../config/keys').JWT_SECRET;
 const User = require('../models/User');
 
 exports.registerUser = (req, res) => {
+    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
+    // Create the new User
     const user = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
     });
 
+    // Save the new User to the DB
     user.save()
         .then(user => {
             const { _id, name, email, registered_since } = user;
+
+            // Send back the new User's info.
             res.status(201).json({
                 _id,
                 name,
@@ -33,6 +38,7 @@ exports.registerUser = (req, res) => {
 };
 
 exports.login = (req, res) => {
+    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ msg: errors.array()[0].msg });
@@ -44,16 +50,19 @@ exports.login = (req, res) => {
         .exec()
         .then(user => {
             if (!user) {
+                // User does not exist
                 const error = new Error();
                 error.status = 401;
                 throw error;
             } else {
+                // User exists: Check if the passwords match
                 foundUser = user;
                 return bcrypt.compare(req.body.password, foundUser.password);
             }
         })
         .then(isMatch => {
             if (isMatch) {
+                // Valid Password: Send JWT back to client
                 res.status(200).json({
                     msg: 'User logged in successfully',
                     _id: foundUser._id,
@@ -65,6 +74,7 @@ exports.login = (req, res) => {
                     }, JWT_SECRET)
                 });
             } else {
+                // Invalid password
                 const error = new Error();
                 error.status = 401;
                 throw error;
@@ -80,6 +90,7 @@ exports.login = (req, res) => {
 };
 
 exports.passwordReset = (req, res) => {
+    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ msg: errors.array()[0].msg });
@@ -93,11 +104,11 @@ exports.passwordReset = (req, res) => {
                 res.status(404).json({ msg: 'User with that email address not found' })
             }
 
-            // Check if the old_password matches
+            // Check if the `old_password` matches this user's stored password
             bcrypt.compare(req.body.old_password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
-                        user.password = req.body.password;
+                        user.password = req.body.password; // Reset the password
                         user.save()
                             .then(() => {
                                 res.status(200).json({ msg: 'Password reset successfully' });
