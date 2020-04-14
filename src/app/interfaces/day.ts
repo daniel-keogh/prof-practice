@@ -11,5 +11,5 @@ export interface Day {
 export interface BloodPressure {
   systolic: number;
   diastolic: number;
-  time: Date;
+  time: string;
 }

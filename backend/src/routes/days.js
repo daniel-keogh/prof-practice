@@ -6,11 +6,37 @@ const {
     getUsersDays,
     updateDay
 } = require('../controllers/days');
-const Day = require('../models/Day');
 
 const router = express.Router();
 
 router.post('/',
+    [
+        body('sleep')
+            .optional()
+            .isNumeric()
+            .withMessage('sleep must be a number'),
+        body('water')
+            .optional()
+            .isNumeric()
+            .withMessage('water must be a number'),
+        body('weight')
+            .optional()
+            .isNumeric()
+            .withMessage('weight must be a number'),
+        body('bloodPressure')
+            .optional()
+            .custom(async (value) => {
+                if (value) {
+                    value.forEach(val => {
+                        if (typeof val.systolic != 'number' && typeof val.diastolic != 'number') {
+                            return Promise.reject(`Invalid value for bloodPressure`);
+                        }
+                    })
+                }
+            })
+            .isArray()
+            .withMessage('bloodPressure must be an Array')
+    ],
     passport.authenticate('jwt', { session: false }),
     addDay
 );
@@ -33,23 +59,12 @@ router.put('/:id',
             .isNumeric()
             .withMessage('weight must be a number'),
         body('bloodPressure')
-            .notEmpty()
-            .withMessage('bloodPressure cannot be empty')
             .custom(async (value) => {
                 value.forEach(val => {
                     if (typeof val.systolic != 'number' && typeof val.diastolic != 'number') {
                         return Promise.reject(`Invalid value for bloodPressure`);
                     }
                 })
-            })
-            .custom(async (value) => {
-                for (bp of value) {
-                    const days = await Day.findOne({ 'bloodPressure.time': bp.time });
-
-                    if (days) {
-                        return Promise.reject(`Cannot add duplicate reading`);
-                    }
-                }
             })
             .isArray()
             .withMessage('bloodPressure must be an Array')

@@ -60,7 +60,7 @@ exports.updateDay = (req, res) => {
                 day.water = water;
                 day.weight = weight;
                 day.sleep = sleep;
-                day.bloodPressure = day.bloodPressure.concat(bloodPressure);
+                day.bloodPressure = bloodPressure;
 
                 return day.save();
             } else {

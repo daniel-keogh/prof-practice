@@ -40,7 +40,8 @@ const daySchema = new Schema({
                 unique: true,
                 required: true
             }
-        }, { _id: false })]
+        }, { _id: false })],
+        default: []
     }
 });
 

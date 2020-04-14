@@ -1,3 +1,4 @@
+import { BloodPressure } from './../../interfaces/day';
 import { AddBloodPressure } from './../../components/add-bp/add-bp.component';
 import { BloodPressureChartService } from './../../services/bp-chart/bp-chart.service';
 import { Setting } from './../../services/settings/setting.enum';
@@ -18,6 +19,7 @@ export class BloodPressurePage implements OnInit, OnDestroy {
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [];
   daysSubscription: Subscription;
+  todaysReadings: BloodPressure[] = [];
 
   @ViewChild('segment', { static: false })
   segment: IonSegment;
@@ -85,9 +87,17 @@ export class BloodPressurePage implements OnInit, OnDestroy {
           this.chartData[0].data.push(
             +(totalSystolic / day.bloodPressure.length).toFixed(3)
           );
+
           this.chartData[1].data.push(
             +(totalDiastolic / day.bloodPressure.length).toFixed(3)
           );
+
+          if (
+            new Date().toLocaleDateString() ===
+            new Date(day.date).toLocaleDateString()
+          ) {
+            this.todaysReadings = day.bloodPressure;
+          }
         });
       });
   }
@@ -109,14 +119,10 @@ export class BloodPressurePage implements OnInit, OnDestroy {
             const { diastolic, systolic, time } = data.data.bloodPressure;
 
             this.userService
-              .updateDay({
-                bloodPressure: [
-                  {
-                    diastolic,
-                    systolic,
-                    time,
-                  },
-                ],
+              .updateBloodPressure({
+                diastolic,
+                systolic,
+                time,
               })
               .then(() => {
                 this.createChart(this.segment.value);
@@ -132,5 +138,17 @@ export class BloodPressurePage implements OnInit, OnDestroy {
           }
         });
       });
+  }
+
+  async deleteReading(reading: BloodPressure) {
+    await this.userService.deleteBloodPressureItem(reading);
+    this.createChart(this.segment.value);
+  }
+
+  orderReadings(readings: BloodPressure[]): BloodPressure[] {
+    // Order BP readings by their time stamps
+    return readings.sort((a, b) => {
+      return +new Date(Date.parse(a.time)) - +new Date(Date.parse(b.time));
+    });
   }
 }
