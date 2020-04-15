@@ -9,11 +9,13 @@ exports.getStories = (req, res) => {
         return res.status(422).json({ msg: errors.array()[0].msg });
     }
 
-    const category = req.query.category || 'fitness';
-    const pageSize = req.query.limit || 25;
-    const sortBy = req.query.sortBy || 'publishedAt';
+    const category = 'qInTitle=' + req.query.category || 'fitness';
+    const pageSize = 'pageSize=' + req.query.limit || 25;
+    const sortBy = 'sortBy=' + req.query.sortBy || 'publishedAt';
+    const excludeDomains = 'excludeDomains=' + req.query.excludeDomains || '';
+    const apiKey = `apiKey=${NEWS_API}`;
 
-    axios.get(`https://newsapi.org/v2/everything?qInTitle=${category}&pageSize=${pageSize}&sortBy=${sortBy}&apiKey=${NEWS_API}`)
+    axios.get(`https://newsapi.org/v2/everything?${category}&${pageSize}&${sortBy}&language=en&${excludeDomains}&${apiKey}`)
         .then(data => {
             // Format the articles array
             const articles = data.data.articles.map(article => {
@@ -31,6 +33,6 @@ exports.getStories = (req, res) => {
             res.status(200).json(articles);
         })
         .catch(() => {
-            res.status(400).json({ articles: [] })
+            res.status(400).json([])
         });
 }

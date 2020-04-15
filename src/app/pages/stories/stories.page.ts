@@ -99,6 +99,29 @@ export class StoriesPage implements OnInit {
       });
   }
 
+  async showStoryActionSheet(article: Article) {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: this.truncateString(article.title, 10),
+      buttons: [
+        {
+          text: 'Open in Browser',
+          icon: 'globe-outline',
+          handler: () => this.openLink(article.url),
+        },
+        {
+          text: `Block stories from ${article.source}`,
+          icon: 'close-circle-outline',
+          role: 'destructive',
+          handler: () => {
+            this.storiesService.addBlacklistedDomain(article.url);
+          },
+        },
+      ],
+    });
+
+    actionSheet.present();
+  }
+
   async showCategoryActionSheet() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Categories',

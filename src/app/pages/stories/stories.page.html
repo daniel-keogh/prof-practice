@@ -33,6 +33,7 @@
           <div *ngIf="articles; else skeleton">
             <ion-item *ngFor="let article of articles | async" 
               button
+              (press)="showStoryActionSheet(article)"
               (click)="openLink(article.url)">
               <ion-avatar slot="start">
                 <img [src]="article.urlToImage" 
