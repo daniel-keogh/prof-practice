@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
+import { parse } from 'psl';
 
 export type StorySort = 'publishedAt' | 'popularity';
 export type StoryCategory =
@@ -58,19 +59,16 @@ export class StoriesService {
   }
 
   async addBlacklistedDomain(url: string): Promise<string[]> {
-    let host = new URL(url).hostname;
-
-    if (url.split('.').length > 2) {
-      // Remove any subdomains
-      host = new URL(url).hostname.replace(/^[^.]+\./g, '');
-    }
+    const host = new URL(url).hostname;
+    // Parse the domain name from the url (without subdomains, etc.)
+    const parsed = parse(host).input;
 
     let data: string[] = await this.storage.get(BLACKLIST_KEY);
 
     if (data && data.length > 0) {
-      data.push(host);
+      data.push(parsed);
     } else {
-      data = [host];
+      data = [parsed];
     }
 
     // Remove duplicates using a Set & then save to local storage

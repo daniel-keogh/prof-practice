@@ -113,7 +113,9 @@ export class StoriesPage implements OnInit {
           icon: 'close-circle-outline',
           role: 'destructive',
           handler: () => {
-            this.storiesService.addBlacklistedDomain(article.url);
+            this.storiesService.addBlacklistedDomain(article.url).then(() => {
+              this.getStories();
+            });
           },
         },
       ],
