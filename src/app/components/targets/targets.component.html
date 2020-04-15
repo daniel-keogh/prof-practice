@@ -18,23 +18,23 @@
   <ion-list>
     <ion-item lines="inset">
       <ion-label position="floating">Water (ml)</ion-label>
-      <ion-input min="0" type="number" [(ngModel)]="targets.water"></ion-input>
+      <ion-input min="0" type="number" [(ngModel)]="target.water"></ion-input>
     </ion-item>
 
     <ion-item lines="inset">
       <ion-label position="floating">Weight (lbs)</ion-label>
-      <ion-input min="0" type="number" [(ngModel)]="targets.weight"></ion-input>
+      <ion-input min="0" type="number" [(ngModel)]="target.weight"></ion-input>
     </ion-item>
 
     <ion-item lines="inset">
       <ion-label position="floating">Sleep (hrs)</ion-label>
-      <ion-input min="0" max="24" type="number" [(ngModel)]="targets.sleep"></ion-input>
+      <ion-input min="0" max="24" type="number" [(ngModel)]="target.sleep"></ion-input>
     </ion-item>
 
     <ion-item button (click)="openBloodPressurePicker()">
       <ion-label>Blood Pressure</ion-label>
       <ion-chip slot="end" color="primary">
-        <ion-label>{{targets.bloodPressure.systolic}} / {{targets.bloodPressure.diastolic}}</ion-label>
+        <ion-label>{{target.bloodPressure.systolic}} / {{target.bloodPressure.diastolic}}</ion-label>
       </ion-chip>
     </ion-item>
   </ion-list>
