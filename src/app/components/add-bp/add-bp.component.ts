@@ -1,19 +1,21 @@
+import { BloodPressure } from './../../interfaces/day';
 import {
   ModalController,
   PickerController,
   AlertController,
 } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { PickerColumnOption } from '@ionic/core';
+import Utils from '../../utils';
 
 @Component({
   selector: 'app-add-bp',
   templateUrl: './add-bp.component.html',
 })
 export class AddBloodPressure implements OnInit {
-  systolic = 120;
-  diastolic = 80;
-  time: string;
+  bp: BloodPressure = {
+    systolic: 120,
+    diastolic: 80,
+  };
 
   constructor(
     private alertCtrl: AlertController,
@@ -22,7 +24,7 @@ export class AddBloodPressure implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.time = new Date().toISOString();
+    this.bp.time = new Date().toISOString();
   }
 
   dismiss() {
@@ -34,11 +36,11 @@ export class AddBloodPressure implements OnInit {
       columns: [
         {
           name: 'systolic',
-          options: this.genPickerRange(250),
+          options: Utils.genPickerRange(250),
         },
         {
           name: 'diastolic',
-          options: this.genPickerRange(200),
+          options: Utils.genPickerRange(200),
         },
       ],
       buttons: [
@@ -49,38 +51,23 @@ export class AddBloodPressure implements OnInit {
         {
           text: 'Confirm',
           handler: (value) => {
-            this.diastolic = value.diastolic.value;
-            this.systolic = value.systolic.value;
+            this.bp.diastolic = value.diastolic.value;
+            this.bp.systolic = value.systolic.value;
           },
         },
       ],
     });
 
     // Set the values that are selected by default when the picker is opened
-    picker.columns[0].selectedIndex = this.systolic;
-    picker.columns[1].selectedIndex = this.diastolic;
+    picker.columns[0].selectedIndex = this.bp.systolic;
+    picker.columns[1].selectedIndex = this.bp.diastolic;
 
     await picker.present();
   }
 
-  genPickerRange(length: number): PickerColumnOption[] {
-    // Generate an array of `length` numbers, starting from 0
-    // Reference: https://stackoverflow.com/a/44957114
-    return Array(length + 1)
-      .fill(0)
-      .map((x, y) => {
-        const num = x + y;
-
-        return {
-          text: num + '',
-          value: num,
-        };
-      });
-  }
-
   save() {
     // Omit seconds & milliseconds from the time
-    const t = new Date(Date.parse(this.time));
+    const t = new Date(Date.parse(this.bp.time));
     t.setSeconds(0);
     t.setMilliseconds(0);
 
@@ -100,8 +87,8 @@ export class AddBloodPressure implements OnInit {
       // Pass the inputted data back to the BP page
       this.modal.dismiss({
         bloodPressure: {
-          systolic: this.systolic,
-          diastolic: this.diastolic,
+          systolic: this.bp.systolic,
+          diastolic: this.bp.diastolic,
           time: t.toISOString(),
         },
       });

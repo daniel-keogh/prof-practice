@@ -1,4 +1,5 @@
-import { ModalController } from '@ionic/angular';
+import { TargetsService } from './../../services/targets/targets.service';
+import { ModalController, ToastController } from '@ionic/angular';
 import { User } from './../../interfaces/user';
 import { UserService } from './../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +16,9 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private userService: UserService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private targets: TargetsService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -39,6 +42,23 @@ export class ProfilePage implements OnInit {
       })
       .then((modal) => {
         modal.present();
+
+        modal
+          .onDidDismiss()
+          .then((result) => {
+            if (result.data) {
+              this.targets.setTarget(result.data);
+            }
+          })
+          .catch((err) => {
+            // Show an error message
+            this.toastCtrl
+              .create({
+                message: err,
+                duration: 2000,
+              })
+              .then((toast) => toast.present());
+          });
       });
   }
 }

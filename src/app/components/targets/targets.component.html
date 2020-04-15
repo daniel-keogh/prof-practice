@@ -6,9 +6,36 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onSave()">
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  
+  <ion-list>
+    <ion-item lines="inset">
+      <ion-label position="floating">Water (ml)</ion-label>
+      <ion-input min="0" type="number" [(ngModel)]="targets.water"></ion-input>
+    </ion-item>
+
+    <ion-item lines="inset">
+      <ion-label position="floating">Weight (lbs)</ion-label>
+      <ion-input min="0" type="number" [(ngModel)]="targets.weight"></ion-input>
+    </ion-item>
+
+    <ion-item lines="inset">
+      <ion-label position="floating">Sleep (hrs)</ion-label>
+      <ion-input min="0" max="24" type="number" [(ngModel)]="targets.sleep"></ion-input>
+    </ion-item>
+
+    <ion-item button (click)="openBloodPressurePicker()">
+      <ion-label>Blood Pressure</ion-label>
+      <ion-chip slot="end" color="primary">
+        <ion-label>{{targets.bloodPressure.systolic}} / {{targets.bloodPressure.diastolic}}</ion-label>
+      </ion-chip>
+    </ion-item>
+  </ion-list>
 </ion-content>
