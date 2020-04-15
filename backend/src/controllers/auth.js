@@ -70,6 +70,7 @@ exports.login = (req, res) => {
                         _id: foundUser._id,
                         email: foundUser.email,
                         name: foundUser.name,
+                        profileImage: foundUser.profileImage,
                         registered_since: foundUser.registered_since
                     }, JWT_SECRET)
                 });

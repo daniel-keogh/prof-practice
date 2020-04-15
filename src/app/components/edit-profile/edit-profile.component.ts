@@ -24,7 +24,7 @@ export class EditProfileComponent implements OnInit {
     this.modal.dismiss();
   }
 
-  onSubmit() {
+  onSave() {
     this.userService
       .updateUser({
         name: this.name,

@@ -28,11 +28,12 @@ exports.updateUser = (req, res) => {
             if (!user) {
                 res.status(404).json({ msg: 'User not found' });
             } else {
-                const { name, email } = req.body;
+                const { name, email, profileImage } = req.body;
 
                 // Update the name & email
                 user.name = name;
                 user.email = email;
+                user.profileImage = profileImage;
 
                 return user.save();
             }

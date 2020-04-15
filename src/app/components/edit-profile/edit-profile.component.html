@@ -6,6 +6,11 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onSave()">
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,8 +18,8 @@
   <div class="ion-padding-top">
     <form (keyup.enter)="onSubmit()">
       <ion-list>
-        <ion-item>
-          <ion-label position="floating">Enter Name</ion-label>
+        <ion-item lines="inset">
+          <ion-label position="floating">Enter your Name</ion-label>
           <ion-input type="text" 
             name="inputName"
             position="floating" 
@@ -24,20 +29,14 @@
             autocorrect>
           </ion-input>
         </ion-item>
+
+        <ion-item>
+          <ion-label>Change Profile Image</ion-label>
+          <ion-button color="tertiary">
+            <ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
       </ion-list>
     </form>
   </div>
 </ion-content>
-
-<ion-footer class="ion-no-border">
-  <ion-toolbar class="ion-padding-bottom">
-    <ion-button
-      class="ion-padding-horizontal"
-      (click)="onSubmit()"
-      color="primary" 
-      expand="full"
-      shape="block">
-      Save
-    </ion-button>
-  </ion-toolbar>
-</ion-footer>

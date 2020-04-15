@@ -32,6 +32,10 @@ export class ProfilePage implements OnInit {
       })
       .then((modal) => {
         modal.present();
+
+        modal.onDidDismiss().then(() => {
+          this.user = this.userService.user;
+        });
       });
   }
 

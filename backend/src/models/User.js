@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    profileImage: {
+        type: String,
+        default: 'https://www.gravatar.com/avatar?d=mm&s=140'
+    },
     days: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -9,7 +9,7 @@
 
 <ion-content>
   <div *ngIf="user" class="ion-padding ion-text-center">
-    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" height="150" width="150">
+    <img src="{{user.profileImage}}" alt="avatar" height="150" width="150">
     <h2>{{user.name}}</h2>
     <ion-note color="tertiary">User since {{user.registered_since | date:medium}}.</ion-note>
   </div>

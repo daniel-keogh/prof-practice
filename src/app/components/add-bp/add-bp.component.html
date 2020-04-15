@@ -19,7 +19,7 @@
           fill="clear"
           strong
           color="primary">
-          {{systolic}} / {{diastolic}}
+          {{bp.systolic}} / {{bp.diastolic}}
         </ion-button>
       </ion-col>
     </ion-row>
@@ -31,7 +31,7 @@
           <ion-datetime displayFormat="h:mm A" 
             minuteValues="0,5,10,15,20,25,30,35,40,45,50,55" 
             [value]="time" 
-            [(ngModel)]="time">
+            [(ngModel)]="bp.time">
           </ion-datetime>
         </ion-item>
       </ion-col>

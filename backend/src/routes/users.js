@@ -30,6 +30,9 @@ router.put('/:id',
                     return Promise.reject('A user with that email address already exists');
                 }
             }),
+        body('profileImage')
+            .isURL()
+            .withMessage('profileImage should be a URL')
     ],
     passport.authenticate('jwt', { session: false }),
     updateUser

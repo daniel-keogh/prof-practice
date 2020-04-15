@@ -42,19 +42,20 @@ export class UserService {
       .get<User>(`http://localhost:4000/api/users/${this._user.value._id}`)
       .pipe(
         tap((data) => {
-          const { _id, name, email, registered_since } = data;
+          const { _id, name, email, registered_since, profileImage } = data;
 
           this._user.next({
             _id,
             name,
             email,
             registered_since,
+            profileImage,
           });
         })
       );
   }
 
-  updateUser(user: User) {
+  updateUser(user: User): Observable<User> {
     return this.http
       .put(`http://localhost:4000/api/users/${this._user.value._id}`, {
         ...this._user.value,
