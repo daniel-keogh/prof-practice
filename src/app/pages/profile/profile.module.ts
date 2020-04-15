@@ -6,6 +6,11 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProfilePageRoutingModule } from './profile-routing.module';
 
+import { TargetsComponent } from './../../components/targets/targets.component';
+import { EditProfileComponent } from './../../components/edit-profile/edit-profile.component';
+
+import { ComponentsModule } from './../../components/components.module';
+
 import { ProfilePage } from './profile.page';
 
 @NgModule({
@@ -13,8 +18,10 @@ import { ProfilePage } from './profile.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule
+    ComponentsModule,
+    ProfilePageRoutingModule,
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfilePage],
+  entryComponents: [EditProfileComponent, TargetsComponent],
 })
 export class ProfilePageModule {}

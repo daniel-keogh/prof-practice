@@ -54,18 +54,18 @@ export class UserService {
       );
   }
 
-  updateUserEmail(newEmail: string) {
+  updateUser(user: User) {
     return this.http
       .put(`http://localhost:4000/api/users/${this._user.value._id}`, {
         ...this._user.value,
-        email: newEmail,
+        ...user,
       })
       .pipe(
         tap(() => {
           // Update the user BehaviourSubject as well
           this._user.next({
             ...this._user.value,
-            email: newEmail,
+            ...user,
           });
         }),
         catchError((e) => {

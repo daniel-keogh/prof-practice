@@ -50,7 +50,7 @@ export class ChangeEmailComponent implements OnInit {
     if (this.form.status !== 'INVALID') {
       const { email } = this.form.value;
 
-      this.userService.updateUserEmail(email).subscribe(
+      this.userService.updateUser({ email }).subscribe(
         () => this.dismiss(),
         (err) => {
           // Show an error message

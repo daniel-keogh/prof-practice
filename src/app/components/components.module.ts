@@ -1,3 +1,5 @@
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { TargetsComponent } from './targets/targets.component';
 import { NgModule } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -29,6 +31,8 @@ import { AddBloodPressure } from './add-bp/add-bp.component';
     RadioPopoverComponent,
     StatsComponent,
     AddBloodPressure,
+    TargetsComponent,
+    EditProfileComponent,
   ],
   exports: [
     ChangeEmailComponent,
@@ -38,6 +42,8 @@ import { AddBloodPressure } from './add-bp/add-bp.component';
     RadioPopoverComponent,
     StatsComponent,
     AddBloodPressure,
+    TargetsComponent,
+    EditProfileComponent,
   ],
 })
 export class ComponentsModule {}

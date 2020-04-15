@@ -9,8 +9,32 @@
 
 <ion-content>
   <div *ngIf="user" class="ion-padding-top ion-text-center">
-    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
+    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" height="150" width="150">
     <h2>{{user.name}}</h2>
     <p>User since {{user.registered_since | date:medium}}.</p>
   </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+        <ion-card button>
+          <ion-item (click)="openEditModal()" class="ion-activated" lines="none">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            <ion-label>Edit Profile</ion-label>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="8" offset-md="2" size-lg="6" offset-lg="3">
+        <ion-card button>
+          <ion-item (click)="openSetTargetModal()" class="ion-activated" lines="none">
+            <ion-icon name="medal-outline" slot="start"></ion-icon>
+            <ion-label>Set Targets</ion-label>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
