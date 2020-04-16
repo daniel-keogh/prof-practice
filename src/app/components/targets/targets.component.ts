@@ -1,3 +1,4 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TargetsService } from './../../services/targets/targets.service';
 import { Target } from './../../interfaces/target';
 import { ModalController, PickerController } from '@ionic/angular';
@@ -20,17 +21,45 @@ export class TargetsComponent implements OnInit {
     },
   };
 
+  form: FormGroup;
+
   constructor(
     private modal: ModalController,
     private pickerCtrl: PickerController,
     private targetService: TargetsService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
+    // Read the existing targets from storage
     this.targetService.getTarget().then((data) => {
       if (data) {
         this.target = data;
       }
+    });
+
+    this.form = new FormGroup({
+      water: new FormControl(null, {
+        updateOn: 'change',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      sleep: new FormControl(null, {
+        updateOn: 'change',
+        validators: [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(24),
+        ],
+      }),
+      weight: new FormControl(null, {
+        updateOn: 'change',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+    });
+
+    this.form.patchValue({
+      water: this.target.water,
+      sleep: this.target.sleep,
+      weight: this.target.weight,
     });
   }
 
@@ -39,7 +68,14 @@ export class TargetsComponent implements OnInit {
   }
 
   onSave() {
-    this.modal.dismiss(this.target);
+    if (this.form.status !== 'INVALID') {
+      this.target = {
+        ...this.target,
+        ...this.form.value,
+      };
+
+      this.modal.dismiss(this.target);
+    }
   }
 
   async openBloodPressurePicker() {

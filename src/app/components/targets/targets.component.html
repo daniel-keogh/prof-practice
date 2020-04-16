@@ -15,27 +15,29 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item lines="inset">
-      <ion-label position="floating">Water (ml)</ion-label>
-      <ion-input min="0" type="number" [(ngModel)]="target.water"></ion-input>
-    </ion-item>
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-item lines="inset">
+        <ion-label position="stacked">Water (ml)</ion-label>
+        <ion-input type="number" formControlName="water"></ion-input>
+      </ion-item>
 
-    <ion-item lines="inset">
-      <ion-label position="floating">Weight (lbs)</ion-label>
-      <ion-input min="0" type="number" [(ngModel)]="target.weight"></ion-input>
-    </ion-item>
+      <ion-item lines="inset">
+        <ion-label position="stacked">Weight (lbs)</ion-label>
+        <ion-input type="number" formControlName="weight"></ion-input>
+      </ion-item>
 
-    <ion-item lines="inset">
-      <ion-label position="floating">Sleep (hrs)</ion-label>
-      <ion-input min="0" max="24" type="number" [(ngModel)]="target.sleep"></ion-input>
-    </ion-item>
+      <ion-item lines="inset">
+        <ion-label position="stacked">Sleep (hrs)</ion-label>
+        <ion-input type="number" formControlName="sleep"></ion-input>
+      </ion-item>
 
-    <ion-item button (click)="openBloodPressurePicker()">
-      <ion-label>Blood Pressure</ion-label>
-      <ion-chip slot="end" color="primary">
-        <ion-label>{{target.bloodPressure.systolic}} / {{target.bloodPressure.diastolic}}</ion-label>
-      </ion-chip>
-    </ion-item>
-  </ion-list>
+      <ion-item button (click)="openBloodPressurePicker()">
+        <ion-label>Blood Pressure</ion-label>
+        <ion-chip slot="end" color="primary">
+          <ion-label>{{target.bloodPressure.systolic}} / {{target.bloodPressure.diastolic}}</ion-label>
+        </ion-chip>
+      </ion-item>
+    </ion-list>
+  </form>
 </ion-content>

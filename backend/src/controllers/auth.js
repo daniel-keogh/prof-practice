@@ -21,14 +21,15 @@ exports.registerUser = (req, res) => {
     // Save the new User to the DB
     user.save()
         .then(user => {
-            const { _id, name, email, registered_since } = user;
+            const { _id, name, email, registered_since, profileImage } = user;
 
             // Send back the new User's info.
             res.status(201).json({
                 _id,
                 name,
                 email,
-                registered_since
+                registered_since,
+                profileImage
             });
         })
         .catch(err => {
