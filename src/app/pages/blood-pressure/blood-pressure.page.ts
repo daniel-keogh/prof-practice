@@ -10,6 +10,8 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ToastController, IonSegment, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
+type BpColor = 'danger' | 'success' | 'warning';
+
 @Component({
   selector: 'app-blood-pressure',
   templateUrl: './blood-pressure.page.html',
@@ -157,5 +159,24 @@ export class BloodPressurePage implements OnInit, OnDestroy {
     return readings.sort((a, b) => {
       return +new Date(Date.parse(a.time)) - +new Date(Date.parse(b.time));
     });
+  }
+
+  bpColour(reading: BloodPressure): BpColor {
+    // Color-code the readings depending on whether they're good/bad
+    // Reference: American Heart Association
+
+    if (reading.systolic < 120 && reading.diastolic < 80) {
+      // Normal
+      return 'success';
+    } else if (
+      (reading.systolic >= 120 || reading.systolic <= 139) &&
+      (reading.diastolic >= 80 || reading.diastolic < 90)
+    ) {
+      // Elevated - Hypertension Stage 1
+      return 'warning';
+    } else {
+      // Hypertension Stage 2 - Crisis
+      return 'danger';
+    }
   }
 }

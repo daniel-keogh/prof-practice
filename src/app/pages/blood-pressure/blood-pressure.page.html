@@ -60,7 +60,7 @@
 
             <ion-item>
               <ion-label>{{reading.systolic}}/{{reading.diastolic}} mmHg</ion-label>
-              <ion-chip slot="end">
+              <ion-chip slot="end" [color]="bpColour(reading)">
                 <ion-label>{{reading.time | date:'shortTime'}}</ion-label>
               </ion-chip>
             </ion-item>
