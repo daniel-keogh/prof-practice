@@ -32,7 +32,7 @@ export class HomePage {
       iconColour: 'secondary',
     },
     {
-      title: 'Water',
+      title: 'Water Intake',
       url: '/water',
       icon: 'water-outline',
       iconColour: 'primary',

@@ -11,7 +11,7 @@ export class SettingsService {
 
   setTheme(theme: Theme): Promise<any> {
     // Toggle the dark theme CSS classes
-    document.body.classList.toggle('dark', theme === Theme.Dark);
+    document.body.classList.toggle('dark', this.isDarkThemePreferred(theme));
 
     return this.storage.set(Setting.Theme, theme);
   }
@@ -30,5 +30,13 @@ export class SettingsService {
           break;
       }
     });
+  }
+
+  private isDarkThemePreferred(theme: Theme): boolean {
+    if (theme === Theme.System) {
+      // Use matchMedia to check the user's preference
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return theme === Theme.Dark;
   }
 }
