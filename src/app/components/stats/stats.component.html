@@ -9,7 +9,7 @@
       <ion-chip #chip 
         slot="end" 
         [color]="(item === 'High') ? 'success' : (item === 'Low') ? 'warning' : 'secondary'">
-        <ion-label *ngIf="stats">{{stats[item]}} {{units}}</ion-label>
+        <ion-label *ngIf="stats">{{stats[item] | number : '1.2-2'}} {{units}}</ion-label>
         <ion-spinner *ngIf="!stats" 
           name="dots" 
           [color]="chip.color"></ion-spinner>

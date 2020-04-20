@@ -1,6 +1,10 @@
 import { UserService } from './../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import {
+  ModalController,
+  ToastController,
+  AlertController,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-edit-profile',
@@ -11,6 +15,7 @@ export class EditProfileComponent implements OnInit {
   name: string;
 
   constructor(
+    private alertController: AlertController,
     private modal: ModalController,
     private userService: UserService,
     private toastCtrl: ToastController
@@ -22,6 +27,51 @@ export class EditProfileComponent implements OnInit {
 
   dismiss() {
     this.modal.dismiss();
+  }
+
+  async changeImage() {
+    const alert = await this.alertController.create({
+      header: 'Change Profile Image',
+      message: 'Enter the URL of the new Image.',
+      inputs: [
+        {
+          name: 'image',
+          type: 'text',
+          placeholder: '',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          handler: (input) => {
+            if (input.image) {
+              this.userService
+                .updateUser({
+                  profileImage: input.image,
+                })
+                .toPromise()
+                .catch((err) => {
+                  // Show error message
+                  this.alertController
+                    .create({
+                      header: err.error.msg,
+                      buttons: ['OK'],
+                    })
+                    .then((alert) => {
+                      alert.present();
+                    });
+                });
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   onSave() {
