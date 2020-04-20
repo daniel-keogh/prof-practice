@@ -3,6 +3,7 @@ import { Theme } from './../settings/theme.enum';
 import { Injectable } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Color, ThemeService } from 'ng2-charts';
+import Utils from 'src/app/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class ChartsService {
 
     // Make sure the chart is clearly visible, even when the app is using
     // a dark theme
-    if (this.selectedTheme === Theme.Dark) {
+    if (Utils.isDarkThemePreferred(this.selectedTheme)) {
       overrides = {
         title: {
           fontColor: '#d7d8da',
