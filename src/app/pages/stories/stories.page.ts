@@ -40,7 +40,9 @@ export class StoriesPage implements OnInit {
           return stories.map((story: Article) => {
             return {
               ...story,
-              description: this.truncateString(story.description, 25),
+              description: story.description
+                ? this.truncateString(story.description, 25)
+                : '',
             };
           });
         })

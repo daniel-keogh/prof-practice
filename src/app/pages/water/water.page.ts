@@ -1,3 +1,4 @@
+import { TargetsService } from './../../services/targets/targets.service';
 import { Setting } from './../../services/settings/setting.enum';
 import { AlertController, ToastController, IonSegment } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -11,19 +12,19 @@ import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-water',
   templateUrl: './water.page.html',
-  styleUrls: ['./water.page.scss']
+  styleUrls: ['./water.page.scss'],
 })
 export class WaterPage implements OnInit, OnDestroy {
-  recommended = 1920;
   today = 0;
+  target: number;
   stats: any;
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [
     {
       data: [],
       label: 'Milliliters',
-      minBarLength: 6
-    }
+      minBarLength: 6,
+    },
   ];
   daysSubscription: Subscription;
 
@@ -34,13 +35,20 @@ export class WaterPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private charts: ChartsService,
     private storage: Storage,
+    private targetService: TargetsService,
     private toastCtrl: ToastController,
     private userService: UserService
   ) {}
 
   ngOnInit() {
+    this.targetService.getTarget().then((data) => {
+      if (data) {
+        this.target = data.water;
+      }
+    });
+
     this.charts.title = 'Water Intake';
-    this.storage.get(Setting.Theme).then(theme => {
+    this.storage.get(Setting.Theme).then((theme) => {
       if (theme) {
         this.charts.selectedTheme = theme;
       }
@@ -73,11 +81,11 @@ export class WaterPage implements OnInit, OnDestroy {
 
     this.daysSubscription = this.userService
       .getDays(numWeeks)
-      .subscribe(data => {
+      .subscribe((data) => {
         this.chartLabels = [];
         this.chartData[0].data = [];
 
-        data.forEach(day => {
+        data.forEach((day) => {
           this.chartLabels.push(day.date);
           this.chartData[0].data.push(day.water);
 
@@ -106,37 +114,37 @@ export class WaterPage implements OnInit, OnDestroy {
           name: 'water',
           type: 'number',
           value: 0,
-          min: 0
-        }
+          min: 0,
+        },
       ],
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'OK',
-          handler: label => {
+          handler: (label) => {
             if (+label.water >= 0) {
               this.userService
                 .updateDay({
-                  water: +label.water
+                  water: +label.water,
                 })
                 .then(() => {
                   this.createChart(this.segment.value);
                 })
-                .catch(err => {
+                .catch((err) => {
                   this.toastCtrl
                     .create({
                       message: err,
-                      duration: 2000
+                      duration: 2000,
                     })
-                    .then(toast => toast.present());
+                    .then((toast) => toast.present());
                 });
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();

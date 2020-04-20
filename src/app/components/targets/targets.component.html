@@ -19,17 +19,17 @@
     <ion-list>
       <ion-item lines="inset">
         <ion-label position="stacked">Water (ml)</ion-label>
-        <ion-input type="number" formControlName="water"></ion-input>
+        <ion-input type="number" min="0" formControlName="water"></ion-input>
       </ion-item>
 
       <ion-item lines="inset">
         <ion-label position="stacked">Weight (lbs)</ion-label>
-        <ion-input type="number" formControlName="weight"></ion-input>
+        <ion-input type="number" min="0" formControlName="weight"></ion-input>
       </ion-item>
 
       <ion-item lines="inset">
         <ion-label position="stacked">Sleep (hrs)</ion-label>
-        <ion-input type="number" formControlName="sleep"></ion-input>
+        <ion-input type="number" min="0" max="24" formControlName="sleep"></ion-input>
       </ion-item>
 
       <ion-item button (click)="openBloodPressurePicker()">

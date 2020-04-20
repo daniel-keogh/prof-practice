@@ -35,14 +35,14 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row *ngIf="target">
       <ion-col size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
         <ion-card>
           <ion-card-content>
             <ion-item lines="none">
               <p>Today you've drank 
-                <ion-note [color]="today >= recommended ? 'success' : 'danger'">{{today}}ml</ion-note>
-                out of the recommended {{recommended}}ml.
+                <ion-note [color]="today >= target ? 'success' : 'danger'">{{today}}ml</ion-note>
+                out of your target of {{target}}ml.
               </p>
             </ion-item>
           </ion-card-content>
