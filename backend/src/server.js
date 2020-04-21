@@ -26,7 +26,11 @@ app.use((req, res, next) => {
     next();
 });
 
-// Set-up Passport
+// Set-up Passport for authenticating user requests
+// The server-side auth implementation is based on this
+// tutorial by Simon Grimm:
+//
+// https://www.youtube.com/watch?v=hPRtfElCi0E
 app.use(passport.initialize());
 passport.use(passportMiddleware);
 

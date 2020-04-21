@@ -16,6 +16,13 @@ import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Pedometer } from '@ionic-native/pedometer/ngx';
 
+
+/* The @auth0/angular-jwt dependency will automatically get access_token & append
+ * it to the Authorization Header of any request that is made by the HTTPClient.
+ *
+ * Reference - Simon Grimm
+ * https://www.youtube.com/watch?v=c79ZUM9zawc
+ */
 export function jwtOptionsFactory(storage) {
   return {
     tokenGetter: () => storage.get('access_token'),
