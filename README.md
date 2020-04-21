@@ -42,3 +42,18 @@ Note that all these commands should be run from the root of the repository.
 
 - Run `npm run server` to start the server with [nodemon](https://www.npmjs.com/package/nodemon).
 It should automatically reload if you change any of the source files.
+
+## Running on a Device
+
+**_Note:_** Full details on building for a device, including the setup requirements are on the [Capacitor](https://capacitor.ionicframework.com/docs/getting-started/dependencies) website.
+
+The Android and iOS projects are located in the `android/` and `ios/` directories respectively. To run the app on one of these platforms you first need to build the app by running `ionic build`. Then you can run either of the following commands to open the native Android or iOS project in the standard IDE for that platform (Xcode for iOS, or Android Studio for Android).
+
+```sh
+$ npx cap open ios
+$ npx cap open android
+```
+
+### Rebuilding
+
+Any time you run `ionic build` you'll need to run `npx cap copy` afterwards in order to copy the built changes into the native project folders.
